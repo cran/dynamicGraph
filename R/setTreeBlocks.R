@@ -8,14 +8,20 @@ function (block.tree, vertices, root.label = "", N = 3, delta = ifelse(overlayin
         v = 100, N = 3, horizontal = FALSE) {
         "setVertex" <- function(j, m, set.positions = TRUE) {
             if (set.positions) {
-                if (horizontal) 
-                  position <- c(A + w * (j - 0.5), (X + Y)/2)
-                else position <- c((A + B)/2, X + w * (j - 0.5))
+                if (m < 3) 
+                  if (horizontal) 
+                    position <- c(A + w * (j - 0.5), (X + Y)/2)
+                  else position <- c((A + B)/2, X + w * (j - 
+                    0.5))
+                else position <- c((A + B)/2 + 0.9 * (B - A)/2 * 
+                  cos(2 * pi * j/m), (X + Y)/2 + 0.9 * (Y - X)/2 * 
+                  sin(2 * pi * j/m))
                 position <- c(position, rep(50, N - 2)) - rep(50, 
                   N)
                 position(vertices[[block.vertices[j]]]) <<- position
             }
             stratum(vertices[[block.vertices[j]]]) <<- stratum
+            blockindex(vertices[[block.vertices[j]]]) <<- stratum
         }
         m <- length(block.vertices)
         if (!is.numeric(block.vertices)) 
@@ -39,6 +45,9 @@ function (block.tree, vertices, root.label = "", N = 3, delta = ifelse(overlayin
             1, 0), Delta = ifelse(overlaying, 0, 2), d = 5, f = 1/3, 
         overlaying = FALSE) {
         labels <- names(block.tree)
+        closed <- FALSE
+        if (!is.null(block.tree$closed)) 
+            closed <- block.tree$closed
         horizontal <- TRUE
         if (!is.null(block.tree$horizontal)) 
             horizontal <- block.tree$horizontal
@@ -113,14 +122,16 @@ function (block.tree, vertices, root.label = "", N = 3, delta = ifelse(overlayin
             "f") && (names(block.tree)[i] != "F") && (names(block.tree)[i] != 
             "g")) {
             count.vertices <- length(block.tree[[i]])
-            block.vertices <- block.tree[[i]]
-            if (!is.numeric(block.vertices)) 
-                block.vertices <- match(block.vertices, Names(vertices))
-            vertices <<- positionVerticesInTreeBlocks(block.vertices, 
-                vertices, Stratum, A, B, X, Y, u, v, horizontal = horizontal)
-            if (label == "") 
-                label <- paste(Names(vertices)[block.vertices], 
-                  sep = "+")
+            if (count.vertices > 0) {
+                block.vertices <- block.tree[[i]]
+                if (!is.numeric(block.vertices)) 
+                  block.vertices <- match(block.vertices, Names(vertices))
+                vertices <<- positionVerticesInTreeBlocks(block.vertices, 
+                  vertices, Stratum, A, B, X, Y, u, v, horizontal = horizontal)
+                if (label == "") 
+                  label <- paste(Names(vertices)[block.vertices], 
+                    sep = "+")
+            }
             s <- 2
         }
         g <- ifelse(count.vertices == 0, 0, g)
@@ -163,7 +174,7 @@ function (block.tree, vertices, root.label = "", N = 3, delta = ifelse(overlayin
         }
         Block <- newBlock(stratum = Stratum, index = -Stratum, 
             position = position, color = block.color, label = label, 
-            ancestors = ancestors)
+            closed = closed, ancestors = ancestors)
         result <- NULL
         if (count.blocks > 0) {
             if (horizontal) 

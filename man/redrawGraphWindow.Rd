@@ -127,10 +127,10 @@ myLabelAllEdges <- function(object, slave = FALSE, ...)
                     from.type = types[1], to.type = types[2],
                     edge.index = i, force = force, Arguments = Args)
       if (!is.null(R)) {
-        if (TRUE || (hasMethod("labelOfTest", class(R))))
-          labelOfEdge(edges[[i]]) <- labelOfTest(R)
-        if (TRUE || (hasMethod("widthOfTest", class(R))))
-          widthOfEdge(edges[[i]]) <- widthOfTest(R)
+        if (TRUE || (hasMethod("label", class(R))))
+          label(edges[[i]]) <- label(R)
+        if (TRUE || (hasMethod("width", class(R))))
+          width(edges[[i]]) <- width(R)
       }
     }
     return(edges)

@@ -21,8 +21,8 @@ newFactor(vertex.indices, vertices = NULL,
       the default label. }
   \item{name}{ Text string for the \code{name} of the factor vertex. }
   \item{label}{ Text string for the \code{label} of the factor vertex. }
-  \item{type}{ Text string for the \code{type}, the class, of the factor
-      vertex. Should be in \code{factorClasses}. }
+  \item{type}{ Text string for the \code{type}, e.i. the class,
+      of the factor vertex. Should be in \code{factorClasses}. }
   \item{index}{ Integer for the \code{index} of the factor vertex. }
   \item{width}{ Numeric, for the \code{width} of the factor vertex. }
   \item{color}{ Text string for the \code{color} of the factor vertex. }

@@ -16,16 +16,17 @@ function (edge.list, vertices, blocks, width = 2, color = "default",
             if (!is.numeric(edge)) 
                 edge <- match(edge, vertex.names)
             strata <- unlist(lapply(edge, function(i) stratum(vertices[[i]])))
-            if (strata[1] != strata[2]) {
+            blockindex <- unlist(lapply(edge, function(i) blockindex(vertices[[i]])))
+            if (blockindex[1] != blockindex[2]) {
                 if (strata[1] < strata[2]) {
-                  b1 <- strata[1]
-                  b2 <- strata[2]
+                  b1 <- blockindex[1]
+                  b2 <- blockindex[2]
                   e1 <- edge[1]
                   e2 <- edge[2]
                 }
                 else {
-                  b1 <- strata[2]
-                  b2 <- strata[1]
+                  b1 <- blockindex[2]
+                  b2 <- blockindex[1]
                   e1 <- edge[2]
                   e2 <- edge[1]
                 }

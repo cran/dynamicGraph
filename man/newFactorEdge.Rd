@@ -40,19 +40,15 @@ factoredge <- newFactorEdge(c(1, -1), list(vertices[[1]], factor))
 str(factoredge)
 
 color(factoredge)
-labelOfEdge(factoredge)
 label(factoredge)
 labelPosition(factoredge)
-widthOfEdge(factoredge)
 width(factoredge)
 nodeIndicesOfEdge(factoredge)
 nodeTypesOfEdge(factoredge)
 
 color(factoredge) <- "Black"
-labelOfEdge(factoredge) <- "V1~V123"
 label(factoredge) <- "V1~V1:2:3"
 labelPosition(factoredge) <- c(0, 1, 2)
-widthOfEdge(factoredge) <- 0
 width(factoredge) <- 1
 nodeIndicesOfEdge(factoredge) <- c(1, -1)
 str(factoredge)

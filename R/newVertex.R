@@ -1,6 +1,6 @@
 "newVertex" <-
 function (name, label = name, type = "VertexProto", index = 1, 
-    position = c(0, 0, 0), stratum = 0, color = ifelse(type == 
+    position = c(0, 0, 0), blockindex = 0, stratum = 0, color = ifelse(type == 
         "TextVertex", "GhostWhite", "SaddleBrown"), vertexClasses = validVertexClasses()) 
 {
     if (!is.na(type) && type == "TextVertex") 
@@ -12,6 +12,7 @@ function (name, label = name, type = "VertexProto", index = 1,
             prototype <- paste(vertexClasses[, 2][x])
     }
     result <- new(prototype, name = name, label = label, index = index, 
-        position = position, color = color, stratum = stratum)
+        position = position, color = color, blockindex = blockindex, 
+        stratum = stratum)
     return(result)
 }

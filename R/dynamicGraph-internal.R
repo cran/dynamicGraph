@@ -16,29 +16,30 @@ function (lib, pkg)
 ".onLoad.dynamicGraph" <-
 function () 
 {
-    library(methods)
+    # library(methods)
     setClass("GraphLatticeProto", representation(vertices = "list", 
         blocks = "list", blockTree = "list", graphs = "list"))
     setClass("CanvasProto", representation(top = "tkwin", canvas = "tkwin", 
         tags = "list", id = "numeric", visibleVertices = "numeric", 
-        graphEdges = "list", blockEdges = "list", factorVertices = "list", 
-        factorEdges = "list"))
+        extraVertices = "list", graphEdges = "list", blockEdges = "list", 
+        factorVertices = "list", factorEdges = "list"))
     setClass("NodeProto", representation(color = "character", 
         label = "character", label.position = "numeric"), prototype(color = "black", 
         label = "Label", label.position = c(0, 0, 0)))
     setClass("VertexProto", contains = "NodeProto", representation(name = "character", 
-        index = "numeric", position = "numeric", stratum = "numeric"), 
-        prototype(name = "Name", index = 0, position = c(0, 0, 
-            0), stratum = 0))
+        index = "numeric", position = "numeric", blockindex = "numeric", 
+        stratum = "numeric"), prototype(name = "Name", index = 0, 
+        position = c(0, 0, 0), blockindex = 0, stratum = 0))
     for (prototype in paste(validVertexClasses()[, 2])) setClass(prototype, 
         contains = "VertexProto")
     setClass("TextVertexProto", contains = "VertexProto")
     setClass("BlockProto", contains = "NodeProto", representation(stratum = "numeric", 
         index = "numeric", ancestors = "numeric", descendants = "numeric", 
-        position = "matrix", visible = "logical"), prototype(stratum = 0, 
-        index = 0, ancestors = 0, descendants = 0, position = matrix(rep(0, 
-            6), ncol = 3), visible = TRUE, color = "black", label = "Label", 
-        label.position = c(0, 0, 0)))
+        position = "matrix", closed = "logical", visible = "logical"), 
+        prototype(stratum = 0, index = 0, ancestors = 0, descendants = 0, 
+            position = matrix(rep(0, 6), ncol = 3), closed = TRUE, 
+            visible = TRUE, color = "black", label = "Label", 
+            label.position = c(0, 0, 0)))
     setClass("FactorVertexProto", contains = "VertexProto", representation(vertex.indices = "numeric"), 
         prototype(vertex.indices = c(0, 0)))
     for (prototype in paste(validFactorClasses()[, 2])) setClass(prototype, 
@@ -110,14 +111,20 @@ function ()
         setGeneric("index", fun)
     }
     setMethod("index", "VertexProto", function(object) object@index)
-    setMethod("index", "BlockProto", function(object) object@index)
+    setMethod("index", "BlockProto", function(object) abs(object@index))
+    setMethod("index", "FactorVertexProto", function(object) abs(object@index))
     setGeneric("index<-", function(x, value) standardGeneric("index<-"))
     setReplaceMethod("index", "VertexProto", function(x, value) {
         x@index <- value
         x
     })
     setReplaceMethod("index", "BlockProto", function(x, value) {
-        x@index <- value
+        x@index <- -abs(value)
+        x
+    })
+    setReplaceMethod("index", "FactorVertexProto", function(x, 
+        value) {
+        x@index <- -abs(value)
         x
     })
     if (!isGeneric("nodeIndices")) {
@@ -167,6 +174,19 @@ function ()
         x@stratum <- value
         x
     })
+    if (!isGeneric("blockindex")) {
+        if (is.function("blockindex")) 
+            fun <- blockindex
+        else fun <- function(object) standardGeneric("blockindex")
+        setGeneric("blockindex", fun)
+    }
+    setMethod("blockindex", "VertexProto", function(object) object@blockindex)
+    setGeneric("blockindex<-", function(x, value) standardGeneric("blockindex<-"))
+    setReplaceMethod("blockindex", "VertexProto", function(x, 
+        value) {
+        x@blockindex <- value
+        x
+    })
     if (!isGeneric("ancestors")) {
         if (is.function("ancestors")) 
             fun <- ancestors
@@ -206,6 +226,18 @@ function ()
     setReplaceMethod("descendants", "BlockProto", function(x, 
         value) {
         x@descendants <- value
+        x
+    })
+    if (!isGeneric("closed")) {
+        if (is.function("closed")) 
+            fun <- closed
+        else fun <- function(object) standardGeneric("closed")
+        setGeneric("closed", fun)
+    }
+    setMethod("closed", "BlockProto", function(object) object@closed)
+    setGeneric("closed<-", function(x, value) standardGeneric("closed<-"))
+    setReplaceMethod("closed", "BlockProto", function(x, value) {
+        x@closed <- value
         x
     })
     if (!isGeneric("visible")) {
@@ -368,31 +400,6 @@ function ()
                 list(f(j, k)))
         return(result)
     })
-    if (!isGeneric("edgeLabel")) {
-        if (is.function("edgeLabel")) 
-            fun <- edgeLabel
-        else fun <- function(object) standardGeneric("edgeLabel")
-        setGeneric("edgeLabel", fun)
-    }
-    setMethod("edgeLabel", "EdgeProto", function(object) object@label)
-    setGeneric("edgeLabel<-", function(x, value) standardGeneric("edgeLabel<-"))
-    setReplaceMethod("edgeLabel", "EdgeProto", function(x, value) {
-        x@label <- value
-        x
-    })
-    if (!isGeneric("labelOfEdge")) {
-        if (is.function("labelOfEdge")) 
-            fun <- labelOfEdge
-        else fun <- function(object) standardGeneric("labelOfEdge")
-        setGeneric("labelOfEdge", fun)
-    }
-    setMethod("labelOfEdge", "EdgeProto", function(object) object@label)
-    setGeneric("labelOfEdge<-", function(x, value) standardGeneric("labelOfEdge<-"))
-    setReplaceMethod("labelOfEdge", "EdgeProto", function(x, 
-        value) {
-        x@label <- value
-        x
-    })
     if (!isGeneric("width")) {
         if (is.function("width")) 
             fun <- width
@@ -422,31 +429,6 @@ function ()
     setReplaceMethod("oriented", "BlockEdgeProto", function(x, 
         value) {
         x@oriented <- value
-        x
-    })
-    if (!isGeneric("edgeWidth")) {
-        if (is.function("edgeWidth")) 
-            fun <- edgeWidth
-        else fun <- function(object) standardGeneric("edgeWidth")
-        setGeneric("edgeWidth", fun)
-    }
-    setMethod("edgeWidth", "EdgeProto", function(object) object@width)
-    setGeneric("edgeWidth<-", function(x, value) standardGeneric("edgeWidth<-"))
-    setReplaceMethod("edgeWidth", "EdgeProto", function(x, value) {
-        x@width <- value
-        x
-    })
-    if (!isGeneric("widthOfEdge")) {
-        if (is.function("widthOfEdge")) 
-            fun <- widthOfEdge
-        else fun <- function(object) standardGeneric("widthOfEdge")
-        setGeneric("widthOfEdge", fun)
-    }
-    setMethod("widthOfEdge", "EdgeProto", function(object) object@width)
-    setGeneric("widthOfEdge<-", function(x, value) standardGeneric("widthOfEdge<-"))
-    setReplaceMethod("widthOfEdge", "EdgeProto", function(x, 
-        value) {
-        x@width <- value
         x
     })
     if (!isGeneric("nodeTypesOfEdge")) {
@@ -547,7 +529,7 @@ function ()
     })
     if (!isGeneric("LabelPositions")) {
         if (is.function("LabelPositions")) 
-            fun <- labelPositions
+            fun <- LabelPositions
         else fun <- function(objectlist) standardGeneric("LabelPositions")
         setGeneric("LabelPositions", fun)
     }
@@ -578,7 +560,7 @@ function ()
     })
     if (!isGeneric("Positions")) {
         if (is.function("Positions")) 
-            fun <- positions
+            fun <- Positions
         else fun <- function(objectlist) standardGeneric("Positions")
         setGeneric("Positions", fun)
     }
@@ -625,9 +607,29 @@ function ()
         else warning("Invalid list of values for positions")
         objectlist
     })
+    if (!isGeneric("Closed")) {
+        if (is.function("Closed")) 
+            fun <- Closed
+        else fun <- function(objectlist) standardGeneric("Closed")
+        setGeneric("Closed", fun)
+    }
+    setMethod("Closed", "list", function(objectlist) {
+        closed <- lapply(objectlist, function(x) if (!is.null(x)) 
+            closed(x))
+        names(closed) <- Names(objectlist)
+        return(unlist(closed))
+    })
+    setGeneric("Closed<-", function(objectlist, value) standardGeneric("Closed<-"))
+    setReplaceMethod("Closed", "list", function(objectlist, value) {
+        if (length(objectlist) == length(value)) {
+            for (i in seq(along = objectlist)) objectlist[[i]]@closed <- value[i]
+        }
+        else warning("Invalid list of values for closed")
+        objectlist
+    })
     if (!isGeneric("Strata")) {
         if (is.function("Strata")) 
-            fun <- strata
+            fun <- Strata
         else fun <- function(objectlist) standardGeneric("Strata")
         setGeneric("Strata", fun)
     }
@@ -647,7 +649,7 @@ function ()
     })
     if (!isGeneric("NodeAncestors")) {
         if (is.function("NodeAncestors")) 
-            fun <- ancestors
+            fun <- NodeAncestors
         else fun <- function(objectlist) standardGeneric("NodeAncestors")
         setGeneric("NodeAncestors", fun)
     }
@@ -668,7 +670,7 @@ function ()
     })
     if (!isGeneric("NodeDescendants")) {
         if (is.function("NodeDescendants")) 
-            fun <- descendants
+            fun <- NodeDescendants
         else fun <- function(objectlist) standardGeneric("NodeDescendants")
         setGeneric("NodeDescendants", fun)
     }
@@ -689,7 +691,7 @@ function ()
     })
     if (!isGeneric("Indices")) {
         if (is.function("Indices")) 
-            fun <- indices
+            fun <- Indices
         else fun <- function(objectlist) standardGeneric("Indices")
         setGeneric("Indices", fun)
     }
@@ -699,9 +701,21 @@ function ()
         names(indices) <- Names(objectlist)
         return(unlist(indices))
     })
+    if (!isGeneric("Blockindices")) {
+        if (is.function("Blockindices")) 
+            fun <- Blockindices
+        else fun <- function(objectlist) standardGeneric("Blockindices")
+        setGeneric("Blockindices", fun)
+    }
+    setMethod("Blockindices", "list", function(objectlist) {
+        blockindices <- lapply(objectlist, function(x) if (!is.null(x)) 
+            blockindex(x))
+        names(blockindices) <- Names(objectlist)
+        return(unlist(blockindices))
+    })
     if (!isGeneric("NodeTypes")) {
         if (is.function("NodeTypes")) 
-            fun <- nodeTypes
+            fun <- NodeTypes
         else fun <- function(objectlist) standardGeneric("NodeTypes")
         setGeneric("NodeTypes", fun)
     }
@@ -713,7 +727,7 @@ function ()
     })
     if (!isGeneric("NodeIndices")) {
         if (is.function("NodeIndices")) 
-            fun <- nodeIndices
+            fun <- NodeIndices
         else fun <- function(objectlist) standardGeneric("NodeIndices")
         setGeneric("NodeIndices", fun)
     }
@@ -745,7 +759,7 @@ function ()
     })
     if (!isGeneric("Oriented")) {
         if (is.function("Oriented")) 
-            fun <- oriented
+            fun <- Oriented
         else fun <- function(objectlist) standardGeneric("Oriented")
         setGeneric("Oriented", fun)
     }
@@ -766,7 +780,7 @@ function ()
     })
     if (!isGeneric("Visible")) {
         if (is.function("Visible")) 
-            fun <- visible
+            fun <- Visible
         else fun <- function(objectlist) standardGeneric("Visible")
         setGeneric("Visible", fun)
     }
@@ -805,37 +819,9 @@ function ()
 ".onLoad.dynamicGraphInterface" <-
 function () 
 {
-    if (!isGeneric("testLabel")) {
-        if (is.function("testLabel")) 
-            fun <- testLabel
-        else fun <- function(object) standardGeneric("testLabel")
-        setGeneric("testLabel", fun)
-    }
-    setMethod("testLabel", "defaultTestObjectProto", function(object) format(object@p, 
+    setMethod("label", "defaultTestObjectProto", function(object) format(object@p, 
         digits = 4))
-    if (!isGeneric("labelOfTest")) {
-        if (is.function("labelOfTest")) 
-            fun <- labelOfTest
-        else fun <- function(object) standardGeneric("labelOfTest")
-        setGeneric("labelOfTest", fun)
-    }
-    setMethod("labelOfTest", "defaultTestObjectProto", function(object) format(object@p, 
-        digits = 4))
-    if (!isGeneric("testWidth")) {
-        if (is.function("testWidth")) 
-            fun <- testWidth
-        else fun <- function(object) standardGeneric("testWidth")
-        setGeneric("testWidth", fun)
-    }
-    setMethod("testWidth", "defaultTestObjectProto", function(object) round(2 + 
-        5 * (1 - object@p)))
-    if (!isGeneric("widthOfTest")) {
-        if (is.function("widthOfTest")) 
-            fun <- widthOfTest
-        else fun <- function(object) standardGeneric("widthOfTest")
-        setGeneric("widthOfTest", fun)
-    }
-    setMethod("widthOfTest", "defaultTestObjectProto", function(object) round(2 + 
+    setMethod("width", "defaultTestObjectProto", function(object) round(2 + 
         5 * (1 - object@p)))
     if (!isGeneric("testEdge")) {
         if (is.function("testEdge")) 

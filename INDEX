@@ -1,44 +1,44 @@
-BlockEdgeProto-class    Class "BlockEdgeProto" ~~~
-BlockProto-class        Class "BlockProto" ~~~
+BlockEdgeProto-class    Class "BlockEdgeProto"
+BlockProto-class        Class "BlockProto"
 blockTreeToList         Extract the list of blocks from a block tree
-CanvasProto-class       Class "CanvasProto" ~~~
+CanvasProto-class       Class "CanvasProto"
 ContinuousVertexProto-class
-                        Class "ContinuousVertexProto" ~~~
+                        Class "ContinuousVertexProto"
 defaultModelObjectProto-class
-                        Class "defaultModelObjectProto" ~~~
+                        Class "defaultModelObjectProto"
 defaultTestObjectProto-class
-                        Class "defaultTestObjectProto" ~~~
+                        Class "defaultTestObjectProto"
 DiscreteGeneratorProto-class
-                        Class "DiscreteGeneratorProto" ~~~
+                        Class "DiscreteGeneratorProto"
 DiscreteVertexProto-class
-                        Class "DiscreteVertexProto" ~~~
-dynamicGraphMain        Dynamic Graph
+                        Class "DiscreteVertexProto"
 DynamicGraph            Simple interface to dynamicGraph
-EdgeProto-class         Class "EdgeProto" ~~~
-FactorEdgeProto-class   Class "FactorEdgeProto" ~~~
+dynamicGraphMain        Dynamic Graph
+EdgeProto-class         Class "EdgeProto"
+FactorEdgeProto-class   Class "FactorEdgeProto"
 FactorVertexProto-class
-                        Class "FactorVertexProto" ~~~
-GeneratorProto-class    Class "GeneratorProto" ~~~
+                        Class "FactorVertexProto"
+GeneratorProto-class    Class "GeneratorProto"
 GraphLatticeProto-class
                         Class "GraphLatticeProto"
 LinearGeneratorProto-class
-                        Class "LinearGeneratorProto" ~~~
+                        Class "LinearGeneratorProto"
 modalDialog             Modal dialog window for returning a text
                         string
 nameToVertexIndex       The indices of vertices
-newBlockEdge            The block edge object
 newBlock                The block object
+newBlockEdge            The block edge object
 newDefaultModelObject   The model object
 newDefaultTestObject    The test object
-newFactorEdge           The factor edge object
 newFactor               The factor vertex object
-newVertexEdge           The edge object
+newFactorEdge           The factor edge object
 newVertex               The vertex object
-NodeProto-class         Class "NodeProto" ~~~
+newVertexEdge           The edge object
+NodeProto-class         Class "NodeProto"
 OrdinalVertexProto-class
-                        Class "OrdinalVertexProto" ~~~
+                        Class "OrdinalVertexProto"
 QuadraticGeneratorProto-class
-                        Class "QuadraticGeneratorProto" ~~~
+                        Class "QuadraticGeneratorProto"
 redrawGraphWindow       Redraw the dynamicGraph window and draw slaves
 returnBlockEdgeList     The block edge list
 returnEdgeList          The edge list
@@ -48,7 +48,8 @@ returnFactorVerticesAndEdges
 returnVertexList        The vertex list
 setBlocks               The block list
 setTreeBlocks           The block tree
+TextVertexProto-class   Class "TextVertexProto" ~~~
 validFactorClasses      Valid factor vertex classes
 validVertexClasses      Valid vertex classes
-VertexEdgeProto-class   Class "VertexEdgeProto" ~~~
-VertexProto-class       Class "VertexProto" ~~~
+VertexEdgeProto-class   Class "VertexEdgeProto"
+VertexProto-class       Class "VertexProto"

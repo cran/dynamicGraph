@@ -1,10 +1,14 @@
 \name{setTreeBlocks}
 \alias{setTreeBlocks}
+\alias{Closed}
+\alias{Closed<-}
 \alias{NodeAncestors}
 \alias{NodeAncestors<-}
 \alias{NodeDescendants}
 \alias{NodeDescendants<-}
 
+\alias{Closed,list-method}
+\alias{Closed<-,list-method}
 \alias{NodeAncestors,list-method}
 \alias{NodeAncestors<-,list-method}
 \alias{NodeDescendants,list-method}
@@ -48,11 +52,11 @@ setTreeBlocks(block.tree, vertices, root.label = "", N = 3,
       vertices and block corners. }
   \item{delta}{ Numeric. Decrement of block size for nested blocks,
 	        and space between blocks when \code{overlaying} is TRUE.
-                The decrement is  \code{delta} divided by 100 times
+                The decrement is  \code{delta} divided by 100, times
                 the the size of the window canvas, width or height. } 
   \item{Delta}{ Numeric. Decrement of block size for nested blocks,
 	        and space between blocks when \code{overlaying} is FALSE. 
-                The decrement is \code{Delta} divided by 100 times
+                The decrement is \code{Delta} divided by 100, times
                 the the size of the window canvas, width or height. }
   \item{d}{ Numeric. If not \code{d} is given in \code{block.tree}, see below:
             The heading bar (with the label) has a height of
@@ -125,6 +129,10 @@ setTreeBlocks(block.tree, vertices, root.label = "", N = 3,
             then the sub blocks, but \code{common.children},
             are placed side by side,
 	    else the blocks are placed vertically. }
+      \item{\code{...\$closed}}{ Logical.
+            If \code{closed} is set to TRUE,
+            then the block is initially drawn "closed",
+            and the vertices and sub blocks of the block are not visible. }
       \item{\code{...\$vertices.last}}{  Logical. If \code{vertices.last} then
 	    the vertices of the block are placed after the sub blocks. }
       \item{\code{...\$"block-name"}}{\code{= list(...)}
@@ -141,7 +149,7 @@ setTreeBlocks(block.tree, vertices, root.label = "", N = 3,
   A list with components
   \item{BlockTree}{A tree of blocks, each of class \code{\link{BlockProto}}. }
   \item{Vertices}{The list of vertices,
-        with the positions updated such that the vertices
+        with the positions updated such the vertices
         has positions within the blocks. }
 }
 % \references{ ~put references to the literature/web site here ~ }
@@ -202,7 +210,7 @@ for (i in seq(along = vertexStrata))
 str(vertexNamesInblock)
 
 # A useful function, replace "k" (block index k) 
-# in block "i" by "x[k]", the content of block k:
+# in block "i" by "x[k]", the content "x[k]" of block "k":
 
 f <- function(A, x) {
   result <- vector("list", length(A))

@@ -26,7 +26,7 @@ newBlockEdge(node.indices, nodes = NULL, width = 2,
 \details{
 The function is used in \code{\link{returnBlockEdgeList}}.
 \code{\link{dynamicGraphMain}} will automatic update block edges
-when vertices are move between blocks.
+when vertices are moved between blocks.
 }
 \value{A object of class \code{BlockEdgeProto}. }
 % \references{ ~put references to the literature/web site here ~ }
@@ -44,19 +44,15 @@ blockedge <- newBlockEdge(c(4, -1), list(vertices[[1]], block))
 str(blockedge)
 
 color(blockedge)
-labelOfEdge(blockedge)
 label(blockedge)
 labelPosition(blockedge)
-widthOfEdge(blockedge)
 width(blockedge)
 nodeIndicesOfEdge(blockedge)
 nodeTypesOfEdge(blockedge)
 
 color(blockedge) <- "Black"
-labelOfEdge(blockedge) <- "V1~Block"
 label(blockedge) <- "V1~1"
 labelPosition(blockedge) <- c(0, 1, 2)
-widthOfEdge(blockedge) <- 0
 width(blockedge) <- 1
 nodeIndicesOfEdge(blockedge) <- c(1, -1)
 

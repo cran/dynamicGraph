@@ -55,7 +55,16 @@ function (names = NULL, types = NULL, from = NULL, to = NULL,
     check.names(to, "to")
     check.names(unlist(edge.list), "edge.list")
     check.names(unlist(factors), "factors")
-    check.names(unlist(blocks), "blocks")
+    if (!is.null(blocks)) {
+        names.blocks <- unlist(blocks)
+        names.blocks <- names.blocks[grep("Vertices", names(names.blocks))]
+        suppressWarnings(x <- as.numeric(names.blocks))
+        if (!any(is.na(x))) 
+            names.blocks <- x
+        if (length(names.blocks) > 0) 
+            warning("Did you give a block.tree for blocks?")
+        check.names(unlist(blocks), "blocks")
+    }
     if (!is.null(block.tree)) {
         names.block.tree <- unlist(block.tree)
         names.block.tree <- names.block.tree[grep("Vertices", 
@@ -65,9 +74,13 @@ function (names = NULL, types = NULL, from = NULL, to = NULL,
             names.block.tree <- x
         check.names(names.block.tree, "block.tree")
     }
-    Vertices <- returnVertexList(names, types = types, N = N, 
+    if (!is.null(Arguments$Vertices)) 
+        Vertices <- Arguments$Vertices
+    else Vertices <- returnVertexList(names, types = types, N = N, 
         colors = vertex.colors, vertexClasses = vertexClasses)
-    if (is.null(texts)) 
+    if (!is.null(Arguments$ExtraVertices)) 
+        ExtraVertices <- Arguments$ExtraVertices
+    else if (is.null(texts)) 
         ExtraVertices <- NULL
     else ExtraVertices <- returnVertexList(paste("T", 1:length(texts), 
         sep = ""), labels = texts, types = rep("TextVertex", 
@@ -76,29 +89,51 @@ function (names = NULL, types = NULL, from = NULL, to = NULL,
     BlockList <- NULL
     BlockTree <- NULL
     BlockEdges <- NULL
-    if (!(is.null(blocks))) {
+    if (!is.null(Arguments$BlockList)) {
+        BlockList <- Arguments$BlockList
+        if (is.null(Arguments$Vertices)) 
+            warning("Argument Vertices should also be given to put verices in blocks!")
+    }
+    else if (!is.null(Arguments$BlockTree)) {
+        BlockTree <- Arguments$BlockTree
+        if (is.null(Arguments$Vertices)) 
+            warning("Argument Vertices should also be given to put verices in blocks!")
+    }
+    else if (!(is.null(blocks))) {
         result <- setBlocks(blocks, Vertices, right.to.left = right.to.left, 
             nested.blocks = nested.blocks, blockColors = blockColors, 
             N = N)
-        Vertices <- result$Vertices
+        if (is.null(Arguments$Vertices)) 
+            Vertices <- result$Vertices
         if (drawblocks) 
             BlockList <- result$Blocks
     }
     else if (!(is.null(block.tree))) {
         result <- setTreeBlocks(block.tree, Vertices, root.label = "", 
             N = N, blockColors = blockColors, overlaying = overlaying)
-        Vertices <- result$Vertices
+        if (is.null(Arguments$Vertices)) 
+            Vertices <- result$Vertices
         if (drawblocks) 
             BlockTree <- result$BlockTree
     }
     FactorVertices <- NULL
     FactorEdges <- NULL
+    if (!is.null(Arguments$FactorVertices)) {
+        FactorVertices <- Arguments$FactorVertices
+        if (is.null(Arguments$FactorEdges)) 
+            warning("Argument FactorEdges should also be given with FactorVertices!")
+    }
     if (!(is.null(factors))) {
         result <- returnFactorVerticesAndEdges(Vertices, factors, 
             factorVertexColor = factorVertexColor, factorEdgeColor = factorEdgeColor, 
             factorClasses = factorClasses)
-        FactorVertices <- result$FactorVertices
-        FactorEdges <- result$FactorEdges
+        if (!is.null(Arguments$FactorVertices)) {
+            FactorVertices <- Arguments$FactorVertices
+        }
+        else FactorVertices <- result$FactorVertices
+        if (!is.null(Arguments$FactorEdges)) 
+            FactorEdges <- Arguments$FactorEdges
+        else FactorEdges <- result$FactorEdges
         if ((is.null(from))) {
             from <- result$PairEdges[, 1]
             to <- result$PairEdges[, 2]
@@ -106,9 +141,13 @@ function (names = NULL, types = NULL, from = NULL, to = NULL,
     }
     if (is.null(edge.list)) 
         edge.list <- two.to.pairs(from, to)
-    Edges <- returnEdgeList(edge.list, Vertices, color = edgeColor, 
+    if (!is.null(Arguments$Edges)) 
+        Edges <- Arguments$Edges
+    else Edges <- returnEdgeList(edge.list, Vertices, color = edgeColor, 
         oriented = oriented)
-    if (TRUE && (!is.null(BlockList) || !is.null(BlockTree))) {
+    if (!is.null(Arguments$BlockEdges)) 
+        BlockEdges <- Arguments$BlockEdges
+    else if (TRUE && (!is.null(BlockList) || !is.null(BlockTree))) {
         if (!(is.null(factors))) 
             message("Edges between blocks and factors not implemented!")
         if (is.null(BlockList) && !is.null(BlockTree)) 

@@ -43,7 +43,26 @@ if (!isGeneric("testWidth")) {
   setGeneric("testWidth", fun)
 }
 
-setMethod("testWidth", "defaultTestObjectProto",
+# if (!isGeneric("label")) {
+#   if (is.function("label"))
+#     fun <- label
+#   else
+#     fun <- function(object) standardGeneric("label")
+#   setGeneric("label", fun)
+# }
+
+setMethod("label", "defaultTestObjectProto",
+          function(object) format(object@p, digits = 4))
+
+# if (!isGeneric("width")) {
+#   if (is.function("width"))
+#     fun <- width
+#   else
+#     fun <- function(object) standardGeneric("width")
+#   setGeneric("width", fun)
+# }
+
+setMethod("width", "defaultTestObjectProto",
           function(object) round(2 + 5 * (1 - object@p)))
 
 # testEdge <- function(object, action, name.1, name.2, ...)

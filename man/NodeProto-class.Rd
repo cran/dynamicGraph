@@ -9,8 +9,8 @@
 \alias{labelPosition<-,NodeProto-method}
 \alias{labelPosition,NodeProto-method}
 
-\title{Class "NodeProto" ~~~ }
-\description{  A skeleton class for the classes of vertices, edges and objects. }
+\title{Class "NodeProto" }
+\description{  A skeleton class for the classes of vertices, edges and block objects. }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("NodeProto", ...)}.
 The objects has the slots and methods relevant to vertices, edges and blocks.
@@ -45,7 +45,6 @@ The objects has the slots and methods relevant to vertices, edges and blocks.
         Return the \code{label.position} of the object. }
   }
 }
-\references{ ~put references to the literature/web site here ~ }
 % \references{ ~put references to the literature/web site here ~ }
 \author{Jens Henrik Badsberg}
 % \note{ ~~further notes~~ }

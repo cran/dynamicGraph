@@ -3,22 +3,24 @@
 \alias{GeneratorProto-class}
 \alias{draw,GeneratorProto-method}
 
-\title{Class "GeneratorProto" ~~~ }
+\title{Class "GeneratorProto" }
 \description{  The class for factor vertices for general terms. }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("GeneratorProto", ...)}.
 }
 \section{Slots}{
   \describe{
-%    \item{\code{test.position}:}{Object of class \code{"numeric"}, see\code{"FactorVertexProto"}. }
-    \item{\code{vertex.indices}:}{Object of class \code{"numeric"}, see\code{"FactorVertexProto"}. }
-    \item{\code{name}:}{Object of class \code{"character"}, see\code{"VertexProto"}. }
-    \item{\code{index}:}{Object of class \code{"numeric"}, see\code{"VertexProto"}. }
-    \item{\code{position}:}{Object of class \code{"numeric"}, see\code{"VertexProto"}. }
-    \item{\code{stratum}:}{Object of class \code{"numeric"}, see\code{"VertexProto"}. }
-    \item{\code{color}:}{Object of class \code{"character"}, see\code{"VertexProto"}. }
-    \item{\code{label}:}{Object of class \code{"character"}, see\code{"VertexProto"}. }
-    \item{\code{label.position}:}{Object of class \code{"numeric"}, see\code{"VertexProto"}. }
+%    \item{\code{test.position}:}{Object of class \code{"numeric"}, see \code{"FactorVertexProto"}. }
+    \item{\code{vertex.indices}:}{Object of class \code{"numeric"}, see \code{"FactorVertexProto"}. }
+    \item{\code{name}:}{Object of class \code{"character"}, see \code{"VertexProto"}. }
+    \item{\code{index}:}{Object of class \code{"numeric"}, see \code{"VertexProto"}. }
+    \item{\code{position}:}{Object of class \code{"numeric"}, see \code{"VertexProto"}. }
+    \item{\code{blockindex}:}{Object of class \code{"numeric"}, see \code{"VertexProto"}. }
+    \item{\code{stratum}:}{Object of class \code{"numeric"}, see \code{"VertexProto"}. }
+    \item{\code{color}:}{Object of class \code{"character"}, see \code{"VertexProto"}.
+       Default is \code{yellow}. }
+    \item{\code{label}:}{Object of class \code{"character"}, see \code{"VertexProto"}. }
+    \item{\code{label.position}:}{Object of class \code{"numeric"}, see \code{"VertexProto"}. }
   }
 }
 \section{Extends}{

@@ -70,17 +70,19 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         return(new("GraphLatticeProto", vertices = vertices, 
             blocks = blocks, blockTree = blockTree))
     }
-    "newGraph" <- function(graph.lattice, vertices, graph.edges, 
-        block.edges, factor.vertices, factor.edges, Add.GraphWindow = redrawGraphWindow, 
-        title = "Graph diddler", close.enough = closeenough, 
-        background = "white", width = 400, height = 400) {
+    "newGraph" <- function(graph.lattice, vertices, extra.vertices, 
+        graph.edges, block.edges, factor.vertices, factor.edges, 
+        Add.GraphWindow = redrawGraphWindow, title = "Graph diddler", 
+        close.enough = closeenough, background = "white", width = 400, 
+        height = 400) {
         top <- tktoplevel()
         canvas <- tkcanvas(top, relief = "raised", background = background, 
             closeenough = close.enough, width = width, height = height)
         tkpack(canvas)
         result <- new("CanvasProto", top = top, canvas = canvas, 
             tags = list(NULL), id = 0, visibleVertices = 1:length(vertices), 
-            graphEdges = graph.edges, blockEdges = block.edges, 
+            extraVertices = ifelse(is.null(extra.vertices), list(), 
+                extra.vertices), graphEdges = graph.edges, blockEdges = block.edges, 
             factorVertices = ifelse(is.null(factor.vertices), 
                 list(), factor.vertices), factorEdges = factor.edges)
         tktitle(top) <- title
@@ -185,7 +187,9 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 label(vertexList[[i]]) <<- Labels[i]
                 vertexList[[i]]@name <<- namesVertices[i]
                 color(vertexList[[i]]) <<- colorsVertices[i]
-                stratum(vertexList[[i]]) <<- strataVertices[i]
+                blockindex(vertexList[[i]]) <<- blocksVertices[i]
+                if (!is.null(blockList)) 
+                  stratum(vertexList[[i]]) <<- strataBlocks[blocksVertices[i]]
             }
             return(vertexList)
         }
@@ -205,7 +209,8 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 labelPosition(tree$block) <<- position
                 tree$block@stratum <<- strataBlocks[i]
                 tree$block@label <<- blockLabels[i]
-                tree$block@visible <<- !closedBlock[i]
+                tree$block@closed <<- closedBlock[i]
+                tree$block@visible <<- !hiddenBlock[i]
                 if (!is.null((tree$sub.blocks))) 
                   for (j in 1:length(tree$sub.blocks)) subBlockTreeUpdate(tree$sub.blocks[[j]])
             }
@@ -219,7 +224,8 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 labelPosition(blockList[[i]]) <<- position
                 blockList[[i]]@stratum <<- strataBlocks[i]
                 blockList[[i]]@label <<- blockLabels[i]
-                blockList[[i]]@visible <<- !closedBlock[i]
+                blockList[[i]]@closed <<- closedBlock[i]
+                blockList[[i]]@visible <<- !hiddenBlock[i]
             }
             if (!is.null(blockTree)) 
                 blockTreeUpdate(blockTree)
@@ -235,7 +241,10 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 label(factorVertexList[[i]]) <<- factorLabels[i]
                 factorVertexList[[i]]@name <<- namesFactorVertices[i]
                 color(factorVertexList[[i]]) <<- colorsFactorVertices[i]
-                stratum(factorVertexList[[i]]) <<- strataFactorVertices[i]
+                if (!is.null(blockList)) {
+                  blockindex(factorVertexList[[i]]) <<- blocksFactorVertices[i]
+                  stratum(factorVertexList[[i]]) <<- strataBlocks[blocksFactorVertices[i]]
+                }
             }
             return(factorVertexList)
         }
@@ -250,7 +259,10 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 label(extraList[[i]]) <<- extraLabels[i]
                 extraList[[i]]@name <<- namesExtraVertices[i]
                 color(extraList[[i]]) <<- colorsExtraVertices[i]
-                stratum(extraList[[i]]) <<- strataExtraVertices[i]
+                if (!is.null(blockList)) {
+                  blockindex(extraList[[i]]) <<- blocksExtraVertices[i]
+                  stratum(extraList[[i]]) <<- strataBlocks[blocksExtraVertices[i]]
+                }
             }
             return(extraList)
         }
@@ -431,15 +443,17 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             function(v) retVertexName(v@index, vertex.type = ifelse(v@index > 
                 0, "Vertex", type.negative)))
         "edge.positions" <- function(i, type.negative = "Factor", 
-            edge.type = "graphEdge") lapply(edge.vertices(i, 
-            type.negative = type.negative, edge.type = edge.type), 
-            function(v) retVertexPos(v@index, ifelse(v@index > 
-                0, "Vertex", type.negative)))
+            edge.type = "graphEdge") {
+            lapply(edge.vertices(i, type.negative = type.negative, 
+                edge.type = edge.type), function(v) retVertexPos(v@index, 
+                ifelse(v@index > 0, "Vertex", type.negative)))
+        }
         "edge.strata" <- function(i, type.negative = "Factor", 
-            edge.type = "graphEdge") lapply(edge.vertices(i, 
-            type.negative = type.negative, edge.type = edge.type), 
-            function(v) retStratum(v@index, vertex.type = ifelse(v@index > 
-                0, "Vertex", type.negative)))
+            edge.type = "graphEdge") {
+            lapply(edge.vertices(i, type.negative = type.negative, 
+                edge.type = edge.type), function(v) retStratum(v@index, 
+                vertex.type = ifelse(v@index > 0, "Vertex", type.negative)))
+        }
         "clearEdge" <- function(i, edge.type = "graphEdge") if (edge.type == 
             "graphEdge") 
             GraphWindow@graphEdges[[i]]@vertex.indices <<- c(0, 
@@ -618,7 +632,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             else drawVertex(i, w = w, vertexcolor = vertexColor, 
                 vertex.type = "Vertex")
         }
-        "setCloseBlock" <- function(i, value, update = TRUE) if (i > 
+        "setClosedBlock" <- function(i, value, update = TRUE) if (i > 
             0) {
             closedBlock[i] <<- value
             if (all(is.na(positionsClosedBlocks[i, ]))) 
@@ -633,9 +647,18 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                   updateCountBlockEdges <<- updateCountBlockEdgesMain
                 }
         }
-        "setDoubleCloseBlock" <- function(i, value, update = TRUE) if (i > 
+        "isInClosedBlock" <- function(i) {
+            a <- blockList[[i]]@ancestors
+            result <- FALSE
+            if (length(a) > 1) {
+                a <- a[a != 0]
+                result <- any(closedBlock[a])
+            }
+            return(result)
+        }
+        "setHiddenBlock" <- function(i, value, update = TRUE) if (i > 
             0) {
-            doubleClosedBlock[i] <<- value
+            hiddenBlock[i] <<- value
             if (value) {
                 if (all(is.na(positionsClosedBlocks[i, ]))) 
                   positionsClosedBlocks[i, ] <<- apply(positionsBlocks[i, 
@@ -643,26 +666,49 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 if (closedBlock[i]) 
                   tkdelete(canvas, closedBlockItem(i)$tag)
                 else tkdelete(canvas, openBlockItem(i)$tag)
-                closedBlock[i] <<- TRUE
             }
         }
         "retStratum" <- function(i, vertex.type = ifelse(i > 
             0, "Vertex", "Factor")) {
+            strata <- function(i) if (i > 0) 
+                strataBlocks[i]
+            else i
             if (vertex.type == "ClosedBlock") 
                 strataBlocks[abs(i)]
-            else if (vertex.type == "Vertex") 
-                strataVertices[i]
-            else if (vertex.type == "Factor") 
-                strataFactorVertices[-i]
-            else if (vertex.type == "Extra") 
-                strataExtraVertices[i]
+            else if (vertex.type == "Vertex") {
+                if (is.null(blockList)) 
+                  strataVertices[i]
+                else strata(blocksVertices[i])
+            }
+            else if (vertex.type == "Factor") {
+                if (is.null(blockList)) 
+                  strataFactorVertices[-i]
+                else strata(blocksFactorVertices[-i])
+            }
+            else if (vertex.type == "Extra") {
+                if (is.null(blockList)) 
+                  strataExtraVertices[i]
+                else strata(blocksExtraVertices[i])
+            }
         }
-        "setStratum" <- function(i, value, vertex.type = ifelse(i > 
+        "retBlockIndex" <- function(i, vertex.type = ifelse(i > 
+            0, "Vertex", "Factor")) {
+            if (vertex.type == "ClosedBlock") 
+                abs(i)
+            else if (vertex.type == "Vertex") 
+                blocksVertices[i]
+            else if (vertex.type == "Factor") 
+                blocksFactorVertices[-i]
+            else if (vertex.type == "Extra") 
+                blocksExtraVertices[i]
+        }
+        "setBlockIndex" <- function(i, value, vertex.type = ifelse(i > 
             0, "Vertex", "Factor")) {
             update <- FALSE
             if (vertex.type == "Vertex") {
-                strataVertices[i] <<- value
-                if ((value > 0) && (closedBlock[value] != closedVertex[i])) {
+                blocksVertices[i] <<- value
+                b <- closedBlock[value] || hiddenBlock[value]
+                if ((value > 0) && (b != closedVertex[i])) {
                   setCloseVertex(i, !closedVertex[i], vertex.type)
                   if (!closedVertex[i]) {
                     pos <- retVertexPos(i, vertex.type)
@@ -672,27 +718,27 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 }
             }
             else if (vertex.type == "Factor") 
-                strataFactorVertices[-i] <<- value
+                blocksFactorVertices[-i] <<- value
             else if (vertex.type == "Extra") 
-                strataExtraVertices[i] <<- value
+                blocksExtraVertices[i] <<- value
             return(update)
         }
-        "updateVertexStratum" <- function(position, i) {
-            currentStratum <- retStratum(i, vertex.type = "Vertex")
+        "updateVertexBlockIndex" <- function(position, i) {
+            currentIndex <- retBlockIndex(i, vertex.type = "Vertex")
             update <- FALSE
             if (!is.null(blockList)) {
-                setStratum(i, 0, vertex.type = "Vertex")
+                setBlockIndex(i, 0, vertex.type = "Vertex")
                 for (j in seq(along = blockList)) if (inBlock(position, 
                   j)) {
-                  change <- setStratum(i, j, vertex.type = "Vertex")
+                  change <- setBlockIndex(i, j, vertex.type = "Vertex")
                   update <- update || change
                 }
             }
-            return(update || (currentStratum != retStratum(i, 
+            return(update || (currentIndex != retBlockIndex(i, 
                 vertex.type = "Vertex")))
         }
-        "updateVertexStratum" <- function(position, i) {
-            currentStratum <- retStratum(i, vertex.type = "Vertex")
+        "updateVertexBlockIndex" <- function(position, i) {
+            currentIndex <- retBlockIndex(i, vertex.type = "Vertex")
             update <- FALSE
             if (!is.null(blockList)) {
                 k <- 0
@@ -700,24 +746,24 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                   j)) {
                   k <- j
                 }
-                change <- setStratum(i, k, vertex.type = "Vertex")
+                change <- setBlockIndex(i, k, vertex.type = "Vertex")
                 update <- update || change
             }
-            return(update || (currentStratum != retStratum(i, 
+            return(update || (currentIndex != retBlockIndex(i, 
                 vertex.type = "Vertex")))
         }
-        "updateVerticesStrata" <- function() {
+        "updateAllBlockIndices" <- function() {
             if (debug.update) 
-                print(paste("updateVerticesStrata"))
+                print(paste("updateAllBlockIndices"))
             updateEdges <- FALSE
             if (!is.null(vertexList)) 
                 for (i in seq(along = vertexList)) {
-                  update <- updateVertexStratum(positionsVertices[i, 
+                  update <- updateVertexBlockIndex(positionsVertices[i, 
                     ], i)
                   updateEdges <- updateEdges || update
                 }
             if (updateEdges) {
-                setUpdateBlockEdges("updateVerticesStrata")
+                setUpdateBlockEdges("updateAllBlockIndices")
             }
             return(updateEdges)
         }
@@ -729,11 +775,12 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             0, "Vertex", "Factor")) {
             if (vertex.type == "ClosedBlock") 
                 position <- positionsClosedBlocks[abs(i), ]
-            else if (vertex.type == "Vertex") 
+            else if (vertex.type == "Vertex") {
                 if (closedVertex[i]) 
-                  position <- positionsClosedBlocks[blockReferences[retStratum(i, 
+                  position <- positionsClosedBlocks[blockReferences[retBlockIndex(i, 
                     vertex.type)], ]
                 else position <- positionsVertices[i, ]
+            }
             else if (vertex.type == "Factor") 
                 position <- positionsFactorVertices[-i, ]
             else if (vertex.type == "Extra") 
@@ -761,7 +808,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                   ], dxy)
             }
             if (vertex.type != "ClosedBlock") 
-                if (updateVertexStratum(position, i)) {
+                if (updateVertexBlockIndex(position, i)) {
                   setUpdateBlockEdges("setVertexPos")
                 }
         }
@@ -876,7 +923,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             positionsEdgeLabels[label.number, ] <<- positionsEdgeLabels[label.number, 
                 ] + inversCanvasRelativePosition(dxy)
             E <- returnEdges(edge.type = edge.type)
-            labelPosition(E[[edgeNode$nr]]) <<- positionsEdgeLabels[label.number, 
+            labelPosition(E[[edgeNode$nr]]) <- positionsEdgeLabels[label.number, 
                 ]
         }
         "setEdgeLabel" <- function(edgeNode, label = "", i = edgeNode$label.number, 
@@ -890,29 +937,29 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             }
             else tkitemconfigure(canvas, edgeNode$label, text = label)
             if (edgeNode$type == "graphEdge") 
-                labelOfEdge(GraphWindow@graphEdges[[edgeNode$nr]]) <<- label
+                label(GraphWindow@graphEdges[[edgeNode$nr]]) <<- label
             else if (edgeNode$type == "factorEdge") 
-                labelOfEdge(GraphWindow@factorEdges[[edgeNode$nr]]) <<- label
+                label(GraphWindow@factorEdges[[edgeNode$nr]]) <<- label
             else if (edgeNode$type == "blockEdge") 
-                labelOfEdge(GraphWindow@blockEdges[[edgeNode$nr]]) <<- label
+                label(GraphWindow@blockEdges[[edgeNode$nr]]) <<- label
         }
         "retEdgeLabel" <- function(edgeNode, i, f, t, edge.type = "graphEdge") {
             if (edgeNode$type == "graphEdge") 
-                labelOfEdge(GraphWindow@graphEdges[[edgeNode$nr]])
+                label(GraphWindow@graphEdges[[edgeNode$nr]])
             else if (edgeNode$type == "factorEdge") 
-                labelOfEdge(GraphWindow@factorEdges[[edgeNode$nr]])
+                label(GraphWindow@factorEdges[[edgeNode$nr]])
             else if (edgeNode$type == "blockEdge") 
-                labelOfEdge(GraphWindow@blockEdges[[edgeNode$nr]])
+                label(GraphWindow@blockEdges[[edgeNode$nr]])
         }
         "setEdgeWidth" <- function(edgeNode, width = 1, i = edgeNode$label.number, 
             f = 0, t = edgeNode$to, edge.type = edgeNode$type) {
             tkitemconfigure(canvas, edgeNode$edge, width = width)
             if (edgeNode$type == "graphEdge") 
-                widthOfEdge(GraphWindow@graphEdges[[edgeNode$nr]]) <<- width
+                width(GraphWindow@graphEdges[[edgeNode$nr]]) <<- width
             else if (edgeNode$type == "factorEdge") 
-                widthOfEdge(GraphWindow@factorEdges[[edgeNode$nr]]) <<- width
+                width(GraphWindow@factorEdges[[edgeNode$nr]]) <<- width
             else if (edgeNode$type == "blockEdge") 
-                widthOfEdge(GraphWindow@blockEdges[[edgeNode$nr]]) <<- width
+                width(GraphWindow@blockEdges[[edgeNode$nr]]) <<- width
         }
         "vertexTypeOfEdge" <- function(index, edge.type = "graphEdge", 
             edgeObject = NULL) if (edge.type == "factorBlockEdge") 
@@ -930,7 +977,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 if (type == "ClosedBlock") {
                   if (!closedBlock[abs(i)]) 
                     display <<- FALSE
-                  if (doubleClosedBlock[abs(i)]) 
+                  if (hiddenBlock[abs(i)]) 
                     display <<- FALSE
                 }
                 else if (closedVertex[abs(i)]) 
@@ -1694,9 +1741,9 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                   cursor = "arrow"))
                 if (label) 
                   tkitembind(canvas, item, "<Enter>", function() tkconfigure(canvas, 
-                    cursor = "diamond_cross"))
+                    cursor = "left_ptr"))
                 else tkitembind(canvas, item, "<Enter>", function() tkconfigure(canvas, 
-                  cursor = "cross_reverse"))
+                  cursor = "right_ptr"))
                 tkitembind(canvas, item, "<B1-Motion>", moveBlock(i, 
                   1))
                 tkitembind(canvas, item, "<Double-Button-1>", 
@@ -1746,10 +1793,12 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             if (debug.strata && (vertex.type != "Factor") && 
                 (vertex.type != "Extra")) {
                 strata <- retStratum(i, vertex.type)
+                block <- retBlockIndex(i, vertex.type)
                 color <- myColor(strata)
                 numbers <- tkcreate(canvas, "text", pos[1] - 
                   4 * w, pos[2] - 4 * w, text = paste(i, strata, 
-                  sep = "."), fill = color, anchor = "nw", font = "12x30")
+                  block, sep = "."), fill = color, anchor = "nw", 
+                  font = "12x30")
                 tkaddtag(canvas, tag, "withtag", numbers)
             }
             else numbers <- NULL
@@ -1795,7 +1844,8 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         subActivateVertex <- function(i, color = "green", vertex.type = ifelse(i > 
             0, "Vertex", "Factor")) if (!deActivateVertex(i, 
             "cyan", vertex.type)) 
-            if (retActivatedVertex() == 0) {
+            if ((retActivatedVertex() == 0) && (vertex.type != 
+                "Extra")) {
                 setActivatedVertex(i, vertex.type)
                 setVertexColor(i, color = color, vertex.type = vertex.type)
                 return(TRUE)
@@ -1825,7 +1875,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 print(paste("subUpdateGraphWindow: Blocks (1-1)"))
             if (!is.null(blockList)) 
                 for (i in seq(along = blockList)) {
-                  if (closedBlock[i]) {
+                  if (closedBlock[i] || hiddenBlock[i]) {
                     pos <- retVertexPos(i, "ClosedBlock")
                     update.edges <- updateEdges || is.element(i, 
                       blockframes)
@@ -1958,9 +2008,10 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                       dxy[2])
                     if (debug.strata) {
                       strata <- retStratum(i, vertex.type = "Vertex")
+                      block <- retBlockIndex(i, vertex.type = "Vertex")
                       color <- myColor(strata)
                       tkitemconfigure(canvas, itemsVertices[[i]]$numbers, 
-                        text = paste(i, strata, sep = "."))
+                        text = paste(i, strata, block, sep = "."))
                       tkitemconfigure(canvas, itemsVertices[[i]]$numbers, 
                         fill = color)
                     }
@@ -2047,7 +2098,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 all.blockframes <- (updateCountBlocks < updateCountBlocksMain)
                 updateEdges <- (updateCountBlockEdges < updateCountBlockEdgesMain)
                 if (updateCountBlockEdges < updateCountBlockEdgesMain) 
-                  updateVerticesStrata()
+                  updateAllBlockIndices()
                 if ((updateCountVertices < updateCountVerticesMain) || 
                   (updateCountLabels < updateCountLabelsMain) || 
                   updateEdges || all.blockframes) 
@@ -2261,7 +2312,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         moveVerticesInBlock <- function(i, dxy, move.vertices = TRUE) {
             for (v in seq(along = vertexList)) if (is.element(v, 
                 visibleVertices)) 
-                if ((blockReferences[retStratum(v, vertex.type = "Vertex")] == 
+                if ((blockReferences[retBlockIndex(v, vertex.type = "Vertex")] == 
                   i)) {
                   if (move.vertices) {
                     tkmove(canvas, vertexItem(v)$tag, dxy[1], 
@@ -2280,9 +2331,10 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             if (debug.strata && (vertex.type != "Factor") && 
                 (vertex.type != "Extra") && (vertex.type != "ClosedBlock")) {
                 strata <- retStratum(i, vertex.type)
+                block <- retBlockIndex(i, vertex.type)
                 color <- myColor(strata)
                 tkitemconfigure(canvas, itemsVertices[[i]]$numbers, 
-                  text = paste(i, strata, sep = "."))
+                  text = paste(i, strata, block, sep = "."))
                 tkitemconfigure(canvas, itemsVertices[[i]]$numbers, 
                   fill = color)
             }
@@ -2496,7 +2548,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 if (sum(dxy^2) < 0.25^2 * sum((posFrom - posTo)^2)) {
                   fun <- function(ii, vertex.type, position) {
                     if (vertex.type == "ClosedBlock") {
-                      if (closedBlock[-ii]) 
+                      if ((closedBlock[-ii]) || hiddenBlock[-ii]) 
                         tkmove(canvas, vertexItem(-ii, vertex.type = vertex.type)$tag, 
                           dxy[1], dxy[2])
                       setVertexPos(-ii, position + dxy, dxy, 
@@ -2583,33 +2635,33 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 redraw <- TRUE
             }
             else if (edge.type == "blockEdge") {
-                from.stratum <- f
-                from.stratum <- c(from.stratum, blockList[[from.stratum]]@descendants)
-                to.stratum <- t
-                to.stratum <- c(to.stratum, blockList[[to.stratum]]@descendants)
+                from.block <- f
+                from.block <- c(from.block, blockList[[from.block]]@descendants)
+                to.block <- t
+                to.block <- c(to.block, blockList[[to.block]]@descendants)
                 if (from.type == "Vertex") {
                   for (w in seq(along = vertexList)) if (is.element(w, 
                     visibleVertices)) 
-                    if (is.element(retStratum(w, vertex.type = "Vertex"), 
-                      to.stratum)) 
+                    if (is.element(retBlockIndex(w, vertex.type = "Vertex"), 
+                      to.block)) 
                       result <- fun(result, f, w, edge.type = "graphEdge")
                 }
                 else if (to.type == "Vertex") {
                   for (v in seq(along = vertexList)) if (is.element(v, 
                     visibleVertices)) 
-                    if (is.element(retStratum(v, vertex.type = "Vertex"), 
-                      from.stratum)) 
+                    if (is.element(retBlockIndex(v, vertex.type = "Vertex"), 
+                      from.block)) 
                       result <- fun(result, v, t, edge.type = "graphEdge")
                 }
                 else {
                   for (v in seq(along = vertexList)) if (is.element(v, 
                     visibleVertices)) 
-                    if (is.element(retStratum(v, vertex.type = "Vertex"), 
-                      from.stratum)) 
+                    if (is.element(retBlockIndex(v, vertex.type = "Vertex"), 
+                      from.block)) 
                       for (w in seq(along = vertexList)) if (is.element(w, 
                         visibleVertices)) 
-                        if (is.element(retStratum(w, vertex.type = "Vertex"), 
-                          to.stratum)) 
+                        if (is.element(retBlockIndex(w, vertex.type = "Vertex"), 
+                          to.block)) 
                           result <- fun(result, v, w, edge.type = "graphEdge")
                 }
             }
@@ -2762,37 +2814,37 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                   blockEdges = NULL)
             }
             else if (edge.type == "blockEdge") {
-                from.stratum <- -f
-                if (from.stratum > 0) 
-                  from.stratum <- c(from.stratum, blockList[[from.stratum]]@descendants)
-                to.stratum <- -t
-                if (to.stratum > 0) 
-                  to.stratum <- c(to.stratum, blockList[[to.stratum]]@descendants)
+                from.block <- -f
+                if (from.block > 0) 
+                  from.block <- c(from.block, blockList[[from.block]]@descendants)
+                to.block <- -t
+                if (to.block > 0) 
+                  to.block <- c(to.block, blockList[[to.block]]@descendants)
                 if (from.type == "Vertex") {
                   for (w in seq(along = vertexList)) if (is.element(w, 
                     visibleVertices)) 
-                    if (is.element(retStratum(w, vertex.type = "Vertex"), 
-                      to.stratum)) 
+                    if (is.element(retBlockIndex(w, vertex.type = "Vertex"), 
+                      to.block)) 
                       j.g <- j.g | which.unordered.edge(c(f, 
                         w), edge.type = "graphEdge")
                 }
                 else if (to.type == "Vertex") {
                   for (v in seq(along = vertexList)) if (is.element(v, 
                     visibleVertices)) 
-                    if (is.element(retStratum(v, vertex.type = "Vertex"), 
-                      from.stratum)) 
+                    if (is.element(retBlockIndex(v, vertex.type = "Vertex"), 
+                      from.block)) 
                       j.g <- j.g | which.unordered.edge(c(v, 
                         t), edge.type = "graphEdge")
                 }
                 else {
                   for (v in seq(along = vertexList)) if (is.element(v, 
                     visibleVertices)) 
-                    if (is.element(retStratum(v, vertex.type = "Vertex"), 
-                      from.stratum)) 
+                    if (is.element(retBlockIndex(v, vertex.type = "Vertex"), 
+                      from.block)) 
                       for (w in seq(along = vertexList)) if (is.element(w, 
                         visibleVertices)) 
-                        if (is.element(retStratum(w, vertex.type = "Vertex"), 
-                          to.stratum)) 
+                        if (is.element(retBlockIndex(w, vertex.type = "Vertex"), 
+                          to.block)) 
                           if (v != w) 
                             j.g <- j.g | which.unordered.edge(c(v, 
                               w), edge.type = "graphEdge")
@@ -2869,17 +2921,17 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 print(paste("subDropEdge", f, t, from.type, to.type, 
                   from.all, to.all, edge.type, slave))
             if (from.type == "ClosedBlock") 
-                from.stratum <- f
-            else from.stratum <- retStratum(f, vertex.type = from.type)
+                from.block <- f
+            else from.block <- retBlockIndex(f, vertex.type = from.type)
             if (to.type == "ClosedBlock") 
-                to.stratum <- t
-            else to.stratum <- retStratum(t, vertex.type = to.type)
+                to.block <- t
+            else to.block <- retBlockIndex(t, vertex.type = to.type)
             if (from.all && ((from.type == "ClosedBlock") || 
                 ((from.type == "Vertex")))) {
                 for (v in seq(along = vertexList)) if (is.element(v, 
                   visibleVertices)) 
-                  if ((retStratum(v, vertex.type = "Vertex") == 
-                    from.stratum)) 
+                  if ((retBlockIndex(v, vertex.type = "Vertex") == 
+                    from.block)) 
                     subDropEdge(NULL, v, t, "Vertex", to.type, 
                       FALSE, to.all, edge.type = edge.type, slave = slave)
             }
@@ -2887,8 +2939,8 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 ((to.type == "Vertex")))) {
                 for (w in seq(along = vertexList)) if (is.element(w, 
                   visibleVertices)) 
-                  if ((retStratum(w, vertex.type = "Vertex") == 
-                    to.stratum)) 
+                  if ((retBlockIndex(w, vertex.type = "Vertex") == 
+                    to.block)) 
                     subDropEdge(NULL, f, w, "Vertex", "Vertex", 
                       FALSE, FALSE, edge.type = edge.type, slave = slave)
             }
@@ -2943,14 +2995,14 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                               to.type = to.type, edge.index = i, 
                               force = force, Arguments = Args())
                             if (!is.null(R)) {
-                              if ((hasMethods || hasMethod("labelOfTest", 
+                              if ((hasMethods || hasMethod("label", 
                                 class(R)))) 
-                                setEdgeLabel(e, testLabel(R), 
-                                  e$label.number, f = f)
-                              if ((hasMethods || hasMethod("widthOfTest", 
+                                setEdgeLabel(e, label(R), e$label.number, 
+                                  f = f)
+                              if ((hasMethods || hasMethod("width", 
                                 class(R)))) 
-                                setEdgeWidth(e, testWidth(R), 
-                                  e$label.number, f = f)
+                                setEdgeWidth(e, width(R), e$label.number, 
+                                  f = f)
                               activateEdge(0, edge.type = edge.type)()
                             }
                           }
@@ -2984,7 +3036,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 dxy <- findDifference(X, posTo)
                 changeBlockCornerPos(i, A, dxy)
                 tkcoordsBlock(i, color = "black", lower = FALSE)
-                if (updateVerticesStrata()) 
+                if (updateAllBlockIndices()) 
                   setUpdateBlockEdges("moveBlockPoint")
                 subUpdateGraphWindow("moveBlockPoint", blockframes = 0)
                 setUpdateBlocks("")
@@ -3027,7 +3079,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 dxy <- findDifference(X, Y)
                 changeBlockCornerPos(i, A, dxy)
                 tkcoordsBlock(i, color = "black", lower = FALSE)
-                if (updateVerticesStrata()) 
+                if (updateAllBlockIndices()) 
                   setUpdateBlockEdges("moveBlockLine")
                 subUpdateGraphWindow("moveBlockLine", blockframes = 0)
                 setUpdateBlocks("")
@@ -3053,7 +3105,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                     moveVerticesInBlock(j, dxy)
                     tkcoordsBlock(j, color = "black", lower = FALSE)
                   }
-                  if (updateVerticesStrata()) 
+                  if (updateAllBlockIndices()) 
                     setUpdateBlockEdges("moveBlock")
                   subUpdateGraphWindow("moveBlock", blockframes = 0)
                   tkcoordsBlock(i, color = "black", lower = FALSE)
@@ -3061,29 +3113,30 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 }
             }
         }
-        doubleCloseBlock <- function(i, ancestor, update = TRUE) {
+        hideBlock <- function(i, ancestor, update = TRUE) {
             blockReferences[i] <<- ancestor
             for (v in seq(along = vertexList)) if (is.element(v, 
                 visibleVertices)) 
-                if (retStratum(v, vertex.type = "Vertex") == 
+                if (retBlockIndex(v, vertex.type = "Vertex") == 
                   i) 
                   setCloseVertex(v, TRUE, "Vertex")
-            for (j in blockList[[i]]@descendants) if ((j != 0)) 
-                doubleCloseBlock(j, ancestor, update = FALSE)
-            setDoubleCloseBlock(i, TRUE, update = update)
+            setHiddenBlock(i, TRUE, update = update)
+            for (j in blockList[[i]]@descendants) if ((j != 0) && 
+                !hiddenBlock[j]) 
+                hideBlock(j, ancestor, update = FALSE)
         }
         closeBlock <- function(i, update = TRUE) {
             force(i)
             function(...) {
                 for (v in seq(along = vertexList)) if (is.element(v, 
                   visibleVertices)) 
-                  if (retStratum(v, vertex.type = "Vertex") == 
+                  if (retBlockIndex(v, vertex.type = "Vertex") == 
                     i) 
                     setCloseVertex(v, TRUE, "Vertex")
                 for (j in blockList[[i]]@descendants) if ((j != 
-                  i) && (j != 0) && !doubleClosedBlock[j]) 
-                  doubleCloseBlock(j, i, update = FALSE)
-                setCloseBlock(i, TRUE, update = update)
+                  i) && (j != 0) && !hiddenBlock[j]) 
+                  hideBlock(j, i, update = FALSE)
+                setClosedBlock(i, TRUE, update = update)
                 drawVertex(i, w = 10, vertexcolor = "Black", 
                   vertex.type = "ClosedBlock")
                 if (update) 
@@ -3094,21 +3147,28 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         openBlock <- function(i, update = TRUE) {
             force(i)
             function(...) {
-                setDoubleCloseBlock(i, FALSE, update = FALSE)
                 blockReferences[i] <<- i
-                setCloseBlock(i, FALSE, update = update)
-                vertex.type <- "ClosedBlock"
-                deActivateVertex(i, retVertexColor(i, vertex.type), 
-                  vertex.type)
-                drawBlock(blockList[[i]], i)
-                for (v in seq(along = vertexList)) if (is.element(v, 
-                  visibleVertices)) 
-                  if (retStratum(v, vertex.type = "Vertex") == 
-                    i) 
-                    setCloseVertex(v, FALSE, "Vertex")
-                for (j in blockList[[i]]@descendants) if ((j != 
-                  0) && closedBlock[j]) 
-                  openBlock(j, update = FALSE)()
+                if ((hiddenBlock[i] && closedBlock[i])) {
+                  drawVertex(i, w = 10, vertexcolor = "Black", 
+                    vertex.type = "ClosedBlock")
+                }
+                else {
+                  setClosedBlock(i, FALSE, update = update)
+                  vertex.type <- "ClosedBlock"
+                  deActivateVertex(i, retVertexColor(i, vertex.type), 
+                    vertex.type)
+                  drawBlock(blockList[[i]], i)
+                  for (v in seq(along = vertexList)) if (is.element(v, 
+                    visibleVertices)) 
+                    if (retBlockIndex(v, vertex.type = "Vertex") == 
+                      i) 
+                      setCloseVertex(v, FALSE, "Vertex")
+                  for (j in blockList[[i]]@descendants) if ((j != 
+                    0) && (hiddenBlock[j])) 
+                    if (!isInClosedBlock(j)) 
+                      openBlock(j, update = FALSE)()
+                }
+                setHiddenBlock(i, FALSE, update = FALSE)
                 if (update) 
                   subUpdateGraphWindow("openBlock", raiseEdges = TRUE, 
                     updateEdges = TRUE)
@@ -3160,6 +3220,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             Labels <<- c(Labels, Expression)
             closedVertex <<- c(closedVertex, FALSE)
             colorsVertices <<- c(colorsVertices, vertexColor)
+            blocksVertices <<- c(blocksVertices, 0)
             strataVertices <<- c(strataVertices, 0)
             namesVertices <<- c(namesVertices, ReturnVal)
             itemsVertices <<- append(itemsVertices, list(NULL))
@@ -3239,6 +3300,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                   1] + 0.1 * w
                 factorLabels <<- Labels(factorVertexList)
                 colorsFactorVertices <<- Colors(factorVertexList)
+                blocksFactorVertices <<- rep(0, length(factorVertexList))
                 strataFactorVertices <<- rep(0, length(factorVertexList))
                 if (!is.matrix(positionsFactorVertices)) 
                   warning("Positions of factor-vertices should have same number of coordinates")
@@ -3259,6 +3321,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 extraLabels <<- Labels(extraList)
                 colorsExtraVertices <<- Colors(extraList)
                 strataExtraVertices <<- rep(0, length(extraList))
+                blokckExtraVertices <<- rep(0, length(extraList))
                 if (!is.matrix(positionsExtraVertices)) 
                   warning("Positions of extra-vertices should have same number of coordinates")
                 else if (!(dim(positionsExtraVertices)[2] == 
@@ -3394,6 +3457,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             graphMenu <- tkmenu(topMenu, tearoff = FALSE)
             tkadd(graphMenu, "command", label = "Copy: Make slave window", 
                 command = function() {
+                  updateArguments(NULL, edges = FALSE, blocks = TRUE)
                   edgeList <- currentEdges(edge.type = "graphEdge")
                   blockEdgeList <- currentEdges(edge.type = "blockEdge")
                   factorEdgeList <- currentEdges(edge.type = "factorEdge")
@@ -3659,9 +3723,9 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         if (is.null(graphWindow)) {
             ArgWindow <- FALSE
             GraphWindow <- newGraph(graphLattice, vertexList, 
-                edgeList, blockEdgeList, factorVertexList, factorEdgeList, 
-                redrawGraphWindow, background = background, title = title, 
-                width = width, height = height)
+                extraList, edgeList, blockEdgeList, factorVertexList, 
+                factorEdgeList, redrawGraphWindow, background = background, 
+                title = title, width = width, height = height)
         }
         else {
             ArgWindow <- TRUE
@@ -3684,6 +3748,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         factorLabels <- NULL
         colorsFactorVertices <- NULL
         strataFactorVertices <- NULL
+        blocksFactorVertices <- NULL
         itemsExtras <- NULL
         itemsExtraEdges <- NULL
         namesExtraVertices <- NULL
@@ -3692,6 +3757,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         extraLabels <- NULL
         colorsExtraVertices <- NULL
         strataExtraVertices <- NULL
+        blocksExtraVertices <- NULL
         Angle <- 10
         canvas <- GraphWindow@canvas
         itemsEdges <- vector("list", length(vertexList))
@@ -3701,15 +3767,27 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         positionsEdgeLabels <- NULL
         closedVertex <- rep(FALSE, length(vertexList))
         closedBlock <- rep(FALSE, length(blockList))
-        doubleClosedBlock <- rep(FALSE, length(blockList))
+        hiddenBlock <- rep(FALSE, length(blockList))
+        if (!is.null(blockList)) {
+            closedBlock <- Closed(blockList)
+            hiddenBlock <- closedBlock
+            for (i in seq(along = blockList)) hiddenBlock[i] <- isInClosedBlock(i)
+            for (i in seq(along = vertexList)) {
+                s <- blocksVertices[i]
+                closedVertex[i] <- closedBlock[s] || hiddenBlock[s]
+            }
+        }
         if (!is.null(blockList)) {
             itemsBlockEdges <- vector("list", length(blockEdgeList))
         }
         initFactorVariables(factorVertexList)
         initExtraVariables(extraList)
         if (!is.null(blockList)) 
-            for (i in seq(along = blockList)) drawBlock(blockList[[i]], 
-                i)
+            for (i in seq(along = blockList)) if (!hiddenBlock[i]) 
+                if (closedBlock[i]) 
+                  drawVertex(i, w = 10, vertexcolor = "Black", 
+                    vertex.type = "ClosedBlock")
+                else drawBlock(blockList[[i]], i)
         for (i in seq(along = edgeList)) drawEdge(edgeList[[i]], 
             i, edge.type = "graphEdge")
         for (i in seq(along = factorEdgeList)) drawEdge(factorEdgeList[[i]], 
@@ -3718,7 +3796,9 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             i, edge.type = "blockEdge")
         for (i in seq(along = vertexList)) if (is.element(i, 
             visibleVertices)) 
-            drawVertex(i, w = w, vertexcolor = vertexColor, vertex.type = "Vertex")
+            if (!closedVertex[i]) 
+                drawVertex(i, w = w, vertexcolor = vertexColor, 
+                  vertex.type = "Vertex")
         if (length(factorVertexList) > 0) 
             for (i in seq(along = factorVertexList)) drawVertex(-i, 
                 w = w, vertexcolor = vertexColor, vertex.type = "Factor")
@@ -3753,6 +3833,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             w
         Labels <- Labels(vertexList)
         colorsVertices <- Colors(vertexList)
+        blocksVertices <- Blockindices(vertexList)
         strataVertices <- Strata(vertexList)
         N <- ncol(positionsVertices)
         if (is.null(blockList) && !is.null(blockTree)) 

@@ -17,7 +17,7 @@ returnFactorVerticesAndEdges(Vertices, factors = NULL, types = "Generator",
   \item{Vertices}{ The list of \code{Vertices}, each
       containing the class \code{VertexProto}. }
   \item{factors}{ The list of vectors identifying the \code{factors}.
-          Each item in the list is a vector with of the indices of
+          Each item in the list is a vector of the indices of
 	  vertices of a factor. 
       }
   \item{types}{ The \code{types} of the factors. Either a single
@@ -36,11 +36,11 @@ returnFactorVerticesAndEdges(Vertices, factors = NULL, types = "Generator",
       The argument \code{factors} is a list of vectors identifying 
       the \code{factors}, or \code{generators}.
       Each item in the list is a vector with of the indices (or names)
-      of vertices of a factor, or variables of a generator.
+      of the vertices of a factor, or variables of a generator.
       A factor vertex is made for each factor, and factor edges
       from this factor vertex to the vertices of the factor
       or added to the factor edge list.
-      Also the edges between pairs of vertices in factors
+      Also the edges between pairs of the vertices in the factors
       are returned.
 }
 \value{

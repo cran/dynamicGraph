@@ -57,7 +57,7 @@ returnEdgeList(edge.list, vertices, width = 2, color = "DarkSlateGrey",
     % \code{\link{NodeIndices<-}},
     \code{\link{Widths}},
     \code{\link{Widths<-}},
-    \code{\link{Oriented}} and
+    \code{\link{Oriented}}, and
     \code{\link{Oriented<-}}. 
 }
 \seealso{\code{\link{vertexList}} and \code{\link{newVertexEdge}}.}

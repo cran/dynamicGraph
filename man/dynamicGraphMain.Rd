@@ -76,9 +76,10 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
         object when the graph is updated, and for computing the
 	test statistic when an edge is labeled. The returned object from
         \code{\link{testEdge}} should have the methods 
-        \code{\link{labelOfTest}} and \code{\link{widthOfTest}} for
-        extracting the label of a test for putting the label on the edge
-        and the width for the edge.
+        \code{label} and \code{width}
+        % (was \code{labelOfTest} and \code{widthOfTest})
+        for extracting the label of a test for putting the label on the edge
+        and for extracting the width for the edge.
         See \code{\link{newDefaultModelObject}}. }
     \item{objectName}{ If set to a text string then the object is assigned with
 	this name in .Global.Env when the object is updated. }
@@ -88,7 +89,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
     \item{title}{ Text string with the title set on the graph window. }
     \item{transformation}{ NULL,
                 or rotation matrix for projecting the positions
-        of the vertices, blocks, etc. on to the canvas. }
+        of the vertices, blocks, etc. onto the canvas. }
     \item{width}{ Integer with the width of the plot canvas. }
     \item{height}{ Integer with the height of the plot canvas. }
     \item{w}{ The \code{radius} of the vertices. Send as argument to the
@@ -129,7 +130,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
         default: "white". }
     \item{closeenough}{ Parameter for whether the mouse is close enough
         when clicking an object of the graph window,
-        see \code{\link{tkcanvas}}. }
+        see \code{\link[tcltk]{tkcanvas}}. }
     \item{drawBlockFrame}{ Logical.
                 If TRUE then frames are drawn around blocks. }
     \item{drawBlockBackground}{ Logical. If TRUE then a \code{block canvas} is
@@ -140,7 +141,8 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
     \item{hasMethods}{ Logical. 
         If TRUE then the \code{object} should have the methods
         \code{\link{modifyModel}} and \code{\link{testEdge}}. 
-        (I do not know why the R-function \code{\link{hasMethod}} does not
+        (I do not know why the R-function
+         \code{\link[methods]{hasMethod}} does not
         work on \code{objects} (defined outside the package
 	\code{\link{dynamicGraph}})
 	inside \code{\link{dynamicGraphMain}}).}
@@ -163,7 +165,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
     This is a dynamic plotting tool for handling graphs.
     The lay out of the graph can be edited by moving
     the vertices of the graph by the mouse, and edges can be 
-    added by clicking vertices and drop by clicking the edges.
+    added by clicking vertices and dropping by clicking the edges.
 
     The function is incremental in the sense that the user can add a method
     for updating the model object of the window when the graph is updated,
@@ -195,10 +197,10 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 
 \value{
     Object of class \code{\link{GraphLatticeProto}}.
-    Might beside the list of canvases of the graph window and slave windows
+    Might, beside the list of canvases of the graph window and slave windows,
     also hold lists of vertices and blocks (block trees).
     \item{...@graphs}{Slot 'graphs': List of class \code{\link{CanvasProto}}.
-	Might beside slots for accessing the graph window also hold 
+	Might, beside slots for accessing the graph window, also hold 
 	slots for edges, factors, factor edges, block edges, etc.}
     \item{...@graphs[[i]]@top}{Slot 'top' of each object in the list of the
         'graphs' slot of the returned object:
@@ -323,7 +325,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 		of the block to a vertex or a block - Click the block.}
 	    \item{Cancel highlighting:}{Of a block - Left click (or drag)
 		the block.}
-	    \item{Add edges:}{To all vertices vertices of block
+	    \item{Add edges:}{To all vertices of block
 		after highlighting first a block or a vertex - Click
                 the other block.}
 	    \item{Move a closed block:}{Left click and drag the block.}
@@ -424,8 +426,8 @@ Claus Dethlefsen for testing early versions of this package on DEAL.
 
 \note{
      Vertices, edges, blocks, block edges,
-     factors and factor edges are objects of the following classes:
-     \code{\link{VertexProto}}, \code{\link{EdgeProto}}
+     factors, and factor edges are objects of the following classes:
+     \code{\link{VertexProto}}, \code{\link{EdgeProto}},
      and \code{\link{BlockProto}} contains \code{\link{NodeProto}},
      \code{\link{FactorVertexProto}} contains \code{\link{VertexProto}}, and
      \code{\link{VertexEdgeProto}}, \code{\link{BlockEdgeProto}}, 
@@ -457,18 +459,18 @@ Claus Dethlefsen for testing early versions of this package on DEAL.
      \code{\link{nodeIndicesOfEdge}},
      \code{\link{nodeIndicesOfEdge<-}},
      \code{\link{nodeTypesOfEdge}},
-     ( \code{\link{labelOfEdge}},
-     \code{\link{labelOfEdge<-}},
-     \code{\link{widthOfEdge}},
-     \code{\link{widthOfEdge<-}} ),
+     % ( \code{\link{labelOfEdge}},
+     %   \code{\link{labelOfEdge<-}},
+     %   \code{\link{widthOfEdge}},
+     %   \code{\link{widthOfEdge<-}} ),
      \code{\link{ancestors}},
      \code{\link{ancestors<-}},
-     \code{\link{descendants}} and
+     \code{\link{descendants}}, and
      \code{\link{descendants<-}},
      are implemented for objects of these classes.
 
      For lists of vertices, edges, blocks, block edges,
-     factors and factor edges the methods
+     factors, and factor edges the methods
      \code{\link{Names}},
      \code{\link{Names<-}},
      \code{\link{Colors}},
@@ -487,7 +489,7 @@ Claus Dethlefsen for testing early versions of this package on DEAL.
 %     \code{\link{Visible<-}},
      \code{\link{NodeAncestors}},
      \code{\link{NodeAncestors<-}},
-     \code{\link{NodeDescendants}} and
+     \code{\link{NodeDescendants}}, and
      \code{\link{NodeDescendants<-}} are available.
 
      The block tree created by \code{\link{setTreeBlocks}} is unlisted by
@@ -504,8 +506,8 @@ Claus Dethlefsen for testing early versions of this package on DEAL.
      object, and the object is also assigned in the top level environment,
      if \code{objectName} was given to \code{\link{dynamicGraphMain}}.
 
-     The methods \code{testEdge} of \code{object} should return an object with
-     the methods \code{labelOfTest} and \code{widthOfTest} for labeling edges,
+     The method \code{testEdge} of \code{object} should return an object with
+     the methods \code{label} and \code{width} for labeling edges,
      see \code{\link{newDefaultTestObject}}.
 
  }
@@ -519,12 +521,12 @@ Claus Dethlefsen for testing early versions of this package on DEAL.
       \code{\link{newDefaultModelObject}} and
       \code{\link{newDefaultTestObject}}
       gives an example of a model object with test object.
-      The pages of \code{\link{redrawGraphWindow}} shows how the user 
+      The pages of \code{\link{redrawGraphWindow}} show how the user 
       can add menu items with actions that redraws the graph
       after modification of edges.
-      Finally \code{\link{validVertexClasses}} shows how to create
+      Finally, \code{\link{validVertexClasses}} show how to create
       a new vertex class with a new symbol for drawing the vertex 
-      and a item added to the pop up menu of the new vertex class.
+      and an item added to the pop up menu of the new vertex class.
       The files \code{".../dynamicGraph/Tests/Circle.newClass.R"} of
       the example catalog of \code{dynamicGraph} will do this example
       collected from these 4 pages.
@@ -541,10 +543,16 @@ V.Names <- paste(c("Sex", "Age", "Eye", "FEV", "Hair", "Shosize"),
 V.Types <- c("Discrete", "Ordinal", "Discrete",
              "Continuous", "Discrete", "Continuous")
 
+Vertices <- returnVertexList(V.Names, types = V.Types, color = "red")
+
 From <- c(1, 2, 3, 4, 5, 6)
 To   <- c(2, 3, 4, 5, 6, 1)
 
-Z <- DynamicGraph(V.Names, V.Types, From, To, texts = c("Gryf", "gaf"), w = 4)
+EdgeList <- vector("list", length(To))
+for (j in seq(along = To)) EdgeList[[j]] <- c(From[j], To[j])
+Edges <- returnEdgeList(EdgeList, Vertices, color = "black")
+
+Z <- dynamicGraphMain(Vertices, edgeList = Edges, w = 4)
 
 }
 \keyword{ dplot }

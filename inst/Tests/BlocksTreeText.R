@@ -5,8 +5,10 @@ source("startup.0.R")
 
 Block.tree <- list(Vertices = c("contry"),
                    X = list(Vertices = c("sex", "race"),
-                            A = list(Vertices = c("hair", "eye"),
-                                     horizontal = FALSE),
+                            A = list(Vertices = c("hair"),
+                                     horizontal = TRUE, closed = TRUE,
+                                     a = list(Vertices = c("eye"),
+                                              horizontal = FALSE),),
                             B = list(Vertices = c("education")),
                             C = list(Vertices = c("age"))))
 

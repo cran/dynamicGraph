@@ -1,12 +1,48 @@
 
+ 2004-02-03: Vertices in a circle if more than 3 vertices in the block
+             in setTreeBlocks
+
+ 2004-02-03: If no vertices in the block, then do not try to position them
+
+ 2004-02-01: CoCo: Methods testLabel and testWidth now label(... and width(...
+
+ 2004-02-01: dynamicGraph: Call to methods
+             (edgeLabel,   edgeWidth,   testLabel   and testWidth )
+              labelOfEdge, widthOfEdge, labelOfTest and widthOfTest,
+             now label(... and width(...
+
+ 2004-02-01: CoCo: Call to methods testLabel and testWidth
+             now label(... and width(...
+
+ 2004-02-01: Strata and block indices separated: slot blockindex
+             added to VertexProto
+
+ 2004-01-31: Curser, open block label: "diamond_cross" -> "left_ptr"
+                     open block:       "cross_reverse" -> "right_ptr"
+
+ 2004-01-31: Highlighting of extra vertices disabled.
+
+ 2004-01-31: Extra vertices are also returned in graph@ (canvas).
+
+ 2004-01-31: Slave graphs appear with blocks opened or closed as in
+             calling window.
+
+ 2004-01-31: Tree argument to SetTreeBlock now has @closed for blocks,
+             and blocks are drawn accordingly. (Slot "closed" and
+             methods "closed(<-)" added to BlockProto, and
+             methods "Closed" added to list-class.
+
+ 2004-01-31: Sub block of a closed block will appear again
+             as when the block was closed.
+
  2004-01-30: Change of names dummyVertices and dummyVisualVertices.
 
  2004-01-30: factorVertices added to CanvasProto
 
  2004-01-30: Change of vertexIndices to nodeIndices for only factors
 
- 2004-01-28: edgeLabel, edgeWidth, testLabel and testWidth now
-             labelOfEdge, ...
+ 2004-01-28: edgeLabel,   edgeWidth,   testLabel   and testWidth now
+             labelOfEdge, widthOfEdge, labelOfTest and widthOfTest, ...
 
  2004-01-24: Extract function for vertex-, edge- and block-list
              replaced of methods for class "list".

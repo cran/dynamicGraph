@@ -42,7 +42,7 @@ setBlocks(block.list, vertices, labels = NULL,
   \item{Blocks}{The list of blocks, each of class 
         \code{\link{BlockProto}}.}
   \item{Vertices}{The list of vertices,
-        with the positions updated such that the vertices
+        with the positions updated such the vertices
         has positions within the blocks. }
 }
 % \references{ ~put references to the literature/web site here ~ }

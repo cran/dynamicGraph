@@ -17,6 +17,8 @@
 \alias{position<-}
 \alias{stratum}
 \alias{stratum<-}
+\alias{blockindex}
+\alias{blockindex<-}
 \alias{visible}
 \alias{visible<-}
 \alias{addToPopups}
@@ -24,7 +26,7 @@
 \description{Returns an object of a class containing \code{VertexProto}.}
 \usage{
 newVertex(name, label = name, type = "VertexProto", index = 1,
-          position = c(0, 0, 0), stratum = 0, 
+          position = c(0, 0, 0), blockindex = 0, stratum = 0,
           color = ifelse(type == "TextVertex", "GhostWhite", "SaddleBrown"),
           vertexClasses = validVertexClasses())
 }
@@ -40,6 +42,7 @@ newVertex(name, label = name, type = "VertexProto", index = 1,
   \item{position}{ Numeric vector with the \code{position} of the vertex.
      Vertices in the same dynamic graph should
      have the same number of coordinates. }
+  \item{blockindex}{ Integer with the \code{blockindex} of the vertex. }
   \item{stratum}{ Integer with the \code{stratum} of the vertex. }
   \item{color}{ Text string with the \code{color} of the vertex. }
   \item{vertexClasses}{ The valid \code{vertexClasses}. }
@@ -52,13 +55,13 @@ newVertex(name, label = name, type = "VertexProto", index = 1,
     The \code{VertexProto} class has the methods
     \code{\link{name}}, \code{\link{label}}, \code{\link{labelPosition}},
     \code{\link{position}}, \code{\link{stratum}},
-    % \code{\link{visible}}
-    \code{\link{color}} and \code{\link{index}}
+    % \code{\link{visible}},
+    \code{\link{color}}, and \code{\link{index}}
     for extracting values of the object and the replacement methods
     \code{\link{name<-}}, \code{\link{label<-}}, \code{\link{labelPosition<-}},
     \code{\link{position<-}}, \code{\link{stratum<-}}, 
-    % \code{\link{visible<-}}.
-    \code{\link{color<-}} and \code{\link{index<-}}.
+    % \code{\link{visible<-}},
+    \code{\link{color<-}}, and \code{\link{index<-}}.
     The method \code{\link{draw}} is used to draw a vertex,
     and items can be added to the pop up menu of the vertex
     by the method \code{\link{addToPopups}}.

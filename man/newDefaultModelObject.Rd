@@ -20,7 +20,7 @@ object, and the object is also assigned in the top level environment,
 if  \code{objectName} was given to \code{\link{dynamicGraphMain}}.
 
 The methods \code{testEdge} of \code{object} should return an object with
-the methods \code{labelOfTest} and \code{widthOfTest} for labeling edges,
+the methods \code{label} and \code{width} for labeling edges,
 see \code{\link{newDefaultTestObject}}.
 }
 \value{An object of class \code{defaultModelObjectProto}.}

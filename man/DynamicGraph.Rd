@@ -7,7 +7,7 @@
     sense that the graph should not be given as list of objects
     as to \code{\link{dynamicGraphMain}}. Here vertices can be 
     specified by a vector of text strings with names,
-    and/or edges by pairs of indices of vertices.
+    and/or edges by pairs of the indices of the vertices.
 }
 \usage{
 DynamicGraph(names = NULL, types = NULL, 
@@ -37,8 +37,8 @@ DynamicGraph(names = NULL, types = NULL,
         of the indices or names of the vertices. }
   \item{blocks}{ 
         A list defining the \code{blocks}:
-        Each item is a vector with of the indices of vertices of the
-	block, or a vector with text strings for the names of vertices
+        Each item is the vector of the indices of the vertices of the
+	block, or the vector with text strings for the names of the vertices
 	of the block. 
         The arguments \code{right.to.left}, \code{nested.blocks} 
         and \code{blockColors} are here used in \code{\link{setBlocks}}
@@ -52,7 +52,7 @@ DynamicGraph(names = NULL, types = NULL,
   \item{oriented}{ Logical. If \code{oriented} is set to TRUE
         then the edges are oriented, also when no block structure is given. }
   \item{factors}{A list defining the \code{factor vertices}:
-        Each item is a vector with of the indices of vertices of a factor.
+        Each item is the vector of the indices of the vertices of a factor.
         }
   \item{texts}{ A vector of text strings, for additional labels. }
   \item{object}{ The model \code{object}, or NULL,

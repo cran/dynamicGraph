@@ -5,7 +5,7 @@
 \alias{oriented<-,VertexEdgeProto-method}
 \alias{oriented,VertexEdgeProto-method}
 
-\title{Class "VertexEdgeProto" ~~~ }
+\title{Class "VertexEdgeProto" }
 \description{  The class for edges between vertices. }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("VertexEdgeProto", ...)}.
@@ -17,11 +17,11 @@ and the method for drawing the edge.
     \item{\code{oriented}:}{Object of class \code{"logical"}.
        If TRUE, then the edge is \code{oriented},
        and thus drawn by an \code{arrow}, also when no blocks are pressent. }
-    \item{\code{vertex.indices}:}{Object of class \code{"numeric"}, see\code{"EdgeProto"}. }
-    \item{\code{width}:}{Object of class \code{"numeric"}, see\code{"EdgeProto"}. }
-    \item{\code{color}:}{Object of class \code{"character"}, see\code{"EdgeProto"}. }
-    \item{\code{label}:}{Object of class \code{"character"}, see\code{"EdgeProto"}. }
-    \item{\code{label.position}:}{Object of class \code{"numeric"}, see\code{"EdgeProto"}. }
+    \item{\code{vertex.indices}:}{Object of class \code{"numeric"}, see \code{"EdgeProto"}. }
+    \item{\code{width}:}{Object of class \code{"numeric"}, see \code{"EdgeProto"}. }
+    \item{\code{color}:}{Object of class \code{"character"}, see \code{"EdgeProto"}. }
+    \item{\code{label}:}{Object of class \code{"character"}, see \code{"EdgeProto"}. }
+    \item{\code{label.position}:}{Object of class \code{"numeric"}, see \code{"EdgeProto"}. }
   }
 }
 \section{Extends}{

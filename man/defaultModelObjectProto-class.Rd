@@ -4,7 +4,7 @@
 \alias{modifyModel,defaultModelObjectProto-method}
 \alias{testEdge,defaultModelObjectProto-method}
 
-\title{Class "defaultModelObjectProto" ~~~ }
+\title{Class "defaultModelObjectProto" }
 \description{  An example class for the model object of dynamicGraph. }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("defaultModelObjectProto", ...)}.
@@ -21,9 +21,9 @@ the list of the returned value from \code{modifyModel} then
 object, and the object is also assigned in the top level environment,
 if  \code{objectName} was given to \code{\link{dynamicGraphMain}}.
 
-The methods \code{testEdge} of \code{object} should return an object with
-the methods \code{labelOfTest} and \code{widthOfTest} for labeling edges,
-see \code{\link{newDefaultTestObject}}.
+The methods \code{testEdge} of \code{object} should return an object with the methods 
+\code{label} and \code{width} % (was \code{labelOfTest} and \code{widthOfTest})
+for labeling edges, see \code{\link{newDefaultTestObject}}.
 
 }
 \section{Slots}{

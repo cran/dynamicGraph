@@ -2,23 +2,25 @@
 \docType{class}
 \alias{EdgeProto-class}
 \alias{draw,EdgeProto-method}
-\alias{edgeLabel<-,EdgeProto-method}
-\alias{edgeLabel,EdgeProto-method}
-\alias{edgeWidth<-,EdgeProto-method}
-\alias{edgeWidth,EdgeProto-method}
-\alias{labelOfEdge<-,EdgeProto-method}
-\alias{labelOfEdge,EdgeProto-method}
+% \alias{edgeLabel<-,EdgeProto-method}
+% \alias{edgeLabel,EdgeProto-method}
+% \alias{edgeWidth<-,EdgeProto-method}
+% \alias{edgeWidth,EdgeProto-method}
+% \alias{labelOfEdge<-,EdgeProto-method}
+% \alias{labelOfEdge,EdgeProto-method}
 \alias{name,EdgeProto-method}
 \alias{nodeIndicesOfEdge<-,EdgeProto-method}
 \alias{nodeIndicesOfEdge,EdgeProto-method}
 % \alias{vertexIndices<-,EdgeProto-method}
 % \alias{vertexIndices,EdgeProto-method}
+\alias{label<-,EdgeProto-method}
+\alias{label,EdgeProto-method}
 \alias{width<-,EdgeProto-method}
 \alias{width,EdgeProto-method}
-\alias{widthOfEdge<-,EdgeProto-method}
-\alias{widthOfEdge,EdgeProto-method}
+% \alias{widthOfEdge<-,EdgeProto-method}
+% \alias{widthOfEdge,EdgeProto-method}
 
-\title{Class "EdgeProto" ~~~ }
+\title{Class "EdgeProto" }
 \description{  A skeleton class for the classes of edges. }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("EdgeProto", ...)}.
@@ -45,16 +47,26 @@ Class \code{"NodeProto"}, directly.
 \section{Methods}{
   \describe{
     \item{draw}{\code{signature(object = "EdgeProto")}: ... }
-    \item{edgeLabel<-}{\code{signature(x = "EdgeProto")}:    Same as \code{labelOfEdge<-}. }
-    \item{edgeLabel}{\code{signature(object = "EdgeProto")}: Same as \code{labelOfEdge}.   }
-    \item{edgeWidth<-}{\code{signature(x = "EdgeProto")}:    Same as \code{widthOfEdge<-}. }
-    \item{edgeWidth}{\code{signature(object = "EdgeProto")}: Same as \code{widthOfEdge}.   }
-    \item{labelOfEdge<-}{\code{signature(x = "EdgeProto")}: 
-       Same as the method \code{label<-}. 
+    % \item{edgeLabel<-}{\code{signature(x = "EdgeProto")}:    
+    %    Will be removed.  Same as \code{labelOfEdge<-}. }
+    % \item{edgeLabel}{\code{signature(object = "EdgeProto")}: 
+    %    Will be removed.  Same as \code{labelOfEdge}.   }
+    % \item{edgeWidth<-}{\code{signature(x = "EdgeProto")}:    
+    %    Will be removed.  Same as \code{widthOfEdge<-}. }
+    % \item{edgeWidth}{\code{signature(object = "EdgeProto")}: 
+    %    Will be removed.  Same as \code{widthOfEdge}.   }
+
+    \item{label<-}{\code{signature(x = "EdgeProto")}:
        Set the \code{label} of the edge. }
-    \item{labelOfEdge}{\code{signature(object = "EdgeProto")}: 
-       Same as the method \code{label}. 
+    \item{label}{\code{signature(object = "EdgeProto")}:
        Return the \code{label} of the edge. }
+    % \item{labelOfEdge<-}{\code{signature(x = "EdgeProto")}: 
+    %    Will be removed.  Same as the method \code{label<-}. 
+    %    Set the \code{label} of the edge. }
+    % \item{labelOfEdge}{\code{signature(object = "EdgeProto")}: 
+    %    Will be removed.  Same as the method \code{label}. 
+    %    Return the \code{label} of the edge. }
+
     \item{name}{\code{signature(object = "EdgeProto")}: 
        Return the \code{name}, equal to the \code{label}, of the edge. }
     \item{nodeIndicesOfEdge<-}{\code{signature(x = "EdgeProto")}:
@@ -63,16 +75,17 @@ Class \code{"NodeProto"}, directly.
        Return the \code{indices} of the vertices of the edge. }
 %     \item{vertexIndices<-}{\code{signature(x = "EdgeProto")}: ... }
 %     \item{vertexIndices}{\code{signature(object = "EdgeProto")}: ... }
+
     \item{width<-}{\code{signature(x = "EdgeProto")}:
        Set the \code{width} of the edge. }
     \item{width}{\code{signature(object = "EdgeProto")}:
        Return the \code{width} of the edge. }
-    \item{widthOfEdge<-}{\code{signature(x = "EdgeProto")}: 
-       Same as the method \code{width<-}. 
-       Set the \code{width} of the edge. }
-    \item{widthOfEdge}{\code{signature(object = "EdgeProto")}: 
-       Same as the method \code{width}. 
-       Return the \code{width} of the edge. }
+    % \item{widthOfEdge<-}{\code{signature(x = "EdgeProto")}: 
+    %    Will be removed.  Same as the method \code{width<-}. 
+    %    Set the \code{width} of the edge. }
+    % \item{widthOfEdge}{\code{signature(object = "EdgeProto")}: 
+    %    Will be removed.  Same as the method \code{width}. 
+    %    Return the \code{width} of the edge. }
   }
 }
 % \references{ ~put references to the literature/web site here ~ }

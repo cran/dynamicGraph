@@ -3,6 +3,8 @@
 \alias{VertexProto-class}
 \alias{ancestors<-,VertexProto-method}
 \alias{ancestors,VertexProto-method}
+\alias{blockindex<-,VertexProto-method}
+\alias{blockindex,VertexProto-method}
 \alias{descendants<-,VertexProto-method}
 \alias{descendants,VertexProto-method}
 \alias{index<-,VertexProto-method}
@@ -18,7 +20,7 @@
 \alias{visible<-,VertexProto-method}
 \alias{visible,VertexProto-method}
 
-\title{Class "VertexProto" ~~~ }
+\title{Class "VertexProto" }
 \description{  A skeleton class for the classes of vertices. }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("VertexProto", ...)}.
@@ -36,8 +38,10 @@ Objects has the methods for extracting and setting the slots for vertices.
        with the \code{position} of the vertex.
        Vertices in the same dynamic graph should
        have the same number of coordinates. }
+    \item{\code{blockindex}:}{Object of class \code{"numeric"}
+       with the \code{blockindex} of the vertex. }
     \item{\code{stratum}:}{Object of class \code{"numeric"} 
-       with the \code{stratum} of the vertex.}
+       with the \code{stratum} of the vertex. }
     \item{\code{color}:}{Object of class \code{"character"}
        with the \code{color} of the vertex. }
     \item{\code{label}:}{Object of class \code{"character"}
@@ -55,6 +59,8 @@ Class \code{"NodeProto"}, directly.
   \describe{
     \item{ancestors<-}{\code{signature(x = "VertexProto")}: ... }
     \item{ancestors}{\code{signature(object = "VertexProto")}: ... }
+    \item{blockindex<-}{\code{signature(x = "VertexProto")}: ... }
+    \item{blockindex}{\code{signature(object = "VertexProto")}: ... }
     \item{descendants<-}{\code{signature(x = "VertexProto")}: ... }
     \item{descendants}{\code{signature(object = "VertexProto")}: ... }
     \item{index<-}{\code{signature(x = "VertexProto")}: ... }

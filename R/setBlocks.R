@@ -68,6 +68,7 @@ function (block.list, vertices, labels = NULL, right.to.left = FALSE,
             }
             stratum(vertices[[name.list[j]]]) <<- ifelse(right.to.left, 
                 n - i, i)
+            blockindex(vertices[[name.list[j]]]) <<- stratum(vertices[[name.list[j]]])
         }
         if (right.to.left) 
             i.list <- rev(1:n)

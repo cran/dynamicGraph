@@ -2,14 +2,14 @@
 \alias{EdgeProto}
 \alias{VertexEdgeProto}
 \alias{newVertexEdge}
-\alias{labelOfEdge}
-\alias{widthOfEdge}
-\alias{labelOfEdge<-}
-\alias{widthOfEdge<-}
-\alias{edgeLabel}
-\alias{edgeWidth}
-\alias{edgeLabel<-}
-\alias{edgeWidth<-}
+% \alias{labelOfEdge}
+% \alias{widthOfEdge}
+% \alias{labelOfEdge<-}
+% \alias{widthOfEdge<-}
+% \alias{edgeLabel}
+% \alias{edgeWidth}
+% \alias{edgeLabel<-}
+% \alias{edgeWidth<-}
 \alias{nodeIndicesOfEdge}
 \alias{nodeIndicesOfEdge<-}
 \alias{nodeTypesOfEdge}
@@ -32,14 +32,14 @@ newVertexEdge(vertex.indices, vertices = NULL, width = 2,
       of the vertices of the edge. These are the indices of the
       vertices in the list of vertices. }
   \item{vertices}{ All the \code{vertices} of the edge, and only the
-     vertices of the edge. Currently only used for setting the default label. }
+     vertices of the edge. Currently, only used for setting the default label. }
   \item{width}{ Numeric, for the \code{width} of the edge. }
   \item{color}{ Text string for the \code{color} of the edge. }
   \item{oriented}{ Logical, TRUE if the edge is \code{oriented},
       also when no blocks are used in \code{\link{dynamicGraphMain}}. }
   \item{type}{ Text string for the \code{type} of the edge. 
       Currently not used. 
-      Intended to set which class the edge should be of
+      Intended to set which class the edge should be class of
       containing the  class \code{EdgeProto}.}
   \item{label}{ Text string for the \code{label} of the edge.
                 By default set by concatenating the labels of the vertices. }
@@ -55,15 +55,15 @@ newVertexEdge(vertex.indices, vertices = NULL, width = 2,
     beside the methods of \code{\link{VertexProto}}
     the methods \code{\link{oriented}} and \code{\link{oriented<-}}.
 
-    The methods
-    \code{\link{labelOfEdge}}, \code{\link{widthOfEdge}},
-    \code{\link{labelOfEdge<-}}, \code{\link{widthOfEdge<-}}
-    are available because of some problems with the methods
-    \code{\link{label}}, \code{\link{width}},
-    \code{\link{label<-}} and \code{\link{width<-}} 
-    for edges and \code{NAMESPACES}.
-    These problems might be solved, and the methods
-    \code{...OfEdge} will later be removed.
+    % The methods
+    % \code{\link{labelOfEdge}}, \code{\link{widthOfEdge}},
+    % \code{\link{labelOfEdge<-}}, \code{\link{widthOfEdge<-}}
+    % are available because of some problems with the methods
+    % \code{\link{label}}, \code{\link{width}},
+    % \code{\link{label<-}}, and \code{\link{width<-}} 
+    % for edges and \code{NAMESPACES}.
+    % These problems are solved, and the methods
+    % \code{...OfEdge} will  be removed very soon.
 
     The method \code{\link{nodeIndicesOfEdge}} will extract the indices of the
     vertices of the edge, and the method \code{\link{nodeTypesOfEdge}} will
@@ -86,20 +86,16 @@ e <- newVertexEdge(c(1, 2, 3), vertices = vertices[1:3])
 str(e)
 
 color(e)
-labelOfEdge(e)
 label(e)
 labelPosition(e)
-widthOfEdge(e)
 width(e)
 oriented(e)
 nodeIndicesOfEdge(e)
 nodeTypesOfEdge(e)
 
 color(e) <- "Black"
-labelOfEdge(e) <- "v1-v2"
 label(e) <- "1-2"
 labelPosition(e) <- c(10, 20, 30)
-widthOfEdge(e) <- 0
 width(e) <- 1
 oriented(e) <- TRUE
 nodeIndicesOfEdge(e) <- c(1, 2)

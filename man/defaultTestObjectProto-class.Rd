@@ -1,18 +1,21 @@
 \name{defaultTestObjectProto-class}
 \docType{class}
 \alias{defaultTestObjectProto-class}
-\alias{labelOfTest,defaultTestObjectProto-method}
-\alias{widthOfTest,defaultTestObjectProto-method}
-\alias{testLabel,defaultTestObjectProto-method}
-\alias{testWidth,defaultTestObjectProto-method}
+\alias{label,defaultTestObjectProto-method}
+\alias{width,defaultTestObjectProto-method}
+% \alias{labelOfTest,defaultTestObjectProto-method}
+% \alias{widthOfTest,defaultTestObjectProto-method}
+% \alias{testLabel,defaultTestObjectProto-method}
+% \alias{testWidth,defaultTestObjectProto-method}
 
-\title{Class "defaultTestObjectProto" ~~~ }
+\title{Class "defaultTestObjectProto" }
 \description{  An example class for the test object for the model object of dynamicGraph. }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("defaultTestObjectProto", ...)}.
 
-    The methods \code{labelOfTest} and \code{widthOfTest} should be
-    implemented by you for your test object returned by the method
+    The methods 
+    \code{label} and \code{width} % (was \code{labelOfTest} and \code{widthOfTest})
+    should be implemented by you for your test object returned by the method
     \code{testEdge} of your model \code{object}. 
 }
 \section{Slots}{
@@ -27,16 +30,20 @@ Objects can be created by calls of the form \code{new("defaultTestObjectProto", 
 }
 \section{Methods}{
   \describe{
-    \item{labelOfTest}{\code{signature(object = "defaultTestObjectProto")}: 
-       Same as the method \code{label}. 
+    \item{label}{\code{signature(object = "defaultTestObjectProto")}: 
        Return the \code{label} of the test. }
-    \item{widthOfTest}{\code{signature(object = "defaultTestObjectProto")}: 
-       Same as the method \code{label}. 
-       Return the \code{label} of the test. }
-    \item{testLabel}{\code{signature(object = "defaultTestObjectProto")}: 
-       Same as \code{labelOfTest}. }
-    \item{testWidth}{\code{signature(object = "defaultTestObjectProto")}: 
-       Same as \code{labelOfTest}. }
+    \item{width}{\code{signature(object = "defaultTestObjectProto")}:
+       Return the \code{width} of the test. }
+%     \item{labelOfTest}{\code{signature(object = "defaultTestObjectProto")}: 
+%        Will be removed.  Same as the method \code{label}. 
+%        Return the \code{label} of the test. }
+%     \item{widthOfTest}{\code{signature(object = "defaultTestObjectProto")}: 
+%        Will be removed.  Same as the method \code{width}. 
+%        Return the \code{width} of the test. }
+%     \item{testLabel}{\code{signature(object = "defaultTestObjectProto")}: 
+%        Will be removed.  Same as \code{labelOfTest}. }
+%     \item{testWidth}{\code{signature(object = "defaultTestObjectProto")}: 
+%        Will be removed.  Same as \code{labelOfTest}. }
   }
 }
 % \references{ ~put references to the literature/web site here ~ }

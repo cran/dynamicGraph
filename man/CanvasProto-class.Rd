@@ -2,7 +2,7 @@
 \docType{class}
 \alias{CanvasProto-class}
 
-\title{Class "CanvasProto" ~~~ }
+\title{Class "CanvasProto" }
 \description{  The class for objects unique to each dynamic graph. }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("CanvasProto", ...)}.
@@ -20,6 +20,8 @@ Objects can be created by calls of the form \code{new("CanvasProto", ...)}.
     \item{\code{visibleVertices}:}{Object of class \code{"numeric"}:
        Numeric vector of the indices of the vertices of
        \code{vertexList} plotted in the graph window. }
+    \item{\code{extraVertices}:}{Object of class \code{"list"}:
+       The \code{extraList} of the graph in the window. }
     \item{\code{graphEdges}:}{Object of class \code{"list"}:
        The \code{edgeList} of the graph in the window. }
     \item{\code{blockEdges}:}{Object of class \code{"list"}:

@@ -1,6 +1,8 @@
 \name{newBlock}
 \alias{newBlock}
 \alias{BlockProto}
+\alias{closed}
+\alias{closed<-}
 \alias{ancestors}
 \alias{ancestors<-}
 \alias{descendants}
@@ -9,18 +11,20 @@
 \description{Returns an object of class \code{BlockProto}.}
 \usage{
 newBlock(stratum = 0, index = 0, position = matrix(rep(0, 6), ncol = 3),
-         visible = TRUE, color = "Grey", label = "Label",
+         closed = FALSE, visible = TRUE, color = "Grey", label = "Label",
          label.position = c(0, 0, 0), ancestors = NULL)
 }
 \arguments{
   \item{stratum}{ Integer for the \code{stratum} of the block. 
-	The block is identified by this stratum, and thus the
-        strata of the blocks are different and unique.
-        Each vertex can only belong to one block,
-	and thus has assigned one stratum. }
+	% The block is identified by this stratum, and thus the
+        % strata of the blocks are different and unique.
+        % Each vertex can only belong to one block,
+	% and thus has assigned one stratum.
+        }
   \item{index}{ Integer for the \code{index} of the block. }
   \item{position}{ Numeric vector for the \code{position} of the block,
       the two diagonal opposite corners. }
+  \item{closed}{ Logical, if TRUE then the block is drawn as a "vertex". }
   \item{visible}{ Logical, if TRUE then the block is drawn. }
   \item{color}{ Text string for the \code{color} of the block. }
   \item{label}{ Text string for the \code{label} of the block. }
@@ -40,14 +44,14 @@ newBlock(stratum = 0, index = 0, position = matrix(rep(0, 6), ncol = 3),
     \code{\link{name}}, \code{\link{label}}, \code{\link{labelPosition}},
     \code{\link{position}}, \code{\link{color}}, \code{\link{stratum}},
     \code{\link{index}}, \code{\link{visible}},
-    \code{\link{ancestors}} and \code{\link{descendants}},
+    \code{\link{ancestors}}, and \code{\link{descendants}},
     for extracting values
     and the replacement methods
     % \code{\link{name<-}}, 
     \code{\link{label<-}}, \code{\link{labelPosition<-}},
     \code{\link{position<-}}, \code{\link{color<-}}, \code{\link{stratum<-}},
     \code{\link{index<-}}, \code{\link{visible<-}},
-    \code{\link{ancestors<-}} and \code{\link{descendants<-}}.
+    \code{\link{ancestors<-}}, and \code{\link{descendants<-}}.
     Items are added to the pop up menu of a block
     by the method \code{\link{addToPopups}}.
 

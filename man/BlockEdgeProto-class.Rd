@@ -5,19 +5,19 @@
 \alias{oriented<-,BlockEdgeProto-method}
 \alias{oriented,BlockEdgeProto-method}
 
-\title{Class "BlockEdgeProto" ~~~ }
-\description{  The class for edges between blocks and between vertices and blocks. }
+\title{Class "BlockEdgeProto" }
+\description{  The class for edges between blocks and for edges between vertices and blocks. }
 \section{Objects from the Class}{
 Objects can be created by calls of the form \code{new("BlockEdgeProto", ...)}.
 }
 \section{Slots}{
   \describe{
-    \item{\code{oriented}:}{Object of class \code{"logical"}, see\code{"VertexEdgeProto"}. }
-    \item{\code{vertex.indices}:}{Object of class \code{"numeric"}, see\code{"EdgeProto"}. }
-    \item{\code{width}:}{Object of class \code{"numeric"}, see\code{"EdgeProto"}. }
-    \item{\code{color}:}{Object of class \code{"character"}, see\code{"EdgeProto"}. }
-    \item{\code{label}:}{Object of class \code{"character"}, see\code{"EdgeProto"}. }
-    \item{\code{label.position}:}{Object of class \code{"numeric"}, see\code{"EdgeProto"}. }
+    \item{\code{oriented}:}{Object of class \code{"logical"}, see \code{"VertexEdgeProto"}. }
+    \item{\code{vertex.indices}:}{Object of class \code{"numeric"}, see \code{"EdgeProto"}. }
+    \item{\code{width}:}{Object of class \code{"numeric"}, see \code{"EdgeProto"}. }
+    \item{\code{color}:}{Object of class \code{"character"}, see \code{"EdgeProto"}. }
+    \item{\code{label}:}{Object of class \code{"character"}, see \code{"EdgeProto"}. }
+    \item{\code{label.position}:}{Object of class \code{"numeric"}, see \code{"EdgeProto"}. }
   }
 }
 \section{Extends}{

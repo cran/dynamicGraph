@@ -13,6 +13,8 @@
 \alias{Positions<-}
 \alias{Strata}
 \alias{Strata<-}
+\alias{Blockindices}
+\alias{Blockindices<-}
 \alias{Indices}
 % \alias{Indices<-}
 \alias{Visible}
@@ -30,6 +32,8 @@
 \alias{Positions<-,list-method}
 \alias{Strata,list-method}
 \alias{Strata<-,list-method}
+\alias{Blockindices,list-method}
+\alias{Blockindices<-,list-method}
 \alias{Indices,list-method}
 \alias{Visible,list-method}
 \alias{Visible<-,list-method}

@@ -8,12 +8,13 @@ mv R man Affald/old
 
 cd inst
 R --no-save < Rhistory 
+mv *.Rd dynamicGraph/man/
 cd ..
 
 # mv inst/dynamicGraph/data .
 mv inst/dynamicGraph/R .
 mv inst/dynamicGraph/man .
-	
+
 ls -laR inst/dynamicGraph
 
 rm -r inst/dynamicGraph
@@ -36,7 +37,7 @@ cat Work/change.decribe.log
 # Move/Delete code from ../man/dynamicGraphMain.Rd
 # incomplete final line found by readLines on `man/dynamicGraph-internal.Rd'
 
-mv man man.orig.20
+mv man man.orig.22
 mkdir man
 cp -p /home/jhb/DynamicGraph/dynamicGraph/MAN/*.Rd man
 

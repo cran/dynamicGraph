@@ -1,13 +1,15 @@
 \name{newDefaultTestObject}
 \alias{newDefaultTestObject}
-\alias{labelOfTest}
-\alias{widthOfTest}
+% \alias{labelOfTest}
+% \alias{widthOfTest}
 \title{The test object}
 \description{Returns an object of the class \code{defaultTestObjectProto}.}
 \usage{newDefaultTestObject(name)}
 \arguments{\item{name}{ Text string with the \code{name} of the test object.}}
 \details{ 
-    The methods \code{labelOfTest} and \code{widthOfTest} should be
+    The methods
+    \code{label} and \code{width} % (was \code{labelOfTest} and \code{widthOfTest})
+    should be
     implemented by you for your test object returned by the method
     \code{testEdge} of your \code{object}. 
 }
@@ -33,26 +35,26 @@ setClass("defaultTestObjectProto",
     return(result)
   }
 
-if (!isGeneric("labelOfTest")) {
-  if (is.function("labelOfTest"))
-    fun <- labelOfTest
+if (!isGeneric("label") && !isGeneric("label", where = 2)) {
+  if (is.function("label"))
+    fun <- label
   else
-    fun <- function(object) standardGeneric("labelOfTest")
-  setGeneric("labelOfTest", fun)
+    fun <- function(object) standardGeneric("label")
+  setGeneric("label", fun)
 }
 
-setMethod("labelOfTest", "defaultTestObjectProto",
+setMethod("label", "defaultTestObjectProto",
           function(object) format(object@p, digits = 4))
 
-if (!isGeneric("widthOfTest")) {
-  if (is.function("widthOfTest"))
-    fun <- widthOfTest
+if (!isGeneric("width") && !isGeneric("width", where = 2)) {
+  if (is.function("width"))
+    fun <- width
   else
-    fun <- function(object) standardGeneric("widthOfTest")
-  setGeneric("widthOfTest", fun)
+    fun <- function(object) standardGeneric("width")
+  setGeneric("width", fun)
 }
 
-setMethod("widthOfTest", "defaultTestObjectProto",
+setMethod("width", "defaultTestObjectProto",
           function(object) round(2 + 5 * (1 - object@p)))
 
 

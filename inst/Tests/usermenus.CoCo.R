@@ -1,4 +1,86 @@
 
+drawModel <- function(object, slave = FALSE,
+                      oriented = FALSE, vertexColor = "red", 
+                      edgeColor = "black", 
+                      factorVertexColor = "default", 
+                      factorEdgeColor = "brown", 
+                      blockEdgeColor = "default", 
+                      ...) 
+ {
+
+  two.to.pairs <- function(from, to)
+  { 
+      edge.list <- vector("list", length(to))
+      for (j in seq(along = to)) edge.list[[j]] <- c(from[j], to[j])
+      return(edge.list)
+  }
+
+
+  args <- list(...)
+  Args <- args$Arguments
+  Vertices <- Args$vertexList
+  Edges <- returnEdges(model = object)
+  edge.list <- two.to.pairs(Edges[, 1], Edges[, 2])
+  Object <- makeModel(object)
+  title <- Object@.title
+
+  factors <- NULL
+  FactorVertices <- NULL
+  FactorEdges <- NULL
+  if (!(is.null(factors))) {
+    message("Not tested!")
+    result <- returnFactorVerticesAndEdges(Vertices, factors,
+                        factorVertexColor = factorVertexColor, 
+                        factorEdgeColor = factorEdgeColor, 
+                        # oriented = oriented, 
+                        factorClasses = factorClasses)
+    FactorVertices <- result$FactorVertices
+    FactorEdges <- result$FactorEdges
+    if ((is.null(edge.list))) {
+      from <- result$PairEdges[,1]
+      to   <- result$PairEdges[,2]
+      edge.list <- two.to.pairs(from, to)
+    }
+  }
+
+  edgeList <- returnEdgeList(edge.list, Vertices,
+                             color = edgeColor, oriented = oriented)
+
+  BlockList <- Args$blockList
+  BlockTree <- Args$blockTree
+  BlockEdges <- NULL
+  if ((!is.null(BlockList) || !is.null(BlockTree))) {
+    message("Not tested!")
+    if (!(is.null(factors)))
+      message("Edges between blocks and factors not implemented!")
+    if (is.null(BlockList) && !is.null(BlockTree))
+      BlockList <- blockTreeToList(BlockTree)
+    BlockEdges <- returnBlockEdgeList(edge.list, Vertices, BlockList,
+                                      color = blockEdgeColor,
+                                      oriented = oriented)
+  }
+
+  if (slave)
+    Args$redrawGraphWindow(graphWindow = NULL, 
+                           edgeList = edgeList,
+                           object = Object,
+                           factorVertexList = FactorVertices,
+                           factorEdgeList = FactorEdges, 
+                           blockEdgeList = BlockEdges,
+                           title = title, 
+                           ...)
+  else
+    Args$redrawGraphWindow(graphWindow = Args$graphWindow,
+                           edgeList = edgeList,
+                           object = Object,
+                           factorVertexList = FactorVertices,
+                           factorEdgeList = FactorEdges, 
+                           blockEdgeList = BlockEdges,
+                           title = "Not used!", 
+                           width = NULL, height = NULL, 
+                           Arguments = Args)
+ }
+
 myLabelAllEdges <- function(object, slave = FALSE, ...) 
  {
   args <- list(...)
@@ -80,6 +162,14 @@ myLabelAllEdges <- function(object, slave = FALSE, ...)
       list(label = "Label all edges, in slave window",
            command = function(object, ...) 
                        myLabelAllEdges(object, slave = TRUE, ...)),
+      MainUser = 
+      list(label = "Draw last model, in this window",
+           command = function(object, ...) 
+                       drawModel(object = "last", slave = FALSE, ...)),
+      MainUser = 
+      list(label = "Draw last model, in slave window",
+           command = function(object, ...) 
+                       drawModel(object = "last", slave = TRUE, ...)),
       MainUser = 
       list(label = "Test of user drag down menu - modalDialog",
            command = function(object, ...) 
