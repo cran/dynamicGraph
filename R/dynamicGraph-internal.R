@@ -16,11 +16,10 @@ function (lib, pkg)
 ".onLoad.dynamicGraph" <-
 function () 
 {
-    # library(methods)
     setClass("GraphLatticeProto", representation(vertices = "list", 
         blocks = "list", blockTree = "list", graphs = "list"))
     setClass("CanvasProto", representation(top = "tkwin", canvas = "tkwin", 
-        tags = "list", id = "numeric", visibleVertices = "numeric", 
+        tags = "list", id = "numeric", object = "list", visibleVertices = "numeric", 
         extraVertices = "list", graphEdges = "list", blockEdges = "list", 
         factorVertices = "list", factorEdges = "list"))
     setClass("NodeProto", representation(color = "character", 

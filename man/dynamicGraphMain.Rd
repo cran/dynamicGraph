@@ -28,7 +28,8 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
                  hasMethods = TRUE, enterLeaveUpdate = TRUE,
                  namesOnEdges = TRUE, updateEdgeLabels = TRUE,
                  debug.strata = FALSE, debug.edges = FALSE,
-                 debug.position = FALSE, debug.update = FALSE, ...)
+                 debug.position = FALSE, debug.update = FALSE, 
+                 returnLink = FALSE, returnNull = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -157,6 +158,15 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
     \item{debug.edges}{ Logical for tracing edges (also by labels in plot). }
     \item{debug.position}{ Logical for tracing positions of vertices. }
     \item{debug.update}{ Logical for tracing redraw of graph window. }
+%   \item{GraphLattice}{ ~~Describe \code{GraphLattice} here~~ }
+%   \item{returnNewMaster}{ ~~Describe \code{returnNewMaster} here~~ }
+    \item{returnLink}{ Logical, if \code{returnLink} is TRUE then a reference
+		       to the dynamic graph window is returned, else an object 
+		       of class \code{\link{GraphLatticeProto-class}}
+                       is returned (if not \code{returnNull} is TRUE).
+    }
+    \item{returnNull}{ Logical, if \code{returnNull}
+                       is TRUE then NULL is returned. }
     \item{\dots}{ Additional arguments. }
 }
 
@@ -196,9 +206,19 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 % Rock plot:         Double right click (not working!)
 
 \value{
-    Object of class \code{\link{GraphLatticeProto}}.
-    Might, beside the list of canvases of the graph window and slave windows,
+    If \code{returnLink} is TRUE then a reference (an object of class "list")
+    to the dynamic graph window is returned, else an object of class 
+    \code{\link{GraphLatticeProto-class}}
+    is returned (if not \code{returnNull} is TRUE)
+
+    The function \code{\link{redrawGraphWindow}} of the returned reference
+    is used to draw other graphs in the graph window or to create slave
+    graphs windows, see \code{\link{addGraph}}.
+   
+    The object of class \code{\link{GraphLatticeProto}} will
+    beside the list of canvases of the graph window and slave windows,
     also hold lists of vertices and blocks (block trees).
+
     \item{...@graphs}{Slot 'graphs': List of class \code{\link{CanvasProto}}.
 	Might, beside slots for accessing the graph window, also hold 
 	slots for edges, factors, factor edges, block edges, etc.}
@@ -213,9 +233,11 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	    \item{Left click, hold and drag:}{The object will move.}
 	    \item{Left click:}{Action to the object:
                 Vertices and blocks will highlight, 
-                at vertices and blocks edges are added after highlight,
+                at vertices and blocks edges are added after highlighting,
                 at edges the edge will be deleted,
                 tests are computed for edge labels.}
+	    \item{Left or right click, with SHIFT or/and CONTROL:}{The object
+                  will be marked.}
 	    \item{Double left click:}{Action to object:
                 Vertices are deleted,
                 blocks will close,
@@ -227,7 +249,11 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
     \section{Vertices (vertices and factor vertices):}{
 	Right click the vertex to get the pop up menu of the vertex:
 	\itemize{
-	    \item{Highlight a vertex:}{For adding an edge - Click the vertex.}
+	    \item{Highlight a vertex:}{For adding an edge -
+                Left click the vertex.}
+	    \item{Mark a vertex:}{For adding edges, etc. - 
+	        Left or right click the vertex
+                while holding SHIFT or/and CONTROL down.}
 	    \item{Cancel highlighting:}{Left click (or drag) the vertex.}
 	    \item{Add an edge:}{After first highlighting a vertex - 
                 Left click the other vertex.}
@@ -322,7 +348,11 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
         Right click the block to get the pop up menu of the closed block:
 	\itemize{
 	    \item{Highlight a block:}{For adding edges from all vertices
-		of the block to a vertex or a block - Click the block.}
+		of the block to a vertex or a block -
+                Left click the block.}
+	    \item{Mark a block:}{For adding edges, etc. - 
+	        Left or right click the block
+                while holding SHIFT or/and CONTROL down.}
 	    \item{Cancel highlighting:}{Of a block - Left click (or drag)
 		the block.}
 	    \item{Add edges:}{To all vertices of block
@@ -382,6 +412,8 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 		"Redraw the graph window".}
 	    \item{Update:}{Faster fix of "corrupted" window:
                   Select "Update the graph window".}
+	    \item{Export the linkGraphLattice :}{Select
+		"Assign linkGraphLattice in .GlobalEnv".}
 	    \item{Export the graph lattice :}{Select
 		"Assign Graph-lattice in .GlobalEnv".}
 	    \item{Export the graph window:}{Select

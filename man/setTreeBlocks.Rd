@@ -304,6 +304,7 @@ To   <- match(FromTo[,2], V.Names)
 
 V.Types <- rep("Discrete", length(V.Names))
 
+Object <- NULL
 Z <- DynamicGraph(V.Names, V.Types, From, To, block.tree = Block.tree, 
                   object = Object, width = 600, height = 600, 
                   drawblocks = TRUE, drawBlockFrame = TRUE, 

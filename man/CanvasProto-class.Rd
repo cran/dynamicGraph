@@ -17,6 +17,8 @@ Objects can be created by calls of the form \code{new("CanvasProto", ...)}.
        The tags of the objects drawn in the graph window. }
     \item{\code{id}:}{Object of class \code{"numeric"}:
        Integer, increased for each redraw of the graph window. }
+    \item{\code{object}:}{Object of class \code{"list"}:
+       The object of the graph. }
     \item{\code{visibleVertices}:}{Object of class \code{"numeric"}:
        Numeric vector of the indices of the vertices of
        \code{vertexList} plotted in the graph window. }

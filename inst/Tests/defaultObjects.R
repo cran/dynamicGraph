@@ -116,6 +116,8 @@ setMethod("modifyModel", signature(object = "defaultModelObjectProto"),
     # print(names(args))
     # print(names(args$Arguments))
     # print(args$Arguments$visibleVertices)
+    # str(args$Arguments$selectedNodes)
+    str(args$selectedNodes)
     FactorVertices <- NULL
     FactorEdges <- NULL
     f <- function(type) if(is.null(type)) "" else paste("(", type, ")")

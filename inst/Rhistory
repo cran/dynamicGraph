@@ -8,6 +8,7 @@ source("/home/jhb/DynamicGraph/dynamicGraph/src/draggraph.R")
 source("/home/jhb/DynamicGraph/dynamicGraph/src/factorgraph.R")
 source("/home/jhb/DynamicGraph/dynamicGraph/src/dynamicGraph.R")
 source("/home/jhb/DynamicGraph/dynamicGraph/src/onLoad.R")
+source("/home/jhb/DynamicGraph/dynamicGraph/src/addGraph.R")
 
 # source("/home/jhb/DynamicGraph/dynamicGraph/src/First.R")
 

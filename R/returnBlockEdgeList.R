@@ -17,7 +17,8 @@ function (edge.list, vertices, blocks, width = 2, color = "default",
                 edge <- match(edge, vertex.names)
             strata <- unlist(lapply(edge, function(i) stratum(vertices[[i]])))
             blockindex <- unlist(lapply(edge, function(i) blockindex(vertices[[i]])))
-            if (blockindex[1] != blockindex[2]) {
+            if ((blockindex[1] != blockindex[2]) && (length(strata) > 
+                1) && !any(is.na(strata))) {
                 if (strata[1] < strata[2]) {
                   b1 <- blockindex[1]
                   b2 <- blockindex[2]
