@@ -1,0 +1,79 @@
+"returnBlockEdgeList" <-
+function (edge.list, vertices, blocks, width = 2, color = "default", 
+    oriented = FALSE, type = NULL) 
+{
+    "newBlockEdgeList" <- function(list) return(new("BlockEdgeListProto", 
+        nodeList = list))
+    which.edge <- function(e) unlist(lapply(result, function(i) all(i@vertex.indices == 
+        e)))
+    vertex.names <- Names(vertices)
+    if (is.null(edge.list)) 
+        edge.list <- vector("list", length = 0)
+    result <- NULL
+    if (!is.null(blocks)) {
+        for (i in seq(along = edge.list)) {
+            edge <- edge.list[[i]]
+            if (!is.numeric(edge)) 
+                edge <- match(edge, vertex.names)
+            strata <- unlist(lapply(edge, function(i) stratum(vertices[[i]])))
+            if (strata[1] != strata[2]) {
+                if (strata[1] < strata[2]) {
+                  b1 <- strata[1]
+                  b2 <- strata[2]
+                  e1 <- edge[1]
+                  e2 <- edge[2]
+                }
+                else {
+                  b1 <- strata[2]
+                  b2 <- strata[1]
+                  e1 <- edge[2]
+                  e2 <- edge[1]
+                }
+                f <- function(x) if (!(any(which.edge(x)))) {
+                  block.vertices <- lapply(x, function(i) if (i < 
+                    0) 
+                    blocks[[-i]]
+                  else vertices[[i]])
+                  if (color == "default") 
+                    color <- ifelse(all(x < 0), "DarkGreen", 
+                      "DarkBlue")
+                  if (length(color) > 1) 
+                    color <- ifelse(all(x < 0), color[1], color[2])
+                  result <<- append(result, list(newBlockEdge(x, 
+                    block.vertices, width = width, color = color, 
+                    oriented = oriented, type = type)))
+                }
+                if (b1 != 0) 
+                  b1.plus.ancestors <- c(b1, blocks[[b1]]@ancestors)
+                if (b2 != 0) 
+                  b2.plus.ancestors <- c(b2, blocks[[b2]]@ancestors)
+                if (b2 != 0) {
+                  f(c(e1, -b2))
+                  if (any(blocks[[b2]]@ancestors != 0)) 
+                    for (i in blocks[[b2]]@ancestors) if ((i != 
+                      0) && !is.element(i, b1.plus.ancestors)) 
+                      f(c(e1, -i))
+                }
+                if (b1 != 0) {
+                  f(c(-b1, e2))
+                  if (any(blocks[[b1]]@ancestors != 0)) 
+                    for (i in blocks[[b1]]@ancestors) if ((i != 
+                      0) && !is.element(i, b2.plus.ancestors)) 
+                      f(c(-i, e2))
+                }
+                if ((b1 != 0) && (b2 != 0)) {
+                  f(c(-b1, -b2))
+                  if ((any(blocks[[b1]]@ancestors != 0)) && (any(blocks[[b2]]@ancestors != 
+                    0))) 
+                    for (i in b1.plus.ancestors) if ((i != 0) && 
+                      !is.element(i, b2.plus.ancestors)) 
+                      for (j in b2.plus.ancestors) if ((j != 
+                        0) && !is.element(j, b1.plus.ancestors)) 
+                        f(c(-i, -j))
+                }
+            }
+        }
+        names(result) <- Labels(result)
+    }
+    return(result)
+}

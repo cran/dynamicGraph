@@ -1,0 +1,43 @@
+#
+
+mv man Affald
+mkdir man
+
+cat Affald/man/blockTreeToList.Rd                | sed -f Work/x.sed > man/blockTreeToList.Rd              
+cat Affald/man/dynamicGraph-internal.Rd          | sed -f Work/x.sed > man/dynamicGraph-internal.Rd        
+cat Affald/man/dynamicGraphMain.Rd               | sed -f Work/x.sed > man/dynamicGraphMain.Rd             
+cat Affald/man/DynamicGraph.Rd                   | sed -f Work/x.sed > man/DynamicGraph.Rd                 
+cat Affald/man/modalDialog.Rd                    | sed -f Work/x.sed > man/modalDialog.Rd                  
+cat Affald/man/nameToVertexIndex.Rd              | sed -f Work/x.sed > man/nameToVertexIndex.Rd            
+cat Affald/man/newBlockEdge.Rd                   | sed -f Work/x.sed > man/newBlockEdge.Rd                 
+cat Affald/man/newBlock.Rd                       | sed -f Work/x.sed > man/newBlock.Rd                     
+cat Affald/man/newDefaultModelObject.Rd          | sed -f Work/x.sed > man/newDefaultModelObject.Rd        
+cat Affald/man/newDefaultTestObject.Rd           | sed -f Work/x.sed > man/newDefaultTestObject.Rd         
+cat Affald/man/newFactorEdge.Rd                  | sed -f Work/x.sed > man/newFactorEdge.Rd                
+cat Affald/man/newFactor.Rd                      | sed -f Work/x.sed > man/newFactor.Rd                    
+cat Affald/man/newVertexEdge.Rd                  | sed -f Work/x.sed > man/newVertexEdge.Rd                
+cat Affald/man/newVertex.Rd                      | sed -f Work/x.sed > man/newVertex.Rd                    
+cat Affald/man/redrawGraphWindow.Rd              | sed -f Work/x.sed > man/redrawGraphWindow.Rd            
+cat Affald/man/returnBlockEdgeList.Rd            | sed -f Work/x.sed > man/returnBlockEdgeList.Rd          
+cat Affald/man/returnEdgeList.Rd                 | sed -f Work/x.sed > man/returnEdgeList.Rd               
+cat Affald/man/returnFactorEdgeList.Rd           | sed -f Work/x.sed > man/returnFactorEdgeList.Rd         
+cat Affald/man/returnFactorVerticesAndEdges.Rd   | sed -f Work/x.sed > man/returnFactorVerticesAndEdges.Rd 
+cat Affald/man/returnVertexList.Rd               | sed -f Work/x.sed > man/returnVertexList.Rd             
+cat Affald/man/setBlocks.Rd                      | sed -f Work/x.sed > man/setBlocks.Rd                    
+cat Affald/man/setTreeBlocks.Rd                  | sed -f Work/x.sed > man/setTreeBlocks.Rd                
+cat Affald/man/validFactorClasses.Rd             | sed -f Work/x.sed > man/validFactorClasses.Rd           
+cat Affald/man/validVertexClasses.Rd             | sed -f Work/x.sed > man/validVertexClasses.Rd           
+
+chmod 644 man/*
+# chmod 644 man/.*.Rd
+chmod 644 Affald/man/*
+# chmod 644 Affald/man/.*.Rd
+# cat R/.*.R > R/DotFiles.R
+chmod 644 R/*
+# chmod 644 R/.*.R
+
+# cp -p Work/DESCRIPTION .
+
+chmod 644 DESCRIPTION
+chmod 644 README
+chmod 644 INDEX

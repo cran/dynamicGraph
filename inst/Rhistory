@@ -1,0 +1,18 @@
+
+source("/home/jhb/DynamicGraph/dynamicGraph/src/vertices.R")
+source("/home/jhb/DynamicGraph/dynamicGraph/src/edges.R")
+source("/home/jhb/DynamicGraph/dynamicGraph/src/blocks.R")
+source("/home/jhb/DynamicGraph/dynamicGraph/src/draggraph.R")
+source("/home/jhb/DynamicGraph/dynamicGraph/src/factorgraph.R")
+source("/home/jhb/DynamicGraph/dynamicGraph/src/dynamicGraph.R")
+source("/home/jhb/DynamicGraph/dynamicGraph/src/onLoad.R")
+
+# source("/home/jhb/DynamicGraph/dynamicGraph/src/First.R")
+
+# source("/home/jhb/DynamicGraph/dynamicGraph/src/DefaultObject.R")
+
+# source("/home/jhb/DynamicGraph/dynamicGraph/Tests/usermenus.R")
+
+package.skeleton("dynamicGraph", list = ls(all.names = TRUE))
+
+quit()

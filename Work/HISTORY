@@ -1,0 +1,31 @@
+
+ 2004-01-28: edgeLabel, edgeWidth, testLabel and testWidth now
+             labelOfEdge, ...
+
+ 2004-01-24: Extract function for vertex-, edge- and block-list
+             replaced of methods for class "list".
+
+ 2004-01-23: Argument objectName = "" added.
+
+ 2004-01-23: Argument namesOnEdges = TRUE added.
+
+ 2004-01-23: Argument updateEdgeLabels = TRUE added.
+
+ 2004-01-18: Fix of minor bug (moveBlock): Edges not move double,
+             now not move of blocks relative upper-left corner.
+
+ 2004-01-18: Fix of minor bug (update of block edges missing when 
+             vertex not opened/closed) / made more efficient: 
+             Update of blockedges move to setCloseBlock.
+
+ 2004-01-18: New feature: Check for invalid names (and indices) in
+                          edges (from, to and edge.list), factors,
+                          blocks and block.tree for DynamicGraph.
+
+ 2004-01-18: New feature: Edges (from, to and edge.list), factors,
+                          blocks and block.tree for DynamicGraph can
+                          now be names on vertices.
+
+ 2004-01-18: Bug at more than one CoCo-object: 
+             .current.coco replaced by object = object in make.model
+             at  my.assign(".current.coco.model", .new.coco.model( ...))
