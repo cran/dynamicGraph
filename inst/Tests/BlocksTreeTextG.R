@@ -3,15 +3,15 @@
 
 source("startup.0.R")
 
-Block.tree <- list(Vertices = c("contry"), g = 30,
+Block.tree <- list(Vertices = c("country"), g = 30,
                    X = list(Vertices = c("sex", "race"), g = 30,
                             A = list(Vertices = c("hair", "eye"), g = 30,
                                      horizontal = FALSE),
                             B = list(Vertices = c("education"), g = 30),
                             C = list(Vertices = c("age"), g = 30)))
 
-From <- c("contry", "contry",  "sex", "sex",      "race", "race")
-To   <- c(   "sex",   "race", "hair", "eye", "education",  "age")
+From <- c("country", "country",  "sex", "sex",      "race", "race")
+To   <- c(    "sex",    "race", "hair", "eye", "education",  "age")
 
 v <- unlist(Block.tree)
 V.Names <- v[grep("Vertices", names(v))]

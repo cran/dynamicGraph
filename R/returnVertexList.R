@@ -3,9 +3,9 @@ function (names, labels = NULL, types = NULL, strata = NULL,
     line = FALSE, N = 3, colors = ifelse(types == "TextVertex", 
         "FloralWhite", "DarkRed"), vertexClasses = validVertexClasses()) 
 {
-    "newNodeList" <- function(list) return(new("NodeListProto", 
+    "newNodeList" <- function(list) return(new("dg.NodeList", 
         nodeList = list))
-    "newVertexList" <- function(list) return(new("VertexListProto", 
+    "newVertexList" <- function(list) return(new("dg.VertexList", 
         nodeList = list))
     n <- length(names)
     if (length(colors) == 1) 
@@ -42,6 +42,7 @@ function (names, labels = NULL, types = NULL, strata = NULL,
             position = position, stratum = stratum, color = colors[i], 
             vertexClasses = vertexClasses)
     }
+    class(result) <- "dg.VertexList"
     names(result) <- Names(result)
     return(result)
 }

@@ -1,4 +1,302 @@
 
+ 2004-10-17: When 'returnLink' is TRUE:
+             'top', 'canvas', 'viewLabel', and 'tags' stored
+	     in returned value to enable 'overwrite' and 'update'.
+
+ 2004-10-14: 'top', 'canvas', 'viewLabel', and 'tags' not stored
+	     in returned value to reduce space.
+
+ 2004-10-14: Rotation by keys for factors and blocks
+
+ 2004-10-07: Rotation by keys eventes implemented 
+
+ 2004-10-06: "resizeCanvas" improved by 'grid', 'frame' + 'pack'
+             and 'tkgrid.columnconfigure' and 'tkgrid.rowconfigure'
+
+ 2004-10-06: Radiobutton in sub menus for 'transformation' and
+	     'useNamesForLabels'
+
+ 2004-10-03: useNamesForLabels implemented
+
+ 2004-10-02: extraEdgeList implemented
+
+ 2004-10-01: Update of menus: Submenus and "keys"
+
+ 2004-09-30: Lists of vertices, factors, blocks and edges now are of class
+             'dg.list', to make 'show' working on these lists.
+
+ 2004-09-30: 'show' uses 'Str' on "DynamicGraph"- objects.
+
+ 2004-09-29: 'updateAddViews' ("tree structure" for views) implemented:
+
+              o All graph windows are updated when the mouse leaves
+		one window;
+
+	      o "Update all slots of 'frameModels'" added to graph menu;
+
+	      o "Assign 'frameModels' in .GlobalEnv" and
+		"Assign 'frameViews' in .GlobalEnv" will after the
+		return appropriate "trees".
+
+ 2004-09-27: Str added, with title to "DynamicGraph"- objects
+
+ 2004-09-26: 'returnNewMaster' and 'redraw' updated for 'drawModel'
+
+ 2004-09-25: asDataFrame added
+
+ 2004-09-24: Update of propertyNode and propertyEdge:
+
+              o propertyNode: 
+
+                - Color for selected vertices
+
+                - Propagate of position, color, label, label.position to slaves
+
+                - Class
+
+                - Block-position 
+
+              o propertyEdge:
+
+                - Selected edges,
+
+                - Propagate of dash, width, color to slaves
+
+                - Clear of properties (in slaves) at drop edge
+
+              o # setModel(object, R = NULL, txt = "propertyNode")
+
+ 2004-09-24: Message added on propertyDialog for trying to change
+	     difficult and fixed slots.
+
+ 2004-09-24: 'vertexList', 'blockList', and 'blockTree'
+             can now be given to 'redrawView'
+
+ 2004-09-23: 'cmdscale' (multidimensional scaling) on edge labels
+             for positions of vertices
+
+ 2004-09-23: 'permit.update.block.index' added
+
+ 2004-09-23: 'font.vertex.label', 'font.edge.label', 'font.block' added
+
+ 2004-09-22: fit.type = "none" also inserted in selectedEdges
+
+ 2004-09-22: 'addVertex', 'dropVertex', 'addEdge', and 'dropEdge'
+             added to main menus
+
+ 2004-09-21: Simple computation of factors after adding vertex
+
+ 2004-09-20: Factor vertices and edges returned from "graphComponents"
+             and "modifyModel" (default) by "ggm"
+ 
+ 2004-09-20: "foodp.R" example made for principal components and biplots
+ 
+ 2004-09-19: Undisplay frames and remove block (and descendants),
+             from block menu
+
+             - Slave window also checked for adding block
+ 
+ 2004-09-18: Add block, from main menu, from block menu and
+	     by click (shift-control-2) canvas implemented.
+
+ 2004-09-16: "Proto" removed from all classes
+
+ 2004-09-14: Fix of problems from Claus:
+
+	     - Zoom from "NULL"
+
+	     - Missing "oriented" argument to "redrawView"
+
+	     - "Property dialog box" -> "Properties"
+
+	     - "DarkSlateGray" -> "DarkGrey" for "propertyDialog"
+
+	     - ( demo(Reinis) for CoCo )
+
+	     - Check for valid values of "dash pattern", "color" and
+               "numerics"
+
+	     - "color" for selected nodes and
+	       "color", "width", and "dash" for edges, both fragile
+
+ 
+ 2004-09-11: Zoom:
+ 
+	     - "Zoom in" and "Zoom out" by button 2 in canvas
+
+
+ 2004-09-10: visibleBlocks added to returnGraphComponents and redrawView
+
+ 
+ 2004-09-09: CoCoGraph 1.6.3.1 checked and build
+
+ 
+ 2004-09-08: NEW: Factorgraphs implemented in CoCoGraph for CoCo and CoCoCg
+
+
+ 2004-09-06: NEW: Button line of window, for type of view in graph window, 
+                  and, e.g., scroll coordinates
+
+
+ 2004-09-05: NEW: Scroll of canvas, zoom and resize of window:
+
+	     - Scrollbars below and right to canvas
+
+	     - "Zoom in" and "Zoom out" at "Graph" main menu
+
+	     - Resize of window (some "Parkinson" can be eliminated
+                                 by making the window smaller again).
+
+	     - Arguments "permitZoom" and "margin" for "dynamicGraphMain".
+
+
+ 2004-09-03: Dialog box for slots of vertices (ordinary, factors and extra),
+             edges (graph, factor and block), and blocks (opened and closed):
+
+	     - The method "propertyDialog" is called from the popop-
+	       menu of the object.
+
+	     - Not all slotvalues will be updated in the graph window,
+	       and not all updated values will remain.
+
+ 
+ 2004-09-02: "activefill" used for vertices, closed blocks, and edges
+
+
+ 2004-09-01: Adding models and views to existing graphs
+	     ("model from command line to graph"):
+
+	     - "addGraph" now part of DynamicGraph (and removed), by
+
+	     - arguments "addModel", "addView", and "overwrite" to
+	       "DynamicGraph":
+
+	       o For adding new views of model, with new graph windows:
+
+                 "addView = TRUE, frameModels = Args$frameModels, 
+                 frameViews = Args$frameViews, graphWindow = NULL, ..."
+
+	       o For adding model, with new graph window:
+
+                 "addModel = TRUE, frameModels = Args$frameModels, 
+                 frameViews = NULL, graphWindow = NULL, ..."
+
+	       o For replacing model, in the current graph window:
+
+                 "overwrite = TRUE, addModel = TRUE,
+                  frameModels = Args$frameModels, 
+                  frameViews = Args$frameViews, 
+                  graphWindow = Args$graphWindow, ..."
+                               
+ 
+ 2004-08-31: Same model in several windows, but different views
+             (2-section, factor, moral, essential, ...)
+
+	     - Arguments "viewType" for selection the "class" of the view 
+
+	     - Select "viewType" from the "Graph" main menu
+
+	     - "redrawGraphWindow" now replaced by two layers:
+	       "drawModel" and "redrawView"
+
+	     - Now: ViewProto-class, SimpleViewProto-class
+               FactorViewProto-class, MoralViewProto-class,
+               EssentialViewProto-class, 
+
+	     - New view types can be defined,
+
+	       o Argument viewClasses = validViewClasses() 
+	         of dynamicGraphMain
+
+	     - For "communicating" the model between views:
+
+	       o The method "returnGraphComponents" of the model object
+	         for returning the objects to draw in the view, 
+	         depending on the viewType.
+
+	       o The method "setGraphComponents" of the model object
+	         is called on the model object when the model is modified.
+
+	     - Example "3.R" added
+
+ 
+ 2004-08-29: Edge class added:
+
+
+	     - New edge types can be defined,
+
+	       o Argument edgeClasses = validEdgeClasses() 
+	         of dynamicGraphMain
+
+             - DashedVertexEdgeProto, DottedVertexEdgeProto,
+               DoubleArrowVertexEdgeProto, DoubleConnectedVertexEdgeProto
+               TripleConnectedVertexEdgeProto
+
+	     - slot "dash": For dash patern
+
+	     - The "draw" method, returned values from the method:
+
+	       o "lines" for line objects between pairs of vertices,
+		 with coordinates at the vertices
+
+	       o "tags" for objects between pairs of vertices,
+		 with coordinates at the middle of the two vertices
+
+	     - Example "Circle.newEdge.R" added
+
+
+ 2004-08-28: Fix: More factor- or extra-vertices than vertices gave
+		  invalid index
+
+
+ 2004-08-27: New: Select set of edges by holding SHIFT or/and CONTROL
+             down while left or right clicking edge:
+
+             - selectedEdges to modifyModel,
+
+
+ 2004-08-27: "invisible()" returned from "redrawView", and thus also 
+	     from "drawModel", "dynamicGraphMain", and "DynamicGraph"
+
+
+ 1.6.6:
+ ======
+
+ 2004-08-26: Fix: Tabs in documentation
+
+ 2004-08-26: Empty block lists
+
+
+ 1.6.3:
+ ======
+
+ 2004-08-23: Fix: Move parent of block closed at drawing blocks
+
+ 2004-08-23: Fix: Vertices falling outside blocks when resizing a block
+
+ 2004-08-23: Fix: Factorgraphs with more factors than vertices
+
+ 2004-08-13: New: Select set of vertices by holding SHIFT or/and CONTROL
+             down while left or right clicking vertex, block or factor
+             for, e.g., putting vertices into a block:
+
+             - selectedNodes to modifyModel,
+
+ 2004-08-12: New: Model from command line to existing graph
+
+             - "returnLink" argument to dynamicGraphMain,
+
+             - addGraph function added
+
+             - "dynamicGraph" argument to dynamic.Graph of CoCoGraph,
+               Example: help("CoCo")
+
+ 2004-08-11: Fix: Bind edge list, also when started with empty edge list
+
+
+ 1.6.1
+ =====
+
  2004-01-28: edgeLabel, edgeWidth, testLabel and testWidth now
              labelOfEdge, ...
 

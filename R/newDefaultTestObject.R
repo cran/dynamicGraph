@@ -5,7 +5,6 @@ function (name)
     message("Just generating a random test!!!!!")
     deviance <- rchisq(1, df)
     p <- 1 - pchisq(deviance, df)
-    result <- new("defaultTestObjectProto", df = df, deviance = deviance, 
-        p = p)
+    result <- new("dg.Test", df = df, deviance = deviance, p = p)
     return(result)
 }

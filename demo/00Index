@@ -1,0 +1,20 @@
+BlocksTreeTextA	       A block tree with block A open
+BlocksTreeTextG	       A block tree with using "g"
+BlocksTreeText	       A block tree with block A closed
+Circle.newVertex       Example on new vertex class
+Circle.newEdge         Example on new edge class
+Circle		       First example
+colorlists	       A predefined color list
+Cyclic		       Example with oriented edges
+defaultObjects	       Default model and test classes
+addModelsAndViews      Add models and views to dynamicGraph
+redrawU                Redraw the dynamicGraphs of 'addModelsAndViews' in new R session
+redrawZ                Redraw the dynamicGraphs of 'Circle' in new R session
+startup.0	       Init with no vertices
+startup.4	       Init with 4 vertices
+startup.errors.int     Init with undefined vertices in edges, integers
+startup.errors	       Init with undefined vertices in edges, names
+startup		       Init with 6 vertices
+usermenus	       Default user menu
+dg.prcomp	       Function for principal components in dynamicGraph
+dg.USArrests	       Principal components in dynamicGraph on USArrests

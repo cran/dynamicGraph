@@ -1,4 +1,5 @@
 \name{setTreeBlocks}
+
 \alias{setTreeBlocks}
 \alias{Closed}
 \alias{Closed<-}
@@ -7,20 +8,23 @@
 \alias{NodeDescendants}
 \alias{NodeDescendants<-}
 
-\alias{Closed,list-method}
-\alias{Closed<-,list-method}
-\alias{NodeAncestors,list-method}
-\alias{NodeAncestors<-,list-method}
-\alias{NodeDescendants,list-method}
-\alias{NodeDescendants<-,list-method}
+% \alias{Closed,dg.list-method}
+% \alias{Closed<-,dg.list-method}
+% \alias{NodeAncestors,dg.list-method}
+% \alias{NodeAncestors<-,dg.list-method}
+% \alias{NodeDescendants,dg.list-method}
+% \alias{NodeDescendants<-,dg.list-method}
 
 \title{The block tree}
+
 \description{
     Create a block tree with positioning the vertices in to blocks.
 }
+
 \usage{
 setTreeBlocks(block.tree, vertices, root.label = "", N = 3,
-              delta = ifelse(overlaying, 1, 0), Delta = ifelse(overlaying, 0, 1.5),
+              delta = ifelse(overlaying, 1, 0), 
+              Delta = ifelse(overlaying, 0, 1.5),
               d = 5, f = 1/4, blockColors = NULL, overlaying = FALSE)
 }
 
@@ -44,7 +48,7 @@ setTreeBlocks(block.tree, vertices, root.label = "", N = 3,
   \item{block.tree}{ A structure with the blocks in a \code{block.tree}.
 	See below. }
   \item{vertices}{ The list of \code{vertices}, each
-      containing the class \code{VertexProto}. Returned with positions
+      containing the class \code{dg.Vertex}. Returned with positions
       set in the interval of the blocks. }
   \item{root.label}{ A text string with the \code{root.label}
       of the root block. }
@@ -74,6 +78,7 @@ setTreeBlocks(block.tree, vertices, root.label = "", N = 3,
   \item{overlaying}{ Logical. If \code{overlaying} is set to FALSE
         then children blocks of a block are not drawn inside the block. }
 }
+
 \details{ 
 
   A recursive definition:
@@ -145,15 +150,17 @@ setTreeBlocks(block.tree, vertices, root.label = "", N = 3,
                     The list is again a \code{Block.tree}. }
   }
 }
+
 \value{
   A list with components
-  \item{BlockTree}{A tree of blocks, each of class \code{\link{BlockProto}}. }
+  \item{BlockTree}{A tree of blocks, each of class \code{\link{dg.Block}}. }
   \item{Vertices}{The list of vertices,
         with the positions updated such the vertices
         has positions within the blocks. }
 }
-% \references{ ~put references to the literature/web site here ~ }
+
 \author{Jens Henrik Badsberg}
+
 \note{ 
 
       Ancestors and descendants are set in \code{\link{setTreeBlocks}}.
@@ -168,7 +175,7 @@ setTreeBlocks(block.tree, vertices, root.label = "", N = 3,
       \code{\link{blockTreeToList}} on the block tree.
 
 }
-% \seealso{ ~~objects to See Also as \code{\link{dynamicGraphMain}}, ~~~ }
+
 \examples{
 # Example 1:
 
@@ -309,8 +316,8 @@ Z <- DynamicGraph(V.Names, V.Types, From, To, block.tree = Block.tree,
                   object = Object, width = 600, height = 600, 
                   drawblocks = TRUE, drawBlockFrame = TRUE, 
                   overlaying = TRUE, title = "Pedegree.G")
-
 }
+
 \keyword{ methods }
 \keyword{ dynamic }
 \keyword{ graphs }

@@ -1,7 +1,6 @@
 "modalDialog" <-
-function (title, question, entryInit, top = graphWindow@top, 
-    entryWidth = 20, returnValOnCancel = "ID_CANCEL", graphWindow = NULL, 
-    do.grab = FALSE) 
+function (title, question, entryInit, top = NULL, entryWidth = 20, 
+    returnValOnCancel = "ID_CANCEL", do.grab = FALSE) 
 {
     dlg <- tktoplevel()
     tkwm.deiconify(dlg)
@@ -20,13 +19,15 @@ function (title, question, entryInit, top = graphWindow@top,
         ReturnVal <<- tclvalue(textEntryVarTcl)
         tkgrab.release(dlg)
         tkdestroy(dlg)
-        tkfocus(top)
+        if (!is.null(top)) 
+            tkfocus(top)
     }
     onCancel <- function() {
         ReturnVal <<- returnValOnCancel
         tkgrab.release(dlg)
         tkdestroy(dlg)
-        tkfocus(top)
+        if (!is.null(top)) 
+            tkfocus(top)
     }
     OK.but <- tkbutton(dlg, text = "   OK   ", command = onOK)
     Cancel.but <- tkbutton(dlg, text = " Cancel ", command = onCancel)

@@ -1,13 +1,16 @@
 \name{modalDialog}
+
 \alias{modalDialog}
+
 \title{Modal dialog window for returning a text string}
+
 \description{
   Ask for a text string in a pop up window.
 }
+
 \usage{
-modalDialog(title, question, entryInit, top = graphWindow@top,
-            entryWidth = 20, returnValOnCancel = "ID_CANCEL",
-            graphWindow = NULL, do.grab = FALSE)
+modalDialog(title, question, entryInit, top = NULL, entryWidth = 20, 
+            returnValOnCancel = "ID_CANCEL", do.grab = FALSE)
 }
 
 % Modal Dialog Boxes
@@ -18,7 +21,7 @@ modalDialog(title, question, entryInit, top = graphWindow@top,
 
 % The following example defines a subroutine which creates a simple modal dialog box using tktoplevel to create the dialog window, and using tkgrab.set and tkgrab.release to force the user to respond to this dialog before changing focus to other window(s) in the applciation.
 
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{title}{ Text string for the title bar of the appering window. }
   \item{question}{ Text string for the \code{question}. }
@@ -27,18 +30,19 @@ modalDialog(title, question, entryInit, top = graphWindow@top,
   \item{entryWidth}{ Integer for the \code{entryWidth}. }
   \item{returnValOnCancel}{ Text
         string for the returned value on \code{Cancel}. }
-  \item{graphWindow}{ \code{graphWindow} can be given to give the \code{top}. }
+% \item{graphWindow}{ \code{graphWindow} can be given to give the \code{top}. }
   \item{do.grab}{ Logical. 
         \code{tkgrab.set} resulted in fail for some systems. }
 }
-% \details{ }
+
 \value{
     The text string entered, or \code{returnValOnCancel}.
 }
+
 \references{\url{http://bioinf.wehi.edu.au/~wettenhall/RTclTkExamples/modalDialog.html}}
+
 \author{From the examples compiled by James Wettenhall.}
-% \note{ }
-% \seealso{ ~~objects to See Also as \code{\link{dynamicGraphMain}}, ~~~ }
+
 \examples{
 Menus <- 
  list(MainUser = 
@@ -56,5 +60,6 @@ Menus <-
                return() } )
      )
 }
+
 \keyword{ dynamic }
 

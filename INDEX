@@ -1,56 +1,49 @@
-addGraph                Add graph to existing dynamic graph window
-BlockEdgeProto-class    Class "BlockEdgeProto"
-BlockProto-class        Class "BlockProto"
 blockTreeToList         Extract the list of blocks from a block tree
-CanvasProto-class       Class "CanvasProto"
-ContinuousVertexProto-class
-                        Class "ContinuousVertexProto"
-defaultModelObjectProto-class
-                        Class "defaultModelObjectProto"
-defaultTestObjectProto-class
-                        Class "defaultTestObjectProto"
-DiscreteGeneratorProto-class
-                        Class "DiscreteGeneratorProto"
-DiscreteVertexProto-class
-                        Class "DiscreteVertexProto"
+dg.Block-class          Class "dg.Block"
+dg.BlockEdge-class      Class "dg.BlockEdge"
+dg.DiscreteVertex-class
+                        Classses "dg.DiscreteVertex",
+                        "dg.ContinuousVertex", and "dg.OrdinalVertex"
+dg.Edge-class           Class "dg.Edge"
+dg.ExtraEdge-class      Class "dg.ExtraEdge"
+dg.FactorEdge-class     Class "dg.FactorEdge"
+dg.FactorVertex-class   Class "dg.FactorVertex"
+dg.Generator-class      Classses "dg.Generator",
+                        "dg.DiscreteGenerator",
+                        "dg.Linear"\-"Generator", and
+                        "dg.QuadraticGenerator"
+dg.list-class           Class "dg.list", "dg.NodeList", and
+                        "dg.EdgeList"
+dg.Model-class          Class "dg.Model"
+dg.Node-class           Class "dg.Node"
+dg.Test-class           Class "dg.Test"
+dg.TextVertex-class     Class "dg.TextVertex"
+dg.Vertex-class         Class "dg.Vertex"
+dg.VertexEdge-class     Class "dg.VertexEdge"
+drawModel               Draw the dynamicGraph window and slaves
 DynamicGraph            Simple interface to dynamicGraph
+DynamicGraph-class      Class "DynamicGraph"
 dynamicGraphMain        Dynamic Graph
-EdgeProto-class         Class "EdgeProto"
-FactorEdgeProto-class   Class "FactorEdgeProto"
-FactorVertexProto-class
-                        Class "FactorVertexProto"
-GeneratorProto-class    Class "GeneratorProto"
-GraphLatticeProto-class
-                        Class "GraphLatticeProto"
-LinearGeneratorProto-class
-                        Class "LinearGeneratorProto"
+DynamicGraphModel-class
+                        Class "DynamicGraphModel"
+DynamicGraphView-class
+                        Class "DynamicGraphView"
 modalDialog             Modal dialog window for returning a text
                         string
 nameToVertexIndex       The indices of vertices
-newBlock                The block object
-newBlockEdge            The block edge object
-newDefaultModelObject   The model object
-newDefaultTestObject    The test object
-newFactor               The factor vertex object
-newFactorEdge           The factor edge object
-newVertex               The vertex object
-newVertexEdge           The edge object
-NodeProto-class         Class "NodeProto"
-OrdinalVertexProto-class
-                        Class "OrdinalVertexProto"
-QuadraticGeneratorProto-class
-                        Class "QuadraticGeneratorProto"
-redrawGraphWindow       Redraw the dynamicGraph window and draw slaves
-returnBlockEdgeList     The block edge list
-returnEdgeList          The edge list
-returnFactorEdgeList    The factor edge list
+returnBlockEdgeList     Class "dg.BlockEdgeList": The block edge list
+returnEdgeList          Class "dg.VertexEdgeList": The edge list
+returnExtraEdgeList     Class "dg.ExtraEdgeList": The extra edge list
+returnFactorEdgeList    Class "dg.FactorEdgeList": The factor edge
+                        list
 returnFactorVerticesAndEdges
-                        The factor vertex list
-returnVertexList        The vertex list
-setBlocks               The block list
+                        Class "dg.FactorVertexList": The factor vertex
+                        list
+returnVertexList        Class "dg.VertexList": The vertex list
+selectDialog            Dialog window for selection between items
+setBlocks               Class "dg.BlockList": The block list
 setTreeBlocks           The block tree
-TextVertexProto-class   Class "TextVertexProto" ~~~
+validEdgeClasses        Valid edge classes
 validFactorClasses      Valid factor vertex classes
 validVertexClasses      Valid vertex classes
-VertexEdgeProto-class   Class "VertexEdgeProto"
-VertexProto-class       Class "VertexProto"
+validViewClasses        Valid view classes

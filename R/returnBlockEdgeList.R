@@ -1,15 +1,15 @@
 "returnBlockEdgeList" <-
-function (edge.list, vertices, blocks, width = 2, color = "default", 
-    oriented = FALSE, type = NULL) 
+function (edge.list, vertices, blocks, visibleBlocks = 1:length(blocks), 
+    width = 2, color = "default", oriented = FALSE, type = NULL) 
 {
-    "newBlockEdgeList" <- function(list) return(new("BlockEdgeListProto", 
+    "newBlockEdgeList" <- function(list) return(new("dg.BlockEdgeList", 
         nodeList = list))
     which.edge <- function(e) unlist(lapply(result, function(i) all(i@vertex.indices == 
         e)))
     vertex.names <- Names(vertices)
     if (is.null(edge.list)) 
         edge.list <- vector("list", length = 0)
-    result <- NULL
+    result <- .emptyDgList("dg.BlockEdgeList")
     if (!is.null(blocks) && !is.null(blocks[[1]])) {
         for (i in seq(along = edge.list)) {
             edge <- edge.list[[i]]
@@ -41,12 +41,15 @@ function (edge.list, vertices, blocks, width = 2, color = "default",
                       "DarkBlue")
                   if (length(color) > 1) 
                     color <- ifelse(all(x < 0), color[1], color[2])
+                  class(block.vertices) <- "dg.NodeList"
                   result <<- append(result, list(newBlockEdge(x, 
                     block.vertices, width = width, color = color, 
                     oriented = oriented, type = type)))
                 }
+                b1.plus.ancestors <- numeric(0)
                 if (b1 != 0) 
                   b1.plus.ancestors <- c(b1, blocks[[b1]]@ancestors)
+                b2.plus.ancestors <- numeric(0)
                 if (b2 != 0) 
                   b2.plus.ancestors <- c(b2, blocks[[b2]]@ancestors)
                 if (b2 != 0) {
@@ -75,7 +78,10 @@ function (edge.list, vertices, blocks, width = 2, color = "default",
                 }
             }
         }
-        names(result) <- Labels(result)
+        if (!is.null(result)) {
+            class(result) <- "dg.BlockEdgeList"
+            names(result) <- Labels(result)
+        }
     }
     return(result)
 }

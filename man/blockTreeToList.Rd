@@ -1,18 +1,22 @@
 \name{blockTreeToList}
+
 \alias{blockTreeToList}
+
 \title{Extract the list of blocks from a block tree}
+
 \description{Returns the list of blocks from a block tree.}
+
 \usage{blockTreeToList(tree)}
+
 \arguments{
   \item{tree}{ The \code{BlockTree} part of the result of
                \code{\link{setTreeBlocks}}. }
 }
-%\details{}
-\value{A list of blocks, each block of class \code{BlockProto}.}
-% \references{ ~put references to the literature/web site here ~ }
+
+\value{A list of blocks, each block of class \code{dg.Block}.}
+
 \author{Jens Henrik Badsberg}
-% ~Make other sections like Warning with \section{Warning }{....} ~
-% \seealso{ ~~objects to See Also as \code{\link{dynamicGraphMain}}, ~~~ }
+
 \examples{
 Block.tree <- list(label = "W", Vertices = c("contry"),
                    X = list(Vertices = c("sex", "race"),
@@ -27,6 +31,7 @@ vertices <- returnVertexList(Names, types = Types)
 blocktree <- setTreeBlocks(Block.tree, vertices)
 Labels(blockTreeToList(blocktree$BlockTree))
 }
+
 \keyword{ methods }
 \keyword{ dynamic }
 \keyword{ graphs }

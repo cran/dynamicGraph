@@ -1,37 +1,65 @@
 \name{returnFactorEdgeList}
+
 \alias{factorEdgeList}
 \alias{returnFactorEdgeList}
-\title{ The factor edge list }
+
+\alias{dg.FactorEdgeList-class}
+
+\title{Class "dg.FactorEdgeList": The factor edge list }
+
 \description{
-  Return a list of factor edges, each of class \code{FactorEdgeProto}.
+ Return a list of factor edges, each of class \code{dg.FactorEdge}.
+
+ Objects can be created by calls of the form
+ \code{new("dg.FactorEdgeList", ...)}.
 }
+
 \usage{
 returnFactorEdgeList(edge.list, vertices, factorvertices = NULL,
                      width = 2, color = "DarkSlateGrey",
                      % oriented = FALSE,
                      type = NULL)
 }
+
 \arguments{
   \item{edge.list}{ A list of vectors identifying the edges (between vertices).
                     Each vector of \code{edge.list} should be a vector of 
                     integers giving the indices of the vertices of an edge, or
                     a vector of text strings with the names of the vertices. }
   \item{vertices}{ The list of \code{vertices}, 
-      each of a class containing \code{VertexProto}. }
+      each of a class containing \code{dg.Vertex}. }
   \item{factorvertices}{ The list of \code{factorvertices}, 
-      each of a class containing \code{FactorVertexProto}. }
+      each of a class containing \code{dg.FactorVertex}. }
   \item{width}{ A numeric with the initial \code{width} of the factor edges. }
   \item{color}{ A text string giving the initial \code{color}
         of the factor edges. }
   % \item{oriented}{ Logical, if TRUE then the edges are \code{oriented}. }
   \item{type}{ A text string giving the \code{type} of the factor edges. }
 }
-% \details{ }
+
 \value{
-    A list of edges, each of class \code{FactorEdgeProto}.
+    A list of edges, each of class \code{dg.FactorEdge}.
 }
-% \references{ ~put references to the literature/web site here ~ }
+
+\section{Slots}{
+  \describe{
+    \item{\code{.Data}:}{Object of class \code{"list"}. }
+  }
+}
+
+\section{Extends}{
+Class \code{"dg.EdgeList"}, directly.
+Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
+Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
+Class \code{"list"}, by class \code{"dg.EdgeList"}.
+}
+
+\section{Methods}{
+No methods defined with class "dg.FactorEdgeList" in the signature.
+}
+
 \author{Jens Henrik Badsberg}
+
 \note{ 
     The methods of the edge list, \code{\link{returnEdgeList}},
     also applies for factor edge lists.
@@ -43,10 +71,11 @@ returnFactorEdgeList(edge.list, vertices, factorvertices = NULL,
     see example here.
 
  }
+
 \seealso{
 \code{\link{returnFactorVerticesAndEdges}}
  and \code{\link{returnBlockEdgeList}}. }
-% \examples{ }
+
 \keyword{ methods }
 \keyword{ dynamic }
 \keyword{ graphs }

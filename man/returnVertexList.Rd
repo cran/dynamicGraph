@@ -1,47 +1,60 @@
 \name{returnVertexList}
+
 \alias{vertexList}
 \alias{returnVertexList}
-\alias{Names}
-\alias{Names<-}
-\alias{Colors}
-\alias{Colors<-}
-\alias{Labels}
-\alias{Labels<-}
-\alias{LabelPositions}
-\alias{LabelPositions<-}
-\alias{Positions}
-\alias{Positions<-}
-\alias{Strata}
-\alias{Strata<-}
-\alias{Blockindices}
-\alias{Blockindices<-}
-\alias{Indices}
-% \alias{Indices<-}
-\alias{Visible}
-\alias{Visible<-}
 
-\alias{Names,list-method}
-\alias{Names<-,list-method}
-\alias{Colors,list-method}
-\alias{Colors<-,list-method}
-\alias{Labels,list-method}
-\alias{Labels<-,list-method}
-\alias{LabelPositions,list-method}
-\alias{LabelPositions<-,list-method}
-\alias{Positions,list-method}
-\alias{Positions<-,list-method}
-\alias{Strata,list-method}
-\alias{Strata<-,list-method}
-\alias{Blockindices,list-method}
-\alias{Blockindices<-,list-method}
-\alias{Indices,list-method}
-\alias{Visible,list-method}
-\alias{Visible<-,list-method}
+\alias{dg.VertexList-class}
 
-\title{ The vertex list }
+% \alias{Names}
+% \alias{Names<-}
+% \alias{Colors}
+% \alias{Colors<-}
+% \alias{Labels}
+% \alias{Labels<-}
+% \alias{LabelPositions}
+% \alias{LabelPositions<-}
+% \alias{Positions}
+% \alias{Positions<-}
+% \alias{Strata}
+% \alias{Strata<-}
+% \alias{Blockindices}
+% \alias{Blockindices<-}
+% \alias{Indices}
+% \alias{asDataFrame}
+% % \alias{Indices<-}
+% \alias{Visible}
+% \alias{Visible<-}
+
+% \alias{dg.list-class}
+
+% \alias{show,dg.list-method}
+% \alias{Names,dg.list-method}
+% \alias{Names<-,dg.list-method}
+% \alias{Colors,dg.list-method}
+% \alias{Colors<-,dg.list-method}
+% \alias{Labels,dg.list-method}
+% \alias{Labels<-,dg.list-method}
+% \alias{LabelPositions,dg.list-method}
+% \alias{LabelPositions<-,dg.list-method}
+% \alias{Positions,dg.list-method}
+% \alias{Positions<-,dg.list-method}
+% \alias{Strata,dg.list-method}
+% \alias{Strata<-,dg.list-method}
+% \alias{Blockindices,dg.list-method}
+% \alias{Blockindices<-,dg.list-method}
+% \alias{Indices,dg.list-method}
+% \alias{asDataFrame,dg.list-method}
+% \alias{Visible,dg.list-method}
+% \alias{Visible<-,dg.list-method}
+
+\title{Class "dg.VertexList": The vertex list }
+
 \description{
-  Return a list of vertices of classes containing the class \code{VertexProto}.
+  Return a list of vertices of classes containing the class \code{dg.Vertex}.
+
+ Objects can be created by calls of the form \code{new("dg.VertexList", ...)}.
 }
+
 \usage{
 returnVertexList(names, labels = NULL, types = NULL, 
                  strata = NULL, line = FALSE, N = 3, 
@@ -49,6 +62,7 @@ returnVertexList(names, labels = NULL, types = NULL,
                                  "FloralWhite", "DarkRed"), 
                  vertexClasses = validVertexClasses())
 }
+
 \arguments{
   \item{names}{ Vector of text strings with the \code{names} of the vertices. }
   \item{labels}{ Vector of text strings with the \code{labels} of the vertices. }
@@ -60,12 +74,29 @@ returnVertexList(names, labels = NULL, types = NULL,
   \item{colors}{ Vector of text strings with \code{colors} of the vertices. }
   \item{vertexClasses}{ The valid \code{\link{vertexClasses}}. }
 }
-% \details{ }
+
 \value{
- A list of vertices of classes containing the class \code{VertexProto}.
+ A list of vertices of classes containing the class \code{dg.Vertex}.
 }
-% \references{ ~put references to the literature/web site here ~ }
+
+\section{Slots}{
+  \describe{
+    \item{\code{.Data}:}{Object of class \code{"list"}. }
+  }
+}
+
+\section{Extends}{
+Class \code{"dg.NodeList"}, directly.
+Class \code{"dg.list"}, by class \code{"dg.NodeList"}.
+Class \code{"list"}, by class \code{"dg.NodeList"}.
+}
+
+\section{Methods}{
+No methods defined with class "dg.VertexList" in the signature.
+}
+
 \author{Jens Henrik Badsberg}
+
 \note{The methods
       \code{\link{Names}}, 
       \code{\link{Names<-}}, 
@@ -78,14 +109,15 @@ returnVertexList(names, labels = NULL, types = NULL,
       \code{\link{Positions}}, 
       \code{\link{Positions<-}}, 
       \code{\link{Strata}}, 
-      \code{\link{Strata<-}} and 
-      \code{\link{Indices}} 
+      \code{\link{Strata<-}},
+      \code{\link{Indices}}, and 
+      \code{\link{asDataFrame}} 
       are available for vertex lists.
       % \code{\link{Indices<-}}, 
       % \code{\link{Visible}}, 
       % \code{\link{Visible<-}}, 
 }
-% \seealso{ ~~objects to See Also as \code{\link{dynamicGraphMain}}, ~~~ }
+
 \examples{
 vertices <- returnVertexList(c("A", "B", "C", "D"),
                              labels = c("OrdinalVertex", "TextVertex", 
@@ -112,7 +144,9 @@ LabelPositions(vertices)
 Positions(vertices)
 Strata(vertices)
 Indices(vertices)
+asDataFrame(vertices)
 }
+
 \keyword{ methods }
 \keyword{ dynamic }
 \keyword{ graphs }

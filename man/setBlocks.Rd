@@ -1,23 +1,32 @@
+\name{setBlocks}
+
+\title{Class "dg.BlockList": The block list}
+
 \alias{setBlocks}
 \alias{blockList}
-\name{setBlocks}
-\title{The block list}
+
+\alias{dg.BlockList-class}
+
 \description{
-    Create a block list with positioning the vertices in the blocks.    
+ Create a block list with positioning the vertices in the blocks.    
+
+ Objects can be created by calls of the form \code{new("dg.BlockList", ...)}.
 }
+
 \usage{
 setBlocks(block.list, vertices, labels = NULL, 
           right.to.left = FALSE, nested.blocks = FALSE,
           % draw.blocks = TRUE,
           blockColors = NULL, color = "Grey", N = 3)
 }
+
 \arguments{
   \item{block.list}{ The list of vectors identifying the \code{blocks}.
           Each item in the list is a vector with of the indices (or text
 	  strings for names) of vertices of a block. 
       }
   \item{vertices}{ The list of \code{vertices}, each
-      containing the class \code{VertexProto}. Returned with positions
+      containing the class \code{dg.Vertex}. Returned with positions
       set in the interval of the blocks. }
   \item{labels}{ List of text strings with the \code{labels} of the
       blocks. If \code{labels} is set to \code{NULL} then labels are
@@ -36,21 +45,35 @@ setBlocks(block.list, vertices, labels = NULL,
   \item{N}{ Integer, \code{N} is the number of coordinates of the
       vertices and block corners. }
 }
-% \details{ ... }
+
 \value{
   A list with components
   \item{Blocks}{The list of blocks, each of class 
-        \code{\link{BlockProto}}.}
+        \code{\link{dg.Block}}.}
   \item{Vertices}{The list of vertices,
         with the positions updated such the vertices
         has positions within the blocks. }
 }
-% \references{ ~put references to the literature/web site here ~ }
-\author{Jens Henrik Badsberg}
-% \note{ ~~further notes~~ }
-% \seealso{ ~~objects to See Also as \code{\link{dynamicGraphMain}}, ~~~ }
-\examples{
 
+\section{Slots}{
+  \describe{
+    \item{\code{.Data}:}{Object of class \code{"list"}. }
+  }
+}
+
+\section{Extends}{
+Class \code{"dg.NodeList"}, directly.
+Class \code{"dg.list"}, by class \code{"dg.NodeList"}.
+Class \code{"list"}, by class \code{"dg.NodeList"}.
+}
+
+\section{Methods}{
+No methods defined with class "dg.BlockList" in the signature.
+}
+
+\author{Jens Henrik Badsberg}
+
+\examples{
 require(tcltk)
 
 require(dynamicGraph)
@@ -117,7 +140,11 @@ Strata(blockList$Vertices)
 Colors(blockList$Vertices)
 Indices(blockList$Vertices)
 
+asDataFrame(blockList$Vertices)
+asDataFrame(blockList$Blocks)
+
 }
+
 \keyword{ methods }
 \keyword{ dynamic }
 \keyword{ graphs }

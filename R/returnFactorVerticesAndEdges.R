@@ -2,12 +2,12 @@
 function (Vertices, factors = NULL, types = "Generator", factorVertexColor = "default", 
     factorEdgeColor = "DarkOliveGreen", factorClasses = validFactorClasses()) 
 {
-    "newFactorVertexList" <- function(list) return(new("FactorVertexListProto", 
+    "newFactorVertexList" <- function(list) return(new("dg.FactorVertexList", 
         nodeList = list))
     vertex.names <- Names(Vertices)
     "subReturnFactorList" <- function(factors, vertices, offset = 0, 
         types = "Generator", width = 2, color = factorVertexColor) {
-        if (length(types) == 1) {
+        if ((length(types) == 1) && !(is.list(types))) {
             Type <- grep(types, paste(factorClasses[, 1]))
             type <- paste(factorClasses[, 1][Type])
         }
@@ -33,19 +33,34 @@ function (Vertices, factors = NULL, types = "Generator", factorVertexColor = "de
                         edge[k]))
                     else {
                       x <- c(edge[j], edge[k])
-                      if (!any(apply(PairEdges, 1, function(i) all(i == 
-                        x)))) 
-                        PairEdges <- rbind(PairEdges, x)
+                      if (!is.null(PairEdges)) 
+                        if (!any(apply(PairEdges, 1, function(i) all(i == 
+                          x)))) 
+                          PairEdges <- rbind(PairEdges, x)
                     }
             }
             if (is.list(types)) {
                 Type <- types[[i]] == paste(factorClasses[, 2])
+                if (!any(Type)) 
+                  Type <- types[[i]] == paste(factorClasses[, 
+                    1])
                 type <- paste(factorClasses[, 1][Type])
             }
+            else if (length(types) > 1) {
+                Type <- types[i] == paste(factorClasses[, 2])
+                if (!any(Type)) 
+                  Type <- types[i] == paste(factorClasses[, 1])
+                type <- paste(factorClasses[, 1][Type])
+            }
+            else {
+                type <- types
+            }
+            class(edge.vertices) <- "dg.VertexList"
             FactorVertices[[i]] <- newFactor(edge, edge.vertices, 
                 type = type, index = -i - offset, width = width, 
                 color = color, factorClasses = factorClasses)
         }
+        class(FactorVertices) <- "dg.FactorVertexList"
         if (is.null(names(factors))) 
             names(FactorVertices) <- Names(FactorVertices)
         else names(FactorVertices) <- names(factors)
@@ -61,7 +76,7 @@ function (Vertices, factors = NULL, types = "Generator", factorVertexColor = "de
     FactorVertices <- NULL
     PairEdges <- NULL
     FactorEdges <- NULL
-    if (!(is.null(factors))) {
+    if (!(is.null(factors)) && (length(factors) > 0)) {
         if (!is.list(factors[[1]])) {
             result <- subReturnFactorList(factors, Vertices, 
                 types = types, width = 2, color = factorVertexColor)
@@ -91,6 +106,8 @@ function (Vertices, factors = NULL, types = "Generator", factorVertexColor = "de
             }
         }
     }
+    class(FactorVertices) <- "dg.FactorVertexList"
+    class(FactorEdges) <- "dg.FactorEdgeList"
     return(list(FactorVertices = FactorVertices, FactorEdges = FactorEdges, 
         PairEdges = PairEdges))
 }

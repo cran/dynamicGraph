@@ -1,9 +1,9 @@
 "newFactorEdge" <-
 function (node.indices, nodes = NULL, width = 2, color = "DarkOliveGreen", 
     type = NULL, label = ifelse(is.null(nodes), "", paste(Labels(nodes), 
-        collapse = "~"))) 
+        collapse = "~")), dash = "") 
 {
-    result <- new("FactorEdgeProto", vertex.indices = node.indices, 
-        width = width, color = color, label = label)
+    result <- new("dg.FactorEdge", vertex.indices = node.indices, 
+        width = width, color = color, label = label, dash = dash)
     return(result)
 }

@@ -3,12 +3,12 @@ require(tcltk)
 
 library(dynamicGraph)
 
-setClass("NewVertexProto", contains = "VertexProto")
+setClass("NewVertex", contains = "dg.Vertex")
 
 myVertexClasses <- rbind(validVertexClasses(), 
-                         c("NewVertex", "NewVertexProto"))
+                         c("NewVertex", "NewVertex"))
 
-setMethod("draw", "NewVertexProto",
+setMethod("draw", "NewVertex",
           function(object, canvas, position,
                    x = position[1], y = position[2], stratum = 0,
                    w = 2, color = "green", background = "white")
@@ -33,41 +33,41 @@ setMethod("draw", "NewVertexProto",
                            fill = color(object))
             return(list(dynamic = list(p1, p2, p3, p4), fixed = NULL)) })
 
-# Why are these 2 * 7 methods not avaliable from "VertexProto" ?
+# Why are these 2 * 7 methods not avaliable from "dg.Vertex" ?
 
-setMethod("color", "NewVertexProto",
+setMethod("color", "NewVertex",
           function(object) object@color)
-setReplaceMethod("color", "NewVertexProto",
+setReplaceMethod("color", "NewVertex",
                  function(x, value) {x@color <- value; x} )
 
-setMethod("label", "NewVertexProto",
+setMethod("label", "NewVertex",
           function(object) object@label)
-setReplaceMethod("label", "NewVertexProto",
+setReplaceMethod("label", "NewVertex",
                  function(x, value) {x@label <- value; x} )
 
-setMethod("labelPosition", "NewVertexProto",
+setMethod("labelPosition", "NewVertex",
           function(object) object@label.position)
-setReplaceMethod("labelPosition", "NewVertexProto",
+setReplaceMethod("labelPosition", "NewVertex",
                  function(x, value) {x@label.position <- value; x} )
 
-setMethod("name", "NewVertexProto",
+setMethod("name", "NewVertex",
           function(object) object@name)
-setReplaceMethod("name", "NewVertexProto",
+setReplaceMethod("name", "NewVertex",
                  function(x, value) {x@name <- value; x} )
 
-setMethod("index", "NewVertexProto",
+setMethod("index", "NewVertex",
           function(object) object@index)
-setReplaceMethod("index", "NewVertexProto",
+setReplaceMethod("index", "NewVertex",
                  function(x, value) {x@index <- value; x} )
 
-setMethod("position", "NewVertexProto", 
+setMethod("position", "NewVertex", 
           function(object) object@position)
-setReplaceMethod("position", "NewVertexProto",
+setReplaceMethod("position", "NewVertex",
                  function(x, value) {x@position <- value; x} )
 
-setMethod("stratum", "NewVertexProto",
+setMethod("stratum", "NewVertex",
           function(object) object@stratum)
-setReplaceMethod("stratum", "NewVertexProto",
+setReplaceMethod("stratum", "NewVertex",
                  function(x, value) {x@stratum <- value; x} )
 
 

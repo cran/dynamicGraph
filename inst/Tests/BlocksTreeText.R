@@ -3,7 +3,7 @@
 
 source("startup.0.R")
 
-Block.tree <- list(Vertices = c("contry"),
+Block.tree <- list(Vertices = c("country"),
                    X = list(Vertices = c("sex", "race"),
                             A = list(Vertices = c("hair"),
                                      horizontal = TRUE, closed = TRUE,
@@ -12,8 +12,8 @@ Block.tree <- list(Vertices = c("contry"),
                             B = list(Vertices = c("education")),
                             C = list(Vertices = c("age"))))
 
-From <- c("contry", "contry",  "sex", "sex",      "race", "race")
-To   <- c(   "sex",   "race", "hair", "eye", "education",  "age")
+From <- c("country", "country",  "sex", "sex",      "race", "race")
+To   <- c(    "sex",    "race", "hair", "eye", "education",  "age")
 
 v <- unlist(Block.tree)
 V.Names <- v[grep("Vertices", names(v))]
@@ -26,7 +26,7 @@ From <- match(From, V.Names)
 To   <- match(To, V.Names)
 
 Z <- DynamicGraph(V.Names, V.Types, From, To, block.tree = Block.tree,
-                  object = Object,
+                  object = Object, margin = 400,
                   width = 600, height = 600, drawblocks = TRUE,
                   UserMenus = Menus, overlaying = FALSE,
                   debug.strata = debug.strata, debug.edges = debug.edges, 

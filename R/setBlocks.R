@@ -3,7 +3,7 @@ function (block.list, vertices, labels = NULL, right.to.left = FALSE,
     nested.blocks = FALSE, blockColors = NULL, color = "Grey", 
     N = 3) 
 {
-    "newBlockList" <- function(list) return(new("BlockListProto", 
+    "newBlockList" <- function(list) return(new("dg.BlockList", 
         nodeList = list))
     "returnDefaultBlocks" <- function(strata = NULL, labels = NULL, 
         n = length(strata), right.to.left = FALSE, nested.blocks = FALSE, 
@@ -92,5 +92,6 @@ function (block.list, vertices, labels = NULL, right.to.left = FALSE,
     Vertices <- positionVerticesInDefaultBlocks(block.list, vertices, 
         right.to.left = right.to.left, nested.blocks = nested.blocks, 
         n = length(block.list), draw.blocks = TRUE, N = N)
+    class(Blocks) <- "dg.BlockList"
     return(list(Blocks = Blocks, Vertices = Vertices))
 }

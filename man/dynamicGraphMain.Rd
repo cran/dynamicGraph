@@ -1,77 +1,83 @@
 \name{dynamicGraphMain}
+
 \alias{dynamicGraphMain}
 \alias{dynamicGraph}
-\alias{GraphLatticeProto}
-\alias{CanvasProto}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
+% \newpage
+
 \title{ Dynamic Graph }
 \description{
     Interactive plot for manipulating graphs.
 }
+
 \usage{
-dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
-                 edgeList = NULL, blockList = NULL, blockEdgeList = NULL,
-                 blockTree = NULL, oriented = FALSE,
-                 factorVertexList = NULL, factorEdgeList = NULL, 
-                 extraList = NULL,
-                 object = NULL, objectName = "", 
-                 vertexClasses = validVertexClasses(),
-                 title = "dynamicGraph", transformation = NULL, 
-                 width = 400, height = 400, w = 6, 
-                 vertexColor = "blue", extraVertexColor = "black", 
-                 edgeColor = "blue",
-                 factorVertexColor = "green", factorEdgeColor = "green",
-                 blockEdgeColor = "default", blockColors = NULL,
-                 background = "white", closeenough = 2,
-                 drawBlockFrame = TRUE, drawBlockBackground = TRUE,
-                 UserMenus = NULL, 
-                 hasMethods = TRUE, enterLeaveUpdate = TRUE,
-                 namesOnEdges = TRUE, updateEdgeLabels = TRUE,
-                 debug.strata = FALSE, debug.edges = FALSE,
-                 debug.position = FALSE, debug.update = FALSE, 
-                 returnLink = FALSE, returnNull = FALSE, ...)
+dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList), 
+    visibleBlocks = 1:length(blockList), edgeList = NULL, oriented = FALSE, 
+    blockList = NULL, blockEdgeList = NULL, blockTree = NULL, 
+    factorVertexList = NULL, factorEdgeList = NULL, 
+    extraList = NULL, extraEdgeList = NULL, object = NULL, objectName = NULL, 
+    vertexClasses = validVertexClasses(), 
+    factorClasses = validFactorClasses(), 
+    edgeClasses = validEdgeClasses(), 
+    viewClasses = validViewClasses(), viewType = "Simple", 
+    title = "dynamicGraph", 
+    transformation = NULL, width = 400, height = 400, w = 6, 
+    vertexColor = "blue", extraVertexColor = "black", edgeColor = "blue", 
+    factorVertexColor = "green", 
+    factorEdgeColor = "green", blockEdgeColor = "default", 
+    blockColors = NULL, extraEdgeColor = "peru", background = "white", 
+    closeenough = 2, setVertexLabels = FALSE, drawBlockFrame = TRUE, 
+    drawBlockBackground = FALSE, UserMenus = NULL, hasMethods = TRUE, 
+    enterLeaveUpdate = TRUE, updateAllViews = TRUE,
+    namesOnEdges = TRUE, updateEdgeLabels = TRUE, useNamesForLabels = TRUE, 
+    debug.strata = FALSE, debug.edges = FALSE, debug.position = FALSE, 
+    debug.update = FALSE, permitZoom = TRUE, margin = 100, 
+    returnLink = FALSE, returnNull = FALSE, ...) 
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
     \item{vertexList}{ List of vertices
-        (each of class containing the class \code{VertexProto})
+        (each of class containing the class \code{dg.Vertex})
         created by \code{\link{returnVertexList}}
         or exported from \code{\link{dynamicGraphMain}}. }
     \item{visibleVertices}{ Numeric vector of the indices of the vertices of
         \code{vertexList} to plot. }
-    \item{edgeList}{ List of edges (of class containing \code{EdgeProto})
+    \item{visibleBlocks}{ Numeric vector of the indices of the blocks of
+        \code{blockList} to plot. }
+    \item{edgeList}{ List of edges (of class containing \code{dg.Edge})
         created by \code{\link{returnEdgeList}}
         or exported from \code{\link{dynamicGraphMain}}.  }
-    \item{blockList}{ List of blocks (each of class \code{BlockProto})
+    \item{blockList}{ List of blocks (each of class \code{dg.Block})
         created by \code{\link{setBlocks}}
         or exported from \code{\link{dynamicGraphMain}}.
         If the \code{blockTree} argument is given, then
         the argument \code{blockList} should not also be given. }
     \item{blockEdgeList}{ List of blockedges
-        (of class containing the class \code{BlockEdgeProto})
+        (of class containing the class \code{dg.BlockEdge})
         created by \code{\link{returnBlockEdgeList}}
         or exported from \code{\link{dynamicGraphMain}}. }
-    \item{blockTree}{ Structure with blocks (of class \code{BlockProto})
+    \item{blockTree}{ Structure with blocks (of class \code{dg.Block})
         created by \code{\link{setTreeBlocks}}
         or exported from \code{\link{dynamicGraphMain}}. }
     \item{oriented}{ Logical.  If TRUE then
         edges are oriented, also when blocks are missing. }
     \item{factorVertexList}{ List of secondary vertices,
         called factor vertices, for, e.g., the generators of the model,
-        (each of class containing \code{FactorVertexProto})
+        (each of class containing \code{dg.FactorVertex})
         created by \code{\link{returnFactorVerticesAndEdges}}
         or exported from \code{\link{dynamicGraphMain}}. }
     \item{factorEdgeList}{ List of bipartite graph edges,
         called factor edges,
-        (each of class containing \code{FactorEdgeProto})
+        (each of class containing \code{dg.FactorEdge})
         created by \code{\link{returnFactorEdgeList}}
         or exported from \code{\link{dynamicGraphMain}}.
         Factor edges are edges between vertices and factor vertices. }
     \item{extraList}{ List of vertices (of class containing the class
-	\code{VertexProto}) 
-        created by \code{\link{returnVertexList}}
+	\code{dg.Vertex}) 
+        created by the function\code{\link{returnVertexList}}
         or exported from \code{\link{dynamicGraphMain}},
         for, e.g., additional titles in the plot. }
+    \item{extraEdgeList}{ List of edges between extra vertices and vertices. }
     \item{object}{ NULL, or object with the methods \code{\link{modifyModel}}
         and \code{\link{testEdge}} - for respectively updating the
         object when the graph is updated, and for computing the
@@ -81,12 +87,22 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
         % (was \code{labelOfTest} and \code{widthOfTest})
         for extracting the label of a test for putting the label on the edge
         and for extracting the width for the edge.
-        See \code{\link{newDefaultModelObject}}. }
+        See \code{\link{dg.Model-class}}. }
     \item{objectName}{ If set to a text string then the object is assigned with
 	this name in .Global.Env when the object is updated. }
     \item{vertexClasses}{ Returned value from \code{\link{validVertexClasses}},
         or extension of this matrix. Used when creating
         new vertices in \code{\link{dynamicGraphMain}}. }
+    \item{factorClasses}{ Returned value from \code{\link{validFactorClasses}},
+        or extension of this matrix. Used when creating
+        new factor vertices in \code{\link{dynamicGraphMain}}. }
+    \item{edgeClasses}{ Returned value from \code{\link{validEdgeClasses}},
+        or extension of this matrix. Used when creating
+        new edges in \code{\link{dynamicGraphMain}}. }
+    \item{viewClasses}{ Returned value from \code{\link{validViewClasses}},
+        or extension of this matrix. Used when creating
+        new views in \code{\link{dynamicGraphMain}}. }
+    \item{viewType}{ A text string with the type of view. }
     \item{title}{ Text string with the title set on the graph window. }
     \item{transformation}{ NULL,
                 or rotation matrix for projecting the positions
@@ -116,8 +132,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
         the color of a factor vertex will depend on the
         type of the generator of the factor. }
     \item{factorEdgeColor}{ Single text string. 
-        \code{factorEdgeColor}
-        is similar to \code{edgeColor}. }
+        \code{factorEdgeColor} is similar to \code{edgeColor}. }
     \item{blockEdgeColor}{ "default", or list with two text strings for colors.
         \code{blockEdgeColor} is similar to \code{edgeColor}.
         The two colors are used for respectively edges
@@ -127,17 +142,22 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
         Similar to \code{vertexColor}: Only used when creating
         new blocks, else the colors set in \code{blockList}
         and \code{blockTree} are used. }
+  \item{extraEdgeColor}{ Single text string. 
+        \code{extraEdgeColor} is similar to \code{edgeColor}. }
     \item{background}{ The color of the canvas of the graph window,
         default: "white". }
     \item{closeenough}{ Parameter for whether the mouse is close enough
         when clicking an object of the graph window,
         see \code{\link[tcltk]{tkcanvas}}. }
+    \item{setVertexLabels}{ Logical.
+                If TRUE then the vertices are marked by the label,
+                else the name. }
     \item{drawBlockFrame}{ Logical.
                 If TRUE then frames are drawn around blocks. }
     \item{drawBlockBackground}{ Logical. If TRUE then a \code{block canvas} is
         drawn, with color set by \code{blockColors}. }
     \item{UserMenus}{ List with user defined menu items for main menu
-        and pop up menus. See \code{\link{redrawGraphWindow}}
+        and pop up menus. See \code{\link{redrawView}}
         for an example of a user specified menu. }
     \item{hasMethods}{ Logical. 
         If TRUE then the \code{object} should have the methods
@@ -149,20 +169,25 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	inside \code{\link{dynamicGraphMain}}).}
     \item{enterLeaveUpdate}{ Logical. If FALSE then the graph window
         is not redrawn when the mouse enters and leaves the graph window. }
+    \item{updateAllViews}{ Logical.
+                If TRUE then all windows are updated when one is changed. }
     \item{namesOnEdges}{ Logical. If FALSE then the names of the vertices 
         are not set on the edge as label. }
     \item{updateEdgeLabels}{ Logical.  If FALSE then the edge labels
         are not cleared when the model is updated. }
+    \item{useNamesForLabels}{ Logical. If \code{useNamesForLabels} is TRUE
+        then names are sued for labels. }
     \item{debug.strata}{ Logical for tracing strata of vertices
                 (also in plot). }
     \item{debug.edges}{ Logical for tracing edges (also by labels in plot). }
     \item{debug.position}{ Logical for tracing positions of vertices. }
     \item{debug.update}{ Logical for tracing redraw of graph window. }
-%   \item{GraphLattice}{ ~~Describe \code{GraphLattice} here~~ }
-%   \item{returnNewMaster}{ ~~Describe \code{returnNewMaster} here~~ }
+    \item{permitZoom}{ Logical. If FALSE then zooming is disabled,
+		       and no margin around the canvas is set. }
+    \item{margin}{ Integer, the width of the margin round the canvas. }
     \item{returnLink}{ Logical, if \code{returnLink} is TRUE then a reference
 		       to the dynamic graph window is returned, else an object 
-		       of class \code{\link{GraphLatticeProto-class}}
+		       of class \code{\link{DynamicGraph-class}}
                        is returned (if not \code{returnNull} is TRUE).
     }
     \item{returnNull}{ Logical, if \code{returnNull}
@@ -206,40 +231,53 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 % Rock plot:         Double right click (not working!)
 
 \value{
-    If \code{returnLink} is TRUE then a reference (an object of class "list")
-    to the dynamic graph window is returned, else an object of class 
-    \code{\link{GraphLatticeProto-class}}
-    is returned (if not \code{returnNull} is TRUE)
+    An object of class \code{\link{DynamicGraph-class}}
+    (if not \code{returnNull} is TRUE)
+    with the lists of vertices and blocks (block trees) of the dynamicGraph,
+    and list of models, each (of class \code{\link{DynamicGraphModel-class}})
+    with the views of the model.
 
-    The function \code{\link{redrawGraphWindow}} of the returned reference
-    is used to draw other graphs in the graph window or to create slave
-    graphs windows, see \code{\link{addGraph}}.
-   
-    The object of class \code{\link{GraphLatticeProto}} will
-    beside the list of canvases of the graph window and slave windows,
-    also hold lists of vertices and blocks (block trees).
+    Each view (of class \code{\link{DynamicGraphView-class}}) of a model
+    will hold the edges (edges between vertices, factors and blocks)
+    and factor- and extra-vertices of the view,
+    together with which vertices and blocks are visible in the view.
 
-    \item{...@graphs}{Slot 'graphs': List of class \code{\link{CanvasProto}}.
-	Might, beside slots for accessing the graph window, also hold 
-	slots for edges, factors, factor edges, block edges, etc.}
-    \item{...@graphs[[i]]@top}{Slot 'top' of each object in the list of the
-        'graphs' slot of the returned object:
-        The 'top' of the canvas of the i-the 
-        graph window.}
+    If \code{returnLink} is TRUE then the returned object
+    will have functions for drawing other models and views
+    associated with the returned  \code{\link{DynamicGraph-class}} object.
+
+    The function \code{\link{drawModel}} of the returned object
+    is used to add and draw other models, 
+    in an existing graph window or in a new slave graphs window,
+    see \code{\link{DynamicGraph}}.
+
+    The function \code{\link{redrawView}} of the models of the returned object
+    is used to draw other views of the model,
+    in an existing graph window or in a new slave graphs window,
+    see \code{\link{DynamicGraph}}.
+
+%     \item{...@graphs}{Slot 'graphs':
+%         List of class \code{\link{DynamicGraphView}}.
+% 	Might, beside slots for accessing the graph window, also hold 
+% 	slots for edges, factors, factor edges, block edges, etc.}
+%     \item{...@graphs[[i]]@top}{Slot 'top' of each object in the list of the
+%         'graphs' slot of the returned object:
+%         The 'top' of the canvas of the i-the 
+%         graph window.}
+
 }
 
     \section{All object in the graph window:}{
 	\itemize{
 	    \item{Left click, hold and drag:}{The object will move.}
 	    \item{Left click:}{Action to the object:
-                Vertices and blocks will highlight, 
+                Vertices, edges, and blocks will highlight, 
                 at vertices and blocks edges are added after highlighting,
-                at edges the edge will be deleted,
                 tests are computed for edge labels.}
 	    \item{Left or right click, with SHIFT or/and CONTROL:}{The object
                   will be marked.}
 	    \item{Double left click:}{Action to object:
-                Vertices are deleted,
+                Vertices and edges are deleted,
                 blocks will close,
                 closed blocks will open.}
 	    \item{Right click:}{The pop up menu of the object will appear.}
@@ -251,6 +289,9 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	\itemize{
 	    \item{Highlight a vertex:}{For adding an edge -
                 Left click the vertex.}
+	    \item{Highlight a vertex:}{For adding to "selectedNodes" -
+                Left or right click the vertex while
+                holding SHIFT or/and CONTROL down.}
 	    \item{Mark a vertex:}{For adding edges, etc. - 
 	        Left or right click the vertex
                 while holding SHIFT or/and CONTROL down.}
@@ -283,19 +324,23 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	    \item{Display, add, a vertex:}{In a slave window -
 		Select "Select vertex among variables not displayed (slave)". }
 	    \item{Export the vertex list:}{Select
-                "Assign Vertices in .GlobalEnv". }
+                "Assign 'vertexList' in .GlobalEnv". }
 	    \item{Export the labels:}{Select
-                "Assign ExtraVertices in .GlobalEnv". }
+                "Assign 'extraList' in .GlobalEnv". }
 	}
     }
     
     \section{Edges (edges to/from vertices, blocks and factors):}{
 	Right click the edge to get the pop up menu of the edge:
 	\itemize{
+	    \item{Highlight a edge:}{Left click the edge.}
+	    \item{Highlight a edge:}{For adding to "selectedEdges" -
+                Left or right click the edge while
+                holding SHIFT or/and CONTROL down.}
 	    \item{Add an edge:}{Left click first the vertex (or block)
                 to highlight, and then left click other vertex (or block).}
 	    \item{Delete an edge:}{And update in the current window -
-		Left click the edge.}
+		Double left click the edge.}
 	    \item{Delete an edge:}{And create a slave graph with the
 		resulting graph
 		- Select "Drop edge" from the pop up menu at the edge.}
@@ -318,7 +363,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	The main menu "Edges":
 	\itemize{
 	    \item{Delete all edge labels:}{Select "Delete all edge labels". }
-	    \item{Export the edge list:}{Select "Assign Edges in .GlobalEnv". }
+	    \item{Export the edge list:}{Select "Assign 'edgeList' in .GlobalEnv". }
 	}
     }
 
@@ -342,7 +387,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	    or colored block canvas and select "Redraw (Zoom to) full
 	    graph" in the appearing block pop up menu. }
 	    }
-    }
+    }			  			   	
 
     \section{Blocks, closed:}{
         Right click the block to get the pop up menu of the closed block:
@@ -350,6 +395,9 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	    \item{Highlight a block:}{For adding edges from all vertices
 		of the block to a vertex or a block -
                 Left click the block.}
+	    \item{Highlight a block:}{For adding to "selectedNodes" -
+                Left or right click the block while
+                holding SHIFT or/and CONTROL down.}
 	    \item{Mark a block:}{For adding edges, etc. - 
 	        Left or right click the block
                 while holding SHIFT or/and CONTROL down.}
@@ -371,13 +419,13 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	The main menu "Blocks":
 	\itemize{	    
 	    \item{Export the block list:}{Select
-                "Assign BlockList in .GlobalEnv". }
+                "Assign 'blockList' in .GlobalEnv". }
 	    \item{Export the block tree:}{Select
-                "Assign BlockTree in .GlobalEnv". }
+                "Assign 'blockTree' in .GlobalEnv". }
 	    \item{Export the block edges:}{Select
-                "Assign BlockEdges in .GlobalEnv". }
+                "Assign 'blockEdgeList' in .GlobalEnv". }
 	}
-    }
+    }			  			   	
 
     \section{Factor vertices:}{
         Right click the factor vertex to get the pop up menu of the
@@ -390,10 +438,10 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	The main menu "Generators":
 	\itemize{	    
 	    \item{Export the factor vertices:}{Select
-                "Assign FactorVertices in .GlobalEnv". }
+                "Assign 'factorVertexList' in .GlobalEnv". }
 	    \item{Export the factor edges:}{Select
-                "Assign FactorEdges in .GlobalEnv". }
-		}
+                "Assign 'factorEdgeList' in .GlobalEnv". }
+		}			  			   	
 	    }  			   	
 	    
     \section{Factor edges:}{
@@ -402,26 +450,39 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 %	\itemize{
 %	    \item{Pop up menu for factor edges:}{Right click the factor edge:
 %		Actions are as for edges.}
-%		}
+%		}			  			   	
 	    }
 
     \section{The graph:}{
 	\itemize{
-	    \item{Create a slave window:}{Select "Copy: Make slave window".}
-	    \item{Redraw (zoom out):}{From the lists of objects - Select
-		"Redraw the graph window".}
-	    \item{Update:}{Faster fix of "corrupted" window:
-                  Select "Update the graph window".}
-	    \item{Export the linkGraphLattice :}{Select
-		"Assign linkGraphLattice in .GlobalEnv".}
-	    \item{Export the graph lattice :}{Select
-		"Assign Graph-lattice in .GlobalEnv".}
+	    \item{Create a slave window:}{Select "Make slave window: Same model".}
+	    \item{Create a slave window:}{Select "Make slave window: Copy model".}
+
+	    \item{Switch class of view:}{Select "Set class of graph window".}
+
+	    \item{Refresh:}{Faster fix of "corrupted" window:
+                            Select "Refresh view (set positions as 'stored')".}
+	    \item{Redraw the view (zoom out):}{Select "Redraw graph window (more refreshing)".}
+	    \item{Update model:}{Select "Update model and redraw (total refreshing)".}
+
+	    \item{Enable rotation:}{Select "Rest (enable) rotation".}
+	    \item{Disable rotation:}{Select "Disable rotation".}
+
+	    \item{Zoom in:}{Select "Zoom in" from main menu, or hit <F1> in canvas. }
+	    \item{Zoom out:}{Select "Zoom out" from main menu, or hit <F2> in canvas.}
+
+	    \item{Export current arguments:}{Select
+		"Assign 'Args' in .GlobalEnv".}
+	    \item{Export the model lattice:}{Select
+		"Assign 'frameModels' in .GlobalEnv".}
+	    \item{Export the graph lattice:}{Select
+		"Assign 'frameViews' in .GlobalEnv".}
 	    \item{Export the graph window:}{Select
-		"Assign Graph-window in .GlobalEnv".}
+		"Assign 'graphWindow' in .GlobalEnv".}
 	    \item{Export the object:}{Select
-		"Assign Object in .GlobalEnv".}
-	}
-    }
+		"Assign 'object' in .GlobalEnv".}
+	}			  			   	
+    }			  			   	
     
     \section{Rotation:}{
 	\itemize{
@@ -432,9 +493,9 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 		"Disable transformation" from the main menu "Graph".}
 	    \item{Export transformation:}{Export the projection
 		matrix - Select
-		"Assign Transformation in .GlobalEnv"
+		"Assign 'transformation' in .GlobalEnv"
                 from the main menu "Graph".}
-	}
+	}			  			   	
     }
 
 % {}
@@ -447,23 +508,27 @@ Many thanks to the gR-group for useful discussions, especially to
 Claus Dethlefsen for testing early versions of this package on DEAL.
 }
 
-\references{
-     CoCo, avaliable form \url{http://www.math.auc.dk/gr/material/CoCo} and
-     \url{http://www.jbs.agrsci.dk/}
-     \code{Biometry/Software-Datasets/CoCo/CoCo.1.6/}
-     with a guide at \url{http://www.jstatsoft.org/v06/i04/},
-     has an interface to \code{\link{dynamicGraph}}. }
+% \references{
+%      CoCo, avaliable form \url{http://www.math.auc.dk/gr/material/CoCo} and
+%      \url{http://www.jbs.agrsci.dk/}
+%      \code{Biometry/Software-Datasets/CoCo/CoCo.1.6/}
+%      with a guide at \url{http://www.jstatsoft.org/v06/i04/},
+%      has an interface to \code{\link{dynamicGraph}}. }
+
+\references{ 
+    CoCo, with a guide at \url{http://www.jstatsoft.org/v06/i04/},
+    has an interface to \code{\link{dynamicGraph}}. }
 
 \author{Jens Henrik Badsberg}
 
 \note{
      Vertices, edges, blocks, block edges,
      factors, and factor edges are objects of the following classes:
-     \code{\link{VertexProto}}, \code{\link{EdgeProto}},
-     and \code{\link{BlockProto}} contains \code{\link{NodeProto}},
-     \code{\link{FactorVertexProto}} contains \code{\link{VertexProto}}, and
-     \code{\link{VertexEdgeProto}}, \code{\link{BlockEdgeProto}}, 
-     \code{\link{FactorEdgeProto}} contains \code{\link{EdgeProto}}.
+     \code{\link{dg.Vertex}}, \code{\link{dg.Edge}},
+     and \code{\link{dg.Block}} contains \code{\link{dg.Node}},
+     \code{\link{dg.FactorVertex}} contains \code{\link{dg.Vertex}}, and
+     \code{\link{dg.VertexEdge}}, \code{\link{dg.BlockEdge}}, 
+     \code{\link{dg.FactorEdge}} contains \code{\link{dg.Edge}}.
 
      The methods 
      \code{\link{draw}},
@@ -529,7 +594,8 @@ Claus Dethlefsen for testing early versions of this package on DEAL.
      can be applied.
 
      The model object of the call of \code{\link{dynamicGraphMain}}
-     should have the methods \code{modifyModel} and \code{testEdge}.
+     should have the methods \code{modifyModel}, \code{testEdge},
+     \code{graphComponents}, and \code{setGraphComponents}.
      When the graph is modified, by adding or dropping vertices or edge,
      the method \code{modifyModel} is called on the argument \code{object}
      of \code{\link{dynamicGraphMain}}. If an \code{object} is returned in
@@ -540,32 +606,48 @@ Claus Dethlefsen for testing early versions of this package on DEAL.
 
      The method \code{testEdge} of \code{object} should return an object with
      the methods \code{label} and \code{width} for labeling edges,
-     see \code{\link{newDefaultTestObject}}.
+     see \code{\link{dg.Test-class}}.
+
+     The methods \code{graphComponents} and \code{setGraphComponents}
+     are used to communicate the graph components between several views
+     of the same model.
+     The method \code{graphComponents} of the model object is for
+     returning the objects to draw in the view, depending on the viewType.
+     The method\code{setGraphComponents} of the model object
+     is called on the model object when the model is modified.
+
+     By \code{returnLink} set to TRUE the functions
+     \code{drawModel}, \code{redrawView}, and \code{update}, and variables 
+     \code{top}, \code{canvas}, \code{viewLabel}, and \code{tags}
+     are returned in the object of the returned value.
+     The function \code{update} is needed for DynamicGraph to be able to
+     update all views when one view is changed, and the other functions
+     and variables are needed for overwriting a view.
+     When any of these values are present in the objects, R will save
+     some environment of the Tcl/tk windows, and the saved workspace
+     might be large.
 
  }
-
-% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{See also \code{\link{DynamicGraph}} and all the other functions
 	of this package. 
 
       An example has been divided on the following 4 manual pages:
-      \code{\link{newDefaultModelObject}} and
-      \code{\link{newDefaultTestObject}}
+      \code{\link{dg.Model-class}} and \code{\link{dg.Test-class}}
       gives an example of a model object with test object.
-      The pages of \code{\link{redrawGraphWindow}} show how the user 
+      The pages of \code{\link{drawModel}} show how the user 
       can add menu items with actions that redraws the graph
       after modification of edges.
       Finally, \code{\link{validVertexClasses}} show how to create
       a new vertex class with a new symbol for drawing the vertex 
       and an item added to the pop up menu of the new vertex class.
-      The files \code{".../dynamicGraph/Tests/Circle.newClass.R"} of
-      the example catalog of \code{dynamicGraph} will do this example
-      collected from these 4 pages.
+      The demo \code{demo(Circle.newClass)} of \code{dynamicGraph}
+      % The file \code{".../dynamicGraph/Tests/Circle.newClass.R"} of
+      % the example catalog of \code{dynamicGraph}
+      will do this example collected from these 4 pages.
 }
 
 \examples{
-
 require(tcltk)
 require(dynamicGraph)
 
@@ -585,8 +667,8 @@ for (j in seq(along = To)) EdgeList[[j]] <- c(From[j], To[j])
 Edges <- returnEdgeList(EdgeList, Vertices, color = "black")
 
 Z <- dynamicGraphMain(Vertices, edgeList = Edges, w = 4)
-
 }
+
 \keyword{ dplot }
 \keyword{ hplot }
 \keyword{ iplot }

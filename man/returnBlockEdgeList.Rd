@@ -1,23 +1,37 @@
 \name{returnBlockEdgeList}
+
 \alias{blockEdgeList}
 \alias{returnBlockEdgeList}
-\title{ The block edge list }
+
+\alias{dg.BlockEdgeList-class}
+
+\title{Class "dg.BlockEdgeList": The block edge list }
+
 \description{
-  Return a list of block edges, each of class \code{BlockEdgeProto}.
+ Return a list of block edges, each of class \code{dg.BlockEdge}.
+
+ Objects can be created by calls of the form \code{new("dg.BlockEdgeList", ...)}.
 }
+
 \usage{
-returnBlockEdgeList(edge.list, vertices, blocks, width = 2, 
-                    color = "default", oriented = FALSE, type = NULL)
+returnBlockEdgeList(edge.list, vertices, blocks, 
+                    visibleBlocks = 1:length(blocks), width = 2, 
+                    color = "default", oriented = FALSE, type = NULL) 
 }
+
 \arguments{
   \item{edge.list}{ A list of vectors identifying the edges (between vertices).
                     Each vector of \code{edge.list} should be a vector of 
                     integers giving the indices of the vertices of an edge, or
                     a vector of text strings with the names of the vertices. }
   \item{vertices}{ The list of \code{vertices}, 
-      each of a class containing \code{VertexProto}. }
+      each of a class containing \code{dg.Vertex}. }
   \item{blocks}{ The list of \code{blocks}, 
-      each of a class \code{BlockProto}. }
+      each of a class \code{dg.Block}. }
+  \item{visibleBlocks}{ A numeric vector with the indices of the
+			\code{visibleBlocks}. The argument is for
+			view where some blocks are not visible in the view,
+			but the vertices of the blocks are drawn. }
   \item{width}{ A numeric with the initial \code{width} of block edges. }
   \item{color}{
       "default", or list with one or two text strings for colors 
@@ -29,17 +43,35 @@ returnBlockEdgeList(edge.list, vertices, blocks, width = 2,
   \item{oriented}{ Logical, if TRUE then the edges are \code{oriented}. }
   \item{type}{ A text string giving the \code{type} of block edges. }
 }
-% \details{ }
+
 \value{
-    A list of block edges, each of class \code{BlockEdgeProto}.
+    A list of block edges, each of class \code{dg.BlockEdge}.
 }
-% \references{ ~put references to the literature/web site here ~ }
+
+\section{Slots}{
+  \describe{
+    \item{\code{.Data}:}{Object of class \code{"list"}. }
+  }
+}
+
+\section{Extends}{
+Class \code{"dg.EdgeList"}, directly.
+Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
+Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
+Class \code{"list"}, by class \code{"dg.EdgeList"}.
+}
+
+\section{Methods}{
+No methods defined with class "dg.BlockEdgeList" in the signature.
+}
+
 \author{Jens Henrik Badsberg}
+
 \note{ 
     The methods of the edge list, \code{\link{returnEdgeList}},
     also applies for block edge lists.
  }
-% \seealso{ ~~objects to See Also as \code{\link{dynamicGraphMain}}, ~~~ }
+
 \examples{
 Block.tree <- list(label = "W", Vertices = c("country"),
                    X = list(Vertices = c("sex", "race"),
@@ -78,8 +110,9 @@ Oriented(blockedges)
 Widths(blockedges) <- rep(1,  7)
 Widths(blockedges) <- rep(1, 14)
 Widths(blockedges)
-
+asDataFrame(blockedges)
 }
+
 \keyword{ methods }
 \keyword{ dynamic }
 \keyword{ graphs }

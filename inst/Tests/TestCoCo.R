@@ -8,10 +8,10 @@ require(CoCo)
 source("usermenus.R")
 
 data(Reinis);                                                    
-fullModel <- makeModel(enterModel("*", object = Reinis));
+fullModel <- makeModel(enterModel("*", data = Reinis));
 fullGraph <- dynamic.Graph(fullModel, UserMenus = Menus);
-backward(recursive = TRUE, follow = TRUE, object = Reinis);
-# eh(object = Reinis);
+backward(recursive = TRUE, follow = TRUE);
+# eh();
 lastModel <- makeModel("last");
 backwardGraph <- dynamic.Graph(lastModel, UserMenus = Menus);
 
