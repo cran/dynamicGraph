@@ -17,11 +17,12 @@ function (lib, pkg)
 function () 
 {
     library(methods)
-    setClass("GraphLatticeProto", representation(dummyVertices = "list", 
+    setClass("GraphLatticeProto", representation(vertices = "list", 
         blocks = "list", blockTree = "list", graphs = "list"))
     setClass("CanvasProto", representation(top = "tkwin", canvas = "tkwin", 
-        tags = "list", graphEdges = "list", factorEdges = "list", 
-        blockEdges = "list", id = "numeric", dummyVisibleVertices = "numeric"))
+        tags = "list", id = "numeric", visibleVertices = "numeric", 
+        graphEdges = "list", blockEdges = "list", factorVertices = "list", 
+        factorEdges = "list"))
     setClass("NodeProto", representation(color = "character", 
         label = "character", label.position = "numeric"), prototype(color = "black", 
         label = "Label", label.position = c(0, 0, 0)))
@@ -38,9 +39,8 @@ function ()
         index = 0, ancestors = 0, descendants = 0, position = matrix(rep(0, 
             6), ncol = 3), visible = TRUE, color = "black", label = "Label", 
         label.position = c(0, 0, 0)))
-    setClass("FactorVertexProto", contains = "VertexProto", representation(test.position = "numeric", 
-        vertex.indices = "numeric"), prototype(test.position = c(0, 
-        0, 0), vertex.indices = c(0, 0)))
+    setClass("FactorVertexProto", contains = "VertexProto", representation(vertex.indices = "numeric"), 
+        prototype(vertex.indices = c(0, 0)))
     for (prototype in paste(validFactorClasses()[, 2])) setClass(prototype, 
         contains = "FactorVertexProto")
     setClass("EdgeProto", contains = "NodeProto", representation(vertex.indices = "numeric", 
@@ -120,21 +120,15 @@ function ()
         x@index <- value
         x
     })
-    if (!isGeneric("vertexIndices")) {
-        if (is.function("vertexIndices")) 
-            fun <- vertexIndices
-        else fun <- function(object) standardGeneric("vertexIndices")
-        setGeneric("vertexIndices", fun)
+    if (!isGeneric("nodeIndices")) {
+        if (is.function("nodeIndices")) 
+            fun <- nodeIndices
+        else fun <- function(object) standardGeneric("nodeIndices")
+        setGeneric("nodeIndices", fun)
     }
-    setMethod("vertexIndices", "VertexProto", function(object) object@vertex.indices)
-    setMethod("vertexIndices", "EdgeProto", function(object) object@vertex.indices)
-    setGeneric("vertexIndices<-", function(x, value) standardGeneric("vertexIndices<-"))
-    setReplaceMethod("vertexIndices", "VertexProto", function(x, 
-        value) {
-        x@vertex.indices <- value
-        x
-    })
-    setReplaceMethod("vertexIndices", "EdgeProto", function(x, 
+    setMethod("nodeIndices", "FactorVertexProto", function(object) object@vertex.indices)
+    setGeneric("nodeIndices<-", function(x, value) standardGeneric("nodeIndices<-"))
+    setReplaceMethod("nodeIndices", "FactorVertexProto", function(x, 
         value) {
         x@vertex.indices <- value
         x

@@ -9,10 +9,30 @@ source("/home/jhb/DynamicGraph/dynamicGraph/src/onLoad.R")
 
 # source("/home/jhb/DynamicGraph/dynamicGraph/src/First.R")
 
-# source("/home/jhb/DynamicGraph/dynamicGraph/src/DefaultObject.R")
-
 # source("/home/jhb/DynamicGraph/dynamicGraph/Tests/usermenus.R")
 
 package.skeleton("dynamicGraph", list = ls(all.names = TRUE))
+
+source("/home/jhb/DynamicGraph/dynamicGraph/src/defaultObject.R")
+
+promptClass("BlockEdgeProto")
+promptClass("BlockProto")
+promptClass("CanvasProto")
+promptClass("ContinuousVertexProto")
+promptClass("DiscreteGeneratorProto")
+promptClass("DiscreteVertexProto")
+promptClass("EdgeProto")
+promptClass("FactorEdgeProto")
+promptClass("FactorVertexProto")
+promptClass("GeneratorProto")
+promptClass("GraphLatticeProto")
+promptClass("LinearGeneratorProto")
+promptClass("NodeProto")
+promptClass("OrdinalVertexProto")
+promptClass("QuadraticGeneratorProto")
+promptClass("VertexEdgeProto")
+promptClass("VertexProto")
+promptClass("defaultModelObjectProto")
+promptClass("defaultTestObjectProto")
 
 quit()

@@ -18,6 +18,22 @@
 \alias{Visible}
 \alias{Visible<-}
 
+\alias{Names,list-method}
+\alias{Names<-,list-method}
+\alias{Colors,list-method}
+\alias{Colors<-,list-method}
+\alias{Labels,list-method}
+\alias{Labels<-,list-method}
+\alias{LabelPositions,list-method}
+\alias{LabelPositions<-,list-method}
+\alias{Positions,list-method}
+\alias{Positions<-,list-method}
+\alias{Strata,list-method}
+\alias{Strata<-,list-method}
+\alias{Indices,list-method}
+\alias{Visible,list-method}
+\alias{Visible<-,list-method}
+
 \title{ The vertex list }
 \description{
   Return a list of vertices of classes containing the class \code{VertexProto}.

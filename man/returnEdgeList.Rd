@@ -9,6 +9,14 @@
 \alias{Widths<-}
 \alias{Oriented}
 \alias{Oriented<-}
+
+\alias{NodeIndices,list-method}
+\alias{NodeTypes,list-method}
+\alias{Widths,list-method}
+\alias{Widths<-,list-method}
+\alias{Oriented,list-method}
+\alias{Oriented<-,list-method}
+
 \title{ The edge list }
 \description{
   Return a list of edges, each of class containing \code{VertexEdgeProto}.

@@ -1,4 +1,10 @@
 
+ 2004-01-30: Change of names dummyVertices and dummyVisualVertices.
+
+ 2004-01-30: factorVertices added to CanvasProto
+
+ 2004-01-30: Change of vertexIndices to nodeIndices for only factors
+
  2004-01-28: edgeLabel, edgeWidth, testLabel and testWidth now
              labelOfEdge, ...
 

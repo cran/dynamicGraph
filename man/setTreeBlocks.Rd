@@ -4,6 +4,12 @@
 \alias{NodeAncestors<-}
 \alias{NodeDescendants}
 \alias{NodeDescendants<-}
+
+\alias{NodeAncestors,list-method}
+\alias{NodeAncestors<-,list-method}
+\alias{NodeDescendants,list-method}
+\alias{NodeDescendants<-,list-method}
+
 \title{The block tree}
 \description{
     Create a block tree with positioning the vertices in to blocks.

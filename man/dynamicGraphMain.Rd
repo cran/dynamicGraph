@@ -149,7 +149,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
     \item{namesOnEdges}{ Logical. If FALSE then the names of the vertices 
         are not set on the edge as label. }
     \item{updateEdgeLabels}{ Logical.  If FALSE then the edge labels
-        are not cleared then the model is updated. }
+        are not cleared when the model is updated. }
     \item{debug.strata}{ Logical for tracing strata of vertices
                 (also in plot). }
     \item{debug.edges}{ Logical for tracing edges (also by labels in plot). }

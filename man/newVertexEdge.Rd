@@ -2,12 +2,14 @@
 \alias{EdgeProto}
 \alias{VertexEdgeProto}
 \alias{newVertexEdge}
-\alias{vertexIndices}
-\alias{vertexIndices<-}  
 \alias{labelOfEdge}
 \alias{widthOfEdge}
 \alias{labelOfEdge<-}
 \alias{widthOfEdge<-}
+\alias{edgeLabel}
+\alias{edgeWidth}
+\alias{edgeLabel<-}
+\alias{edgeWidth<-}
 \alias{nodeIndicesOfEdge}
 \alias{nodeIndicesOfEdge<-}
 \alias{nodeTypesOfEdge}

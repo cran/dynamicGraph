@@ -29,7 +29,7 @@ newBlock(stratum = 0, index = 0, position = matrix(rep(0, 6), ncol = 3),
   \item{ancestors}{ Integer vector for the \code{ancestor} blocks of the
                     block. 
                     The slot with the \code{descendant} blocks is set
-                    after the creation of the block.}
+                    after the creation of the block. }
 }
 % \details{ }
 \value{A object of class \code{BlockProto}. }

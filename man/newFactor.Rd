@@ -1,6 +1,8 @@
 \name{newFactor}
 \alias{FactorVertexProto}
 \alias{newFactor}
+\alias{nodeIndices}
+\alias{nodeIndices<-}  
 \title{The factor vertex object}
 \description{Returns an object of the class
     containing the class \code{FactorVertexProto}.}
@@ -49,7 +51,7 @@ labelPosition(factor)
 name(factor)
 index(factor)
 position(factor)
-vertexIndices(factor)
+nodeIndices(factor)
 
 color(factor) <- "green"
 label(factor) <- "v-1-2-3"

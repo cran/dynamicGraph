@@ -1,6 +1,28 @@
+BlockEdgeProto-class    Class "BlockEdgeProto" ~~~
+BlockProto-class        Class "BlockProto" ~~~
 blockTreeToList         Extract the list of blocks from a block tree
+CanvasProto-class       Class "CanvasProto" ~~~
+ContinuousVertexProto-class
+                        Class "ContinuousVertexProto" ~~~
+defaultModelObjectProto-class
+                        Class "defaultModelObjectProto" ~~~
+defaultTestObjectProto-class
+                        Class "defaultTestObjectProto" ~~~
+DiscreteGeneratorProto-class
+                        Class "DiscreteGeneratorProto" ~~~
+DiscreteVertexProto-class
+                        Class "DiscreteVertexProto" ~~~
 dynamicGraphMain        Dynamic Graph
 DynamicGraph            Simple interface to dynamicGraph
+EdgeProto-class         Class "EdgeProto" ~~~
+FactorEdgeProto-class   Class "FactorEdgeProto" ~~~
+FactorVertexProto-class
+                        Class "FactorVertexProto" ~~~
+GeneratorProto-class    Class "GeneratorProto" ~~~
+GraphLatticeProto-class
+                        Class "GraphLatticeProto"
+LinearGeneratorProto-class
+                        Class "LinearGeneratorProto" ~~~
 modalDialog             Modal dialog window for returning a text
                         string
 nameToVertexIndex       The indices of vertices
@@ -12,6 +34,11 @@ newFactorEdge           The factor edge object
 newFactor               The factor vertex object
 newVertexEdge           The edge object
 newVertex               The vertex object
+NodeProto-class         Class "NodeProto" ~~~
+OrdinalVertexProto-class
+                        Class "OrdinalVertexProto" ~~~
+QuadraticGeneratorProto-class
+                        Class "QuadraticGeneratorProto" ~~~
 redrawGraphWindow       Redraw the dynamicGraph window and draw slaves
 returnBlockEdgeList     The block edge list
 returnEdgeList          The edge list
@@ -23,3 +50,5 @@ setBlocks               The block list
 setTreeBlocks           The block tree
 validFactorClasses      Valid factor vertex classes
 validVertexClasses      Valid vertex classes
+VertexEdgeProto-class   Class "VertexEdgeProto" ~~~
+VertexProto-class       Class "VertexProto" ~~~

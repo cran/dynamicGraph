@@ -67,11 +67,11 @@ function (vertexList, visibleVertices = 1:length(vertexList),
     }
     "newGraphLattice" <- function(vertices, blocks = list(NULL), 
         blockTree = list(NULL)) {
-        return(new("GraphLatticeProto", dummyVertices = vertices, 
+        return(new("GraphLatticeProto", vertices = vertices, 
             blocks = blocks, blockTree = blockTree))
     }
     "newGraph" <- function(graph.lattice, vertices, graph.edges, 
-        factor.edges, block.edges, Add.GraphWindow = redrawGraphWindow, 
+        block.edges, factor.vertices, factor.edges, Add.GraphWindow = redrawGraphWindow, 
         title = "Graph diddler", close.enough = closeenough, 
         background = "white", width = 400, height = 400) {
         top <- tktoplevel()
@@ -79,8 +79,10 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             closeenough = close.enough, width = width, height = height)
         tkpack(canvas)
         result <- new("CanvasProto", top = top, canvas = canvas, 
-            tags = list(NULL), graphEdges = graph.edges, factorEdges = factor.edges, 
-            blockEdges = block.edges, id = 0, dummyVisibleVertices = 1:length(vertices))
+            tags = list(NULL), id = 0, visibleVertices = 1:length(vertices), 
+            graphEdges = graph.edges, blockEdges = block.edges, 
+            factorVertices = ifelse(is.null(factor.vertices), 
+                list(), factor.vertices), factorEdges = factor.edges)
         tktitle(top) <- title
         return(result)
     }
@@ -3427,7 +3429,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                   "Enter name for lattice", "Lattice", GraphWindow@top)
                 if (ReturnVal == "ID_CANCEL") 
                   return()
-                GraphLattice@dummyVertices <- verticesUpdate()
+                GraphLattice@vertices <- verticesUpdate()
                 assign(ReturnVal, GraphLattice, pos = 1)
             }
             tkadd(graphMenu, "command", label = "Assign GraphLattice in .GlobalEnv", 
@@ -3657,9 +3659,9 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         if (is.null(graphWindow)) {
             ArgWindow <- FALSE
             GraphWindow <- newGraph(graphLattice, vertexList, 
-                edgeList, factorEdgeList, blockEdgeList, redrawGraphWindow, 
-                background = background, title = title, width = width, 
-                height = height)
+                edgeList, blockEdgeList, factorVertexList, factorEdgeList, 
+                redrawGraphWindow, background = background, title = title, 
+                width = width, height = height)
         }
         else {
             ArgWindow <- TRUE

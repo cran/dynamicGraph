@@ -19,7 +19,7 @@ DynamicGraph(names = NULL, types = NULL,
              drawblocks = TRUE, right.to.left = FALSE,
              nested.blocks = FALSE, overlaying = TRUE,
              vertexColor = "red", extraVertexColor = "white",
-             edgeColor = "black", factorVertexColor = "yellow",
+             edgeColor = "black", factorVertexColor = "default",
              factorEdgeColor = "brown", blockEdgeColor = "default",
              blockColors = NULL, ...)
 }
