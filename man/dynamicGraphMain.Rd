@@ -342,7 +342,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	    or colored block canvas and select "Redraw (Zoom to) full
 	    graph" in the appearing block pop up menu. }
 	    }
-    }			  			   	
+    }
 
     \section{Blocks, closed:}{
         Right click the block to get the pop up menu of the closed block:
@@ -377,7 +377,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 	    \item{Export the block edges:}{Select
                 "Assign BlockEdges in .GlobalEnv". }
 	}
-    }			  			   	
+    }
 
     \section{Factor vertices:}{
         Right click the factor vertex to get the pop up menu of the
@@ -393,7 +393,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
                 "Assign FactorVertices in .GlobalEnv". }
 	    \item{Export the factor edges:}{Select
                 "Assign FactorEdges in .GlobalEnv". }
-		}			  			   	
+		}
 	    }  			   	
 	    
     \section{Factor edges:}{
@@ -402,7 +402,7 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 %	\itemize{
 %	    \item{Pop up menu for factor edges:}{Right click the factor edge:
 %		Actions are as for edges.}
-%		}			  			   	
+%		}
 	    }
 
     \section{The graph:}{
@@ -420,8 +420,8 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 		"Assign Graph-window in .GlobalEnv".}
 	    \item{Export the object:}{Select
 		"Assign Object in .GlobalEnv".}
-	}			  			   	
-    }			  			   	
+	}
+    }
     
     \section{Rotation:}{
 	\itemize{
@@ -434,10 +434,10 @@ dynamicGraphMain(vertexList, visibleVertices = 1:length(vertexList),
 		matrix - Select
 		"Assign Transformation in .GlobalEnv"
                 from the main menu "Graph".}
-	}			  			   	
-    }			  			   	
-    
-{}
+	}
+    }
+
+% {}
 
 % http://www.math.auc.dk/gr/material/CoCo/
 % http://www.jbs.agrsci.dk/Biometry/Software-Datasets/CoCo/CoCo.1.6/

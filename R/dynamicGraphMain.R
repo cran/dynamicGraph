@@ -194,7 +194,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 vertexList[[i]]@name <<- namesVertices[i]
                 color(vertexList[[i]]) <<- colorsVertices[i]
                 blockindex(vertexList[[i]]) <<- blocksVertices[i]
-                if (!is.null(blockList)) 
+                if (!is.null(blockList) && !is.null(blockList[[1]])) 
                   stratum(vertexList[[i]]) <<- strataBlocks[blocksVertices[i]]
             }
             return(vertexList)
@@ -222,7 +222,8 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 if (!is.null((tree$sub.blocks))) 
                   for (j in 1:length(tree$sub.blocks)) subBlockTreeUpdate(tree$sub.blocks[[j]])
             }
-            subBlockTreeUpdate(tree)
+            if (!is.null(blockList) && !is.null(blockList[[1]])) 
+                subBlockTreeUpdate(tree)
             return(tree)
         }
         "blocksUpdate" <- function(updateTree = TRUE) {
@@ -230,16 +231,17 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 blockList <<- GraphLattice@blocks
             if ((length(blockTree) == 0) || (is.null(blockTree))) 
                 blockTree <<- GraphLattice@blockTree
-            for (i in seq(along = blockList)) {
-                position <- positionsBlocks[i, , ]
-                position(blockList[[i]]) <<- position
-                position <- positionsBlockLabels[i, ]
-                labelPosition(blockList[[i]]) <<- position
-                blockList[[i]]@stratum <<- strataBlocks[i]
-                blockList[[i]]@label <<- blockLabels[i]
-                blockList[[i]]@closed <<- closedBlock[i]
-                blockList[[i]]@visible <<- !hiddenBlock[i]
-            }
+            if (!is.null(blockList) && !is.null(blockList[[1]])) 
+                for (i in seq(along = blockList)) {
+                  position <- positionsBlocks[i, , ]
+                  position(blockList[[i]]) <<- position
+                  position <- positionsBlockLabels[i, ]
+                  labelPosition(blockList[[i]]) <<- position
+                  blockList[[i]]@stratum <<- strataBlocks[i]
+                  blockList[[i]]@label <<- blockLabels[i]
+                  blockList[[i]]@closed <<- closedBlock[i]
+                  blockList[[i]]@visible <<- !hiddenBlock[i]
+                }
             if (updateTree && !is.null(blockTree)) 
                 blockTreeUpdate(blockTree)
             if (is.null(blockList)) 
@@ -261,7 +263,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 label(factorVertexList[[i]]) <<- factorLabels[i]
                 factorVertexList[[i]]@name <<- namesFactorVertices[i]
                 color(factorVertexList[[i]]) <<- colorsFactorVertices[i]
-                if (!is.null(blockList)) {
+                if (!is.null(blockList) && !is.null(blockList[[1]])) {
                   blockindex(factorVertexList[[i]]) <<- blocksFactorVertices[i]
                   stratum(factorVertexList[[i]]) <<- strataBlocks[blocksFactorVertices[i]]
                 }
@@ -283,7 +285,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 label(extraList[[i]]) <<- extraLabels[i]
                 extraList[[i]]@name <<- namesExtraVertices[i]
                 color(extraList[[i]]) <<- colorsExtraVertices[i]
-                if (!is.null(blockList)) {
+                if (!is.null(blockList) && !is.null(blockList[[1]])) {
                   blockindex(extraList[[i]]) <<- blocksExtraVertices[i]
                   stratum(extraList[[i]]) <<- strataBlocks[blocksExtraVertices[i]]
                 }
@@ -320,7 +322,6 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                   Edges <- newEdges$graphEdges
                 else Edges <- R$newEdges$graphEdges
             else Edges <- R$edgeList
-            print(c(title, "extractEdgesResult"))
             return(Edges)
         }
         "returnEdges" <- function(edge.type = "graphEdge") {
@@ -510,10 +511,10 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         "to" <- function(i, edge.type = "graphEdge") returnEdges(edge.type = edge.type)[[i]]@vertex.indices[2]
         "setTransformation" <- function(value = NULL) {
             if (is.null(value) == (!is.null(transformation))) {
-                if (!is.null(blockList)) 
+                if (!is.null(blockList) && !is.null(blockList[[1]])) 
                   for (i in seq(along = blockList)) deleteBlock(i)
                 transformation <<- value
-                if (!is.null(blockList)) 
+                if (!is.null(blockList) && !is.null(blockList[[1]])) 
                   for (i in seq(along = blockList)) drawBlock(blockList[[i]], 
                     i)
             }
@@ -718,17 +719,17 @@ function (vertexList, visibleVertices = 1:length(vertexList),
             if (vertex.type == "ClosedBlock") 
                 strataBlocks[abs(i)]
             else if (vertex.type == "Vertex") {
-                if (is.null(blockList)) 
+                if (is.null(blockList) || is.null(blockList[[1]])) 
                   strataVertices[i]
                 else strata(blocksVertices[i])
             }
             else if (vertex.type == "Factor") {
-                if (is.null(blockList)) 
+                if (is.null(blockList) || is.null(blockList[[1]])) 
                   strataFactorVertices[-i]
                 else strata(blocksFactorVertices[-i])
             }
             else if (vertex.type == "Extra") {
-                if (is.null(blockList)) 
+                if (is.null(blockList) || is.null(blockList[[1]])) 
                   strataExtraVertices[i]
                 else strata(blocksExtraVertices[i])
             }
@@ -768,7 +769,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         "updateVertexBlockIndex" <- function(position, i) {
             currentIndex <- retBlockIndex(i, vertex.type = "Vertex")
             update <- FALSE
-            if (!is.null(blockList)) {
+            if (!is.null(blockList) && !is.null(blockList[[1]])) {
                 setBlockIndex(i, 0, vertex.type = "Vertex")
                 for (j in seq(along = blockList)) if (inBlock(position, 
                   j)) {
@@ -782,7 +783,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         "updateVertexBlockIndex" <- function(position, i) {
             currentIndex <- retBlockIndex(i, vertex.type = "Vertex")
             update <- FALSE
-            if (!is.null(blockList)) {
+            if (!is.null(blockList) && !is.null(blockList[[1]])) {
                 k <- 0
                 for (j in seq(along = blockList)) if (inBlock(position, 
                   j)) {
@@ -1981,7 +1982,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 print(paste("subUpdateGraphWindow:", txt, " (0)"))
             if (debug.update) 
                 print(paste("subUpdateGraphWindow: Blocks (1-1)"))
-            if (!is.null(blockList)) 
+            if (!is.null(blockList) && !is.null(blockList[[1]])) 
                 for (i in seq(along = blockList)) {
                   if (closedBlock[i] || hiddenBlock[i]) {
                     pos <- retVertexPos(i, "ClosedBlock")
@@ -3894,7 +3895,7 @@ function (vertexList, visibleVertices = 1:length(vertexList),
         closedVertex <- rep(FALSE, length(vertexList))
         closedBlock <- rep(FALSE, length(blockList))
         hiddenBlock <- rep(FALSE, length(blockList))
-        if (!is.null(blockList)) {
+        if (!is.null(blockList) && !is.null(blockList[[1]])) {
             closedBlock <- Closed(blockList)
             hiddenBlock <- closedBlock
             for (i in seq(along = blockList)) hiddenBlock[i] <- isInClosedBlock(i)
@@ -3903,12 +3904,12 @@ function (vertexList, visibleVertices = 1:length(vertexList),
                 closedVertex[i] <- closedBlock[s] || hiddenBlock[s]
             }
         }
-        if (!is.null(blockList)) {
+        if (!is.null(blockList) && !is.null(blockList[[1]])) {
             itemsBlockEdges <- vector("list", length(blockEdgeList))
         }
         initFactorVariables(factorVertexList)
         initExtraVariables(extraList)
-        if (!is.null(blockList)) 
+        if (!is.null(blockList) && !is.null(blockList[[1]])) 
             for (i in seq(along = blockList)) if (!hiddenBlock[i]) 
                 if (closedBlock[i]) 
                   drawVertex(i, w = 10, vertexcolor = "Black", 

@@ -10,7 +10,7 @@ function (edge.list, vertices, blocks, width = 2, color = "default",
     if (is.null(edge.list)) 
         edge.list <- vector("list", length = 0)
     result <- NULL
-    if (!is.null(blocks)) {
+    if (!is.null(blocks) && !is.null(blocks[[1]])) {
         for (i in seq(along = edge.list)) {
             edge <- edge.list[[i]]
             if (!is.numeric(edge)) 
