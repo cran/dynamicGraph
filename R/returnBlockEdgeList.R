@@ -1,6 +1,6 @@
 "returnBlockEdgeList" <-
 function (edge.list, vertices, blocks, visibleBlocks = 1:length(blocks), 
-    width = 2, color = "default", oriented = FALSE, type = NULL) 
+    width = 2, color = "default", N = 3, oriented = NA, type = NULL) 
 {
     "newBlockEdgeList" <- function(list) return(new("dg.BlockEdgeList", 
         nodeList = list))
@@ -9,7 +9,13 @@ function (edge.list, vertices, blocks, visibleBlocks = 1:length(blocks),
     vertex.names <- Names(vertices)
     if (is.null(edge.list)) 
         edge.list <- vector("list", length = 0)
-    result <- .emptyDgList("dg.BlockEdgeList")
+    result <- new("dg.BlockEdgeList")
+    if (!is.null(oriented) && !(length(oriented) == 1)) 
+        warning("Invalid length of argument 'oriented'")
+    if (!is.null(width) && !(length(width) == 1)) 
+        warning("Invalid length of argument 'width'")
+    if (!is.null(color) && !(length(color) <= 2)) 
+        warning("Invalid length of argument 'color'")
     if (!is.null(blocks) && !is.null(blocks[[1]])) {
         for (i in seq(along = edge.list)) {
             edge <- edge.list[[i]]
@@ -42,9 +48,10 @@ function (edge.list, vertices, blocks, visibleBlocks = 1:length(blocks),
                   if (length(color) > 1) 
                     color <- ifelse(all(x < 0), color[1], color[2])
                   class(block.vertices) <- "dg.NodeList"
-                  result <<- append(result, list(newBlockEdge(x, 
-                    block.vertices, width = width, color = color, 
-                    oriented = oriented, type = type)))
+                  result <<- append(result, list(new("dg.BlockEdge", 
+                    vertex.indices = x, vertices = block.vertices, 
+                    width = width, color = color, oriented = oriented, 
+                    N = N)))
                 }
                 b1.plus.ancestors <- numeric(0)
                 if (b1 != 0) 

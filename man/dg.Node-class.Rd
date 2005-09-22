@@ -11,6 +11,9 @@
 \alias{labelPosition<-,dg.Node-method}
 \alias{labelPosition,dg.Node-method}
 \alias{propertyDialog,dg.Node-method}
+\alias{setSlots,dg.Node-method}
+
+\alias{setSlots}
 
 \title{Class "dg.Node" }
 
@@ -54,6 +57,7 @@ The objects has the slots and methods relevant to vertices, edges and blocks.
         Return the \code{label.position} of the object. }
     \item{propertyDialog}{\code{signature(object = "dg.Node")}: 
         Open a Tk/tcl-window with the slots of the node. }
+    \item{setSlots}{\code{signature(object = "dg.Node")}: ... }
   }
 }
 

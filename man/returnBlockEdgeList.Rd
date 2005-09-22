@@ -4,6 +4,7 @@
 \alias{returnBlockEdgeList}
 
 \alias{dg.BlockEdgeList-class}
+\alias{initialize,dg.BlockEdgeList-method}
 
 \title{Class "dg.BlockEdgeList": The block edge list }
 
@@ -16,7 +17,7 @@
 \usage{
 returnBlockEdgeList(edge.list, vertices, blocks, 
                     visibleBlocks = 1:length(blocks), width = 2, 
-                    color = "default", oriented = FALSE, type = NULL) 
+                    color = "default", N = 3, oriented = NA, type = NULL) 
 }
 
 \arguments{
@@ -40,6 +41,7 @@ returnBlockEdgeList(edge.list, vertices, blocks,
       between blocks and for edges between blocks 
       and vertices.
     }
+  \item{N}{ Integer, \code{N} is the number of coordinates of the vertices. }
   \item{oriented}{ Logical, if TRUE then the edges are \code{oriented}. }
   \item{type}{ A text string giving the \code{type} of block edges. }
 }
@@ -55,14 +57,34 @@ returnBlockEdgeList(edge.list, vertices, blocks,
 }
 
 \section{Extends}{
+% Class \code{"dg.EdgeList"}, directly.
+% Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
+% Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
+% Class \code{"list"}, by class \code{"dg.EdgeList"}.
+
+% Class \code{"list"}, from data part.
+% Class \code{"dg.list"}, directly.
+% Class \code{"dg.EdgeList"}, directly.
+% Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
+
 Class \code{"dg.EdgeList"}, directly.
+Class \code{"dg.list"}, directly.
+Class \code{"list"}, from data part.
 Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
-Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
-Class \code{"list"}, by class \code{"dg.EdgeList"}.
+% Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+% Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+Class \code{"vector"}, by class \code{"dg.list"}.
+Class \code{"vector"}, by class \code{"list"}.
 }
 
 \section{Methods}{
-No methods defined with class "dg.BlockEdgeList" in the signature.
+  \describe{
+    \item{initialize}{\code{signature(.Object = "dg.BlockEdgeList")}: ... }
+    \item{ancestorsBlockList}{\code{signature(blockList = "dg.BlockList")}: ... }
+    \item{descendantsBlockList}{\code{signature(blockList = "dg.BlockList")}: ... }
+    \item{checkBlockList}{\code{signature(blockList = "dg.BlockList")}: ... }
+  }
 }
 
 \author{Jens Henrik Badsberg}
@@ -95,6 +117,9 @@ edges <- returnEdgeList(edge.list, vertices, color = "red", oriented = TRUE)
 vertices <- blocktree$Vertices
 blockedges <- returnBlockEdgeList(edge.list, vertices, blocks,
                                   color = "red", oriented = TRUE)
+blockedges <- new("dg.BlockEdgeList", edge.list = edge.list, 
+                                      vertices = vertices, blocks = blocks,
+                                      color = "red", oriented = TRUE)
 
 Names(blockedges)
 Colors(blockedges)

@@ -1,0 +1,7 @@
+mv  addModelsAndViewsNew.R addModelsAndViews.R
+mv  BlocksTreeTextNew.R	   BlocksTreeText.R
+mv  Circle.newEdgeNew.R	   Circle.newEdge.R
+mv  CircleNew.R		   Circle.R
+mv  Circle.newVertexNew.R  Circle.newVertex.R
+mv  CyclicNew.R		   Cyclic.R
+mv  FactorgraphNew.R	   Factorgraph.R

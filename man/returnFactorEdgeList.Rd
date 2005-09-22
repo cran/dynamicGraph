@@ -4,6 +4,7 @@
 \alias{returnFactorEdgeList}
 
 \alias{dg.FactorEdgeList-class}
+\alias{initialize,dg.FactorEdgeList-method}
 
 \title{Class "dg.FactorEdgeList": The factor edge list }
 
@@ -16,7 +17,7 @@
 
 \usage{
 returnFactorEdgeList(edge.list, vertices, factorvertices = NULL,
-                     width = 2, color = "DarkSlateGrey",
+                     width = 2, color = "DarkSlateGrey", N = 3, 
                      % oriented = FALSE,
                      type = NULL)
 }
@@ -34,6 +35,7 @@ returnFactorEdgeList(edge.list, vertices, factorvertices = NULL,
   \item{color}{ A text string giving the initial \code{color}
         of the factor edges. }
   % \item{oriented}{ Logical, if TRUE then the edges are \code{oriented}. }
+  \item{N}{ Integer, \code{N} is the number of coordinates of the vertices. }
   \item{type}{ A text string giving the \code{type} of the factor edges. }
 }
 
@@ -48,14 +50,31 @@ returnFactorEdgeList(edge.list, vertices, factorvertices = NULL,
 }
 
 \section{Extends}{
+% Class \code{"dg.EdgeList"}, directly.
+% Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
+% Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
+% Class \code{"list"}, by class \code{"dg.EdgeList"}.
+
+% Class \code{"list"}, from data part.
+% Class \code{"dg.list"}, directly.
+% Class \code{"dg.EdgeList"}, directly.
+% Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
+
 Class \code{"dg.EdgeList"}, directly.
+Class \code{"dg.list"}, directly.
+Class \code{"list"}, from data part.
 Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
-Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
-Class \code{"list"}, by class \code{"dg.EdgeList"}.
+% Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+% Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+Class \code{"vector"}, by class \code{"dg.list"}.
+Class \code{"vector"}, by class \code{"list"}.
 }
 
 \section{Methods}{
-No methods defined with class "dg.FactorEdgeList" in the signature.
+  \describe{
+    \item{initialize}{\code{signature(.Object = "dg.FactorEdgeList")}: ... }
+  }
 }
 
 \author{Jens Henrik Badsberg}

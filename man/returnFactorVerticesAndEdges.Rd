@@ -72,9 +72,21 @@ returnFactorVerticesAndEdges(Vertices, factors = NULL, types = "Generator",
 }
 
 \section{Extends}{
+% Class \code{"dg.NodeList"}, directly.
+% Class \code{"dg.list"}, by class \code{"dg.NodeList"}.
+% Class \code{"list"}, by class \code{"dg.NodeList"}.
+
+% Class \code{"list"}, from data part.
+% Class \code{"dg.list"}, directly.
+% Class \code{"dg.NodeList"}, directly.
+
 Class \code{"dg.NodeList"}, directly.
-Class \code{"dg.list"}, by class \code{"dg.NodeList"}.
-Class \code{"list"}, by class \code{"dg.NodeList"}.
+Class \code{"dg.list"}, directly.
+Class \code{"list"}, from data part.
+Class \code{"vector"}, by class \code{"dg.NodeList"}.
+% Class \code{"vector"}, by class \code{"dg.NodeList"}.
+Class \code{"vector"}, by class \code{"dg.list"}.
+Class \code{"vector"}, by class \code{"list"}.
 }
 
 \section{Methods}{

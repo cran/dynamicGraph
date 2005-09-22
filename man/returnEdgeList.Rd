@@ -4,6 +4,7 @@
 \alias{returnEdgeList}
 
 \alias{dg.VertexEdgeList-class}
+\alias{initialize,dg.VertexEdgeList-method}
 
 % \alias{NodeTypes}
 % % \alias{NodeTypes<-}
@@ -29,11 +30,11 @@
 \description{
  Return a list of edges, each of class containing \code{dg.VertexEdge}.
 
- Objects can be created by calls of the form \code{new("dg.EdgeList", ...)}.
+ Objects can be created by calls of the form \code{new("dg.VertexEdgeList", ...)}.
 }
 \usage{
 returnEdgeList(edge.list, vertices, width = 2, color = "DarkSlateGrey", N = 3, 
-               oriented = FALSE, types = NULL, edgeClasses = validEdgeClasses())
+               oriented = NA, types = NULL, edgeClasses = validEdgeClasses())
 }
 \arguments{
   \item{edge.list}{ A list of vectors identifying the edges.
@@ -66,14 +67,31 @@ returnEdgeList(edge.list, vertices, width = 2, color = "DarkSlateGrey", N = 3,
 }
 
 \section{Extends}{
+% Class \code{"dg.EdgeList"}, directly.
+% Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
+% Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
+% Class \code{"list"}, by class \code{"dg.EdgeList"}.
+
+% Class \code{"list"}, from data part.
+% Class \code{"dg.NodeList"}, directly.
+% Class \code{"dg.list"}, by class \code{"dg.NodeList"}.
+
 Class \code{"dg.EdgeList"}, directly.
+Class \code{"dg.list"}, directly.
+Class \code{"list"}, from data part.
 Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
-Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
-Class \code{"list"}, by class \code{"dg.EdgeList"}.
+% Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+% Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+Class \code{"vector"}, by class \code{"dg.list"}.
+Class \code{"vector"}, by class \code{"list"}.
+
 }
 
 \section{Methods}{
-No methods defined with class "dg.VertexEdgeList" in the signature.
+  \describe{
+    \item{initialize}{\code{signature(.Object = "dg.VertexEdgeList")}: ... }
+  }
 }
 
 \author{Jens Henrik Badsberg}
@@ -94,7 +112,7 @@ No methods defined with class "dg.VertexEdgeList" in the signature.
     \code{\link{Oriented<-}}. 
 }
 
-\seealso{\code{\link{vertexList}} and \code{\link{newVertexEdge}}.}
+\seealso{\code{\link{vertexList}} and \code{\link{dg.VertexEdge-class}}.}
 
 \examples{
 from <- c("contry", "contry", "race", "race",       "sex",  "sex")
@@ -105,7 +123,11 @@ vertices <- returnVertexList(vertexnames)
 # to <- match(to, vertexnames)
 edge.list <- vector("list", length(to))
 for (j in seq(along = to)) edge.list[[j]] <- c(from[j], to[j])
+
 edges <- returnEdgeList(edge.list, vertices, color = "red", oriented = TRUE)
+
+edges <- new("dg.VertexEdgeList", edge.list = edge.list,
+             vertices = vertices, color = "red", oriented = TRUE)
 
 Names(edges)
 Colors(edges)

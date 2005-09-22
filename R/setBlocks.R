@@ -29,8 +29,9 @@ function (block.list, vertices, labels = NULL, right.to.left = FALSE,
             if (!is.null(blockColors) && (length(blockColors) >= 
                 j)) 
                 color <- blockColors[i]
-            result[[i]] <- newBlock(stratum = j, index = -j, 
-                position = position, color = color, label = label)
+            result[[i]] <- new("dg.Block", stratum = j, index = -j, 
+                position = position, closed = FALSE, visible = TRUE, 
+                color = color, label = label, parent = 0, ancestors = 0)
         }
         names(result) <- labels
         return(result)
@@ -70,6 +71,9 @@ function (block.list, vertices, labels = NULL, right.to.left = FALSE,
                 n - i, i)
             blockindex(vertices[[name.list[j]]]) <<- stratum(vertices[[name.list[j]]])
         }
+        for (i in seq(along = vertices)) position(vertices[[i]]) <- c(100 * 
+            (i - 0.5)/length(vertices) - 50, -48.5, rep(0, N - 
+            2))
         if (right.to.left) 
             i.list <- rev(1:n)
         else i.list <- 1:n

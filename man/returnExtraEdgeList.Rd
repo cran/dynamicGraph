@@ -4,6 +4,7 @@
 \alias{returnExtraEdgeList}
 
 \alias{dg.ExtraEdgeList-class}
+\alias{initialize,dg.ExtraEdgeList-method}
 
 \title{Class "dg.ExtraEdgeList": The extra edge list }
 
@@ -16,7 +17,7 @@
 
 \usage{
 returnExtraEdgeList(edge.list, vertices, extravertices = NULL,
-                    width = 2, color = "DarkSlateGrey", type = NULL)
+                    width = 2, color = "DarkSlateGrey", N = 3, type = NULL)
 }
 
 \arguments{
@@ -33,6 +34,7 @@ returnExtraEdgeList(edge.list, vertices, extravertices = NULL,
   \item{color}{ A text string giving the initial \code{color}
         of the extra edges. }
   % \item{oriented}{ Logical, if TRUE then the edges are \code{oriented}. }
+  \item{N}{ Integer, \code{N} is the number of coordinates of the vertices. }
   \item{type}{ A text string giving the \code{type} of the extra edges. }
 }
 
@@ -47,14 +49,31 @@ returnExtraEdgeList(edge.list, vertices, extravertices = NULL,
 }
 
 \section{Extends}{
+% Class \code{"dg.EdgeList"}, directly.
+% Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
+% Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
+% Class \code{"list"}, by class \code{"dg.EdgeList"}.
+
+% Class \code{"list"}, from data part.
+% Class \code{"dg.list"}, directly.
+% Class \code{"dg.EdgeList"}, directly.
+% Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
+
 Class \code{"dg.EdgeList"}, directly.
+Class \code{"dg.list"}, directly.
+Class \code{"list"}, from data part.
 Class \code{"dg.NodeList"}, by class \code{"dg.EdgeList"}.
-Class \code{"dg.list"}, by class \code{"dg.EdgeList"}.
-Class \code{"list"}, by class \code{"dg.EdgeList"}.
+Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+% Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+% Class \code{"vector"}, by class \code{"dg.EdgeList"}.
+Class \code{"vector"}, by class \code{"dg.list"}.
+Class \code{"vector"}, by class \code{"list"}.
 }
 
 \section{Methods}{
-No methods defined with class "dg.ExtraEdgeList" in the signature.
+  \describe{
+    \item{initialize}{\code{signature(.Object = "dg.ExtraEdgeList")}: ... }
+  }
 }
 
 \author{Jens Henrik Badsberg}

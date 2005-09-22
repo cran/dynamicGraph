@@ -7,6 +7,14 @@
 
 \alias{dg.BlockList-class}
 
+\alias{ancestorsBlockList}
+\alias{checkBlockList}
+\alias{descendantsBlockList}
+
+\alias{ancestorsBlockList,dg.BlockList-method}
+\alias{checkBlockList,dg.BlockList-method}
+\alias{descendantsBlockList,dg.BlockList-method}
+
 \description{
  Create a block list with positioning the vertices in the blocks.    
 
@@ -51,7 +59,7 @@ setBlocks(block.list, vertices, labels = NULL,
   \item{Blocks}{The list of blocks, each of class 
         \code{\link{dg.Block}}.}
   \item{Vertices}{The list of vertices,
-        with the positions updated such the vertices
+        with the positions of the vertices updated such the vertices
         has positions within the blocks. }
 }
 
@@ -62,13 +70,29 @@ setBlocks(block.list, vertices, labels = NULL,
 }
 
 \section{Extends}{
+% Class \code{"dg.NodeList"}, directly.
+% Class \code{"dg.list"}, by class \code{"dg.NodeList"}.
+% Class \code{"list"}, by class \code{"dg.NodeList"}.
+
+% Class \code{"list"}, from data part.
+% Class \code{"dg.list"}, directly.
+% Class \code{"dg.NodeList"}, directly.
+
 Class \code{"dg.NodeList"}, directly.
-Class \code{"dg.list"}, by class \code{"dg.NodeList"}.
-Class \code{"list"}, by class \code{"dg.NodeList"}.
+Class \code{"dg.list"}, directly.
+Class \code{"list"}, from data part.
+% Class \code{"vector"}, by class \code{"dg.NodeList"}.
+Class \code{"vector"}, by class \code{"dg.NodeList"}.
+Class \code{"vector"}, by class \code{"dg.list"}.
+Class \code{"vector"}, by class \code{"list"}.
 }
 
 \section{Methods}{
-No methods defined with class "dg.BlockList" in the signature.
+  \describe{
+    \item{checkBlockList}{\code{signature(blockList = "dg.BlockList")}: ... }
+    \item{ancestorsBlockList}{\code{signature(blockList = "dg.BlockList")}: ... }
+    \item{descendantsBlockList}{\code{signature(blockList = "dg.BlockList")}: ... }
+  }
 }
 
 \author{Jens Henrik Badsberg}
@@ -93,22 +117,26 @@ Blocks <- list(Basic = c(2, 1), Intermediate = c(5, 4, 3),  Now = c(6))
 
 V.Names <- paste(V.Names, c(1, 1, 2, 2, 2, 3), sep =":")
 
-Z <- DynamicGraph(V.Names, V.Types, From, To, blocks = Blocks,
-                  width = 600, height = 600, drawblocks = TRUE,
-                  drawBlockBackground = FALSE, title = "DrawBlocks")
+graph <- new("dg.simple.graph", vertex.names = V.Names, types = V.Types,
+             from = From, to = To, blocks = Blocks)
+
+W <- dg(graph,
+        control = dg.control(width = 600, height = 600, drawblocks = TRUE,
+                             drawBlockBackground = FALSE, title = "DrawBlocks", 
+                             namesOnEdges = FALSE))
 
 # A block recursiv model, without drawing blocks:
 
-Z <- DynamicGraph(V.Names, V.Types, From, To, blocks = Blocks,
-                  width = 600, height = 600, 
-                  drawblocks = FALSE, title = "No blocks drawn")
+W <- dg(simpleGraphToGraph(graph, control = dg.control(drawblocks = FALSE)),
+        control = dg.control(width = 600, height = 600, title = "No blocks drawn"))
 
 # A block recursive model with nested blocks:
 
-Z <- DynamicGraph(V.Names, V.Types, From, To, blocks = Blocks,
-                  width = 600, height = 600, drawblocks = TRUE, 
-                  nested.blocks = TRUE, title = "Nested blocks",
-                  blockColors = paste("Grey", 100 - 2 * (1:10), sep = ""))
+W <- dg(simpleGraphToGraph(graph, 
+          control = dg.control(nested.blocks = TRUE,
+                               blockColors = 
+                               paste("Grey", 100 - 2 * (1:10), sep = ""))),
+        control = dg.control(width = 600, height = 600, title = "Nested blocks"))
 
 # The block list of the last example:
 

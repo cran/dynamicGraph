@@ -1,20 +1,140 @@
 
+
+ 1.7...:
+ =======
+
+ 2005-07-25: "initialize" methods for dg.VertexList, dg.EdgeList, ...
+             but not returnFactorVerticesAndEdges and setBlocks.
+
+ 2005-07-02: new-functions replaced by "initialize" methods.
+
+ 2005-07-02: The object "dg.graph" 'propagate' to "dynamicGraphMain",
+             and "dg.simple.graph" 'propagate' to "DynamicGraph".
+
+ 2005-06-22: "learning" / "model search" of edges eliminated: 
+             Edges not drawn before used.
+
+ 2005-06-15: Argument "blockTree" removed from "dynamicGraphMain".
+
+ 2005-06-15: Check of "family" structure in blockList,
+             based on slot "parent".
+
+ 2005-06-14: "Lazy" popup menus: First made when needed.
+
+ 2005-06-14: Panel for blockList updated in slave windows.
+
+ 2005-06-07: tkselection.set / ..clear used for visibleVertices
+             for variableList in left side panel:
+             tkinsert / tkdelete (with 'quoted' names for vertices
+             not visible) better, and implemented !!!
+
+ 2005-06-07: Fix of blocks for "N" = 2.
+
+ 2005-06-07: Panel for blockList implemented.
+
+ 2005-06-06: Panel for blockTree implemented.
+
+ 2005-06-05: Edges with vertices with index zero not drawn.
+             (Redraw of 'frameModels' with deleted edges.) 
+
+ 2005-06-04: 'top', 'box' 'canvas', 'viewLabel', and 'tags', and
+             functions 'drawModel', 'redrawView', and 'update' now
+             put into tree of environments in 'dynamicGraph' environment.
+             This reduces the size of the saved workspace.
+
+ 2005-05-30: Panel with "box" for variables implemented:
+             Selection used for adding and deleting variables -
+             Not optimal: Selection influenced by selection in other windows!
+
+ 2005-05-29: Started implementing the method "dg" for the classes
+             "dg.graph" (for "dynamicGraphMain")
+             and "dg.simple.graph" (for "DynamicGraph").
+
+ 2005-05-28: Replacement of indices of vertices on sequence.
+
+ 2005-05-28: Vertices constrained to blocks implemented.
+
+ 2005-05-27: 1) When no edge labels was selected, namesOnEdges = FALSE,
+                the edge labels returned when moving vertices,
+             2) After delete of edgelabels, edgelabels returned when adding 
+                edges, but are remove for old edges when moving vertices.
+
+             But problems fixed: When namesOnEdges the edgelabels are
+             cleared in the edge lists (if namesOnEdges is NA, the edge
+             labels is not drawn). Edge label can now be deleted "for good",
+             (e.i. namesOnEdges is set to TRUE, and the labels of the list
+             cleared), or "temporary" (e.i. from the view until vertices
+             moved or edges added).
+
+ 2005-05-26: Position of vertices not in a block corrected.
+
+ 2005-05-26: Label on the top block: Use root.label in setTreeBlocks.
+
+ 2005-05-26: Man page for "dg.control".
+
+ 2005-05-26: UserMenus move to dg.control,
+             returnLink move to dg.control, and replace by saveTkReferences,
+             saveFunctions added to dg.control, hasMethods move to dg.control,
+             N replaced by local.N in dynamicGraphMain (not control$N).
+
+ 2005-05-25: 'top', 'canvas', 'viewLabel', and 'tags' now put in environment
+             in view. Also environments in graph frame and model frame.
+             The functions "update", "redrawView", and "drawModel" put in
+             respective environments. (Putting functions in environments
+             does not reduce size of saved workspace !!!!)
+             "returnFunc" ???
+
+ 2005-05-24: "dg.control" implemented. Consider: viewType and oriented.
+
+ 2005-05-13: .asDataFrame: Test for "dist".
+
+ 2005-05-12: "oriented" now has tree possible values: NA, FALSE and TRUE.
+             If "oriented" is TRUE then the edges is drawn directed
+             according to the order of the vertices.
+             If "oriented" is FALSE then the edges is drawn as an undirected
+             edge, also between blocks.
+             If "oriented" is NA then the edges is drawn directed
+             according to the strata of the blocks of the vertices.
+
+ 2005-05-12: Undirected edges between blocks.
+
+ 2005-05-12: Directed edges in blocks:
+             If the slot "oriented" is TRUE the edge is oriented
+             according to the order of the vertices, remains
+             when the vertices are moved between blocks.
+
+ 2005-05-12: Edges with slot "oriented" TRUE drawn as oriented,
+             also when argument "oriented" is FALSE.
+
+ 2005-05-11: .propertyDialog: Test for "is.language".
+
+ 2005-05-11: .propertyDialog: Fix of "<<-".
+
+ 2005-05-10: .propertyDialog: old.slot.names and new.slot.names
+             for changing class of vertex.
+
+ 2005-05-09: viewLabel move in "newGraph".
+
+ 2005-05-09: Work with new canvas (not included in source yet).
+ 
+ - - - - -
+
  2004-10-17: When 'returnLink' is TRUE:
              'top', 'canvas', 'viewLabel', and 'tags' stored
-	     in returned value to enable 'overwrite' and 'update'.
+             in returned value to enable 'overwrite' and 'update'.
 
  2004-10-14: 'top', 'canvas', 'viewLabel', and 'tags' not stored
-	     in returned value to reduce space.
+             in returned value to reduce space.
 
  2004-10-14: Rotation by keys for factors and blocks
 
- 2004-10-07: Rotation by keys eventes implemented 
+ 2004-10-07: Rotation by keys events implemented 
 
  2004-10-06: "resizeCanvas" improved by 'grid', 'frame' + 'pack'
              and 'tkgrid.columnconfigure' and 'tkgrid.rowconfigure'
 
  2004-10-06: Radiobutton in sub menus for 'transformation' and
-	     'useNamesForLabels'
+             'useNamesForLabels'
 
  2004-10-03: useNamesForLabels implemented
 
@@ -30,13 +150,13 @@
  2004-09-29: 'updateAddViews' ("tree structure" for views) implemented:
 
               o All graph windows are updated when the mouse leaves
-		one window;
+                one window;
 
-	      o "Update all slots of 'frameModels'" added to graph menu;
+              o "Update all slots of 'frameModels'" added to graph menu;
 
-	      o "Assign 'frameModels' in .GlobalEnv" and
-		"Assign 'frameViews' in .GlobalEnv" will after the
-		return appropriate "trees".
+              o "Assign 'frameModels' in .GlobalEnv" and
+                "Assign 'frameViews' in .GlobalEnv" will after the
+                return appropriate "trees".
 
  2004-09-27: Str added, with title to "DynamicGraph"- objects
 
@@ -67,7 +187,7 @@
               o # setModel(object, R = NULL, txt = "propertyNode")
 
  2004-09-24: Message added on propertyDialog for trying to change
-	     difficult and fixed slots.
+             difficult and fixed slots.
 
  2004-09-24: 'vertexList', 'blockList', and 'blockTree'
              can now be given to 'redrawView'
@@ -97,32 +217,32 @@
              - Slave window also checked for adding block
  
  2004-09-18: Add block, from main menu, from block menu and
-	     by click (shift-control-2) canvas implemented.
+             by click (shift-control-2) canvas implemented.
 
  2004-09-16: "Proto" removed from all classes
 
  2004-09-14: Fix of problems from Claus:
 
-	     - Zoom from "NULL"
+             - Zoom from "NULL"
 
-	     - Missing "oriented" argument to "redrawView"
+             - Missing "oriented" argument to "redrawView"
 
-	     - "Property dialog box" -> "Properties"
+             - "Property dialog box" -> "Properties"
 
-	     - "DarkSlateGray" -> "DarkGrey" for "propertyDialog"
+             - "DarkSlateGray" -> "DarkGrey" for "propertyDialog"
 
-	     - ( demo(Reinis) for CoCo )
+             - ( demo(Reinis) for CoCo )
 
-	     - Check for valid values of "dash pattern", "color" and
+             - Check for valid values of "dash pattern", "color" and
                "numerics"
 
-	     - "color" for selected nodes and
-	       "color", "width", and "dash" for edges, both fragile
+             - "color" for selected nodes and
+               "color", "width", and "dash" for edges, both fragile
 
  
  2004-09-11: Zoom:
  
-	     - "Zoom in" and "Zoom out" by button 2 in canvas
+             - "Zoom in" and "Zoom out" by button 2 in canvas
 
 
  2004-09-10: visibleBlocks added to returnGraphComponents and redrawView
@@ -140,48 +260,48 @@
 
  2004-09-05: NEW: Scroll of canvas, zoom and resize of window:
 
-	     - Scrollbars below and right to canvas
+             - Scrollbars below and right to canvas
 
-	     - "Zoom in" and "Zoom out" at "Graph" main menu
+             - "Zoom in" and "Zoom out" at "Graph" main menu
 
-	     - Resize of window (some "Parkinson" can be eliminated
+             - Resize of window (some "Parkinson" can be eliminated
                                  by making the window smaller again).
 
-	     - Arguments "permitZoom" and "margin" for "dynamicGraphMain".
+             - Arguments "permitZoom" and "margin" for "dynamicGraphMain".
 
 
  2004-09-03: Dialog box for slots of vertices (ordinary, factors and extra),
              edges (graph, factor and block), and blocks (opened and closed):
 
-	     - The method "propertyDialog" is called from the popop-
-	       menu of the object.
+             - The method "propertyDialog" is called from the popop-
+               menu of the object.
 
-	     - Not all slotvalues will be updated in the graph window,
-	       and not all updated values will remain.
+             - Not all slotvalues will be updated in the graph window,
+               and not all updated values will remain.
 
  
  2004-09-02: "activefill" used for vertices, closed blocks, and edges
 
 
  2004-09-01: Adding models and views to existing graphs
-	     ("model from command line to graph"):
+             ("model from command line to graph"):
 
-	     - "addGraph" now part of DynamicGraph (and removed), by
+             - "addGraph" now part of DynamicGraph (and removed), by
 
-	     - arguments "addModel", "addView", and "overwrite" to
-	       "DynamicGraph":
+             - arguments "addModel", "addView", and "overwrite" to
+               "DynamicGraph":
 
-	       o For adding new views of model, with new graph windows:
+               o For adding new views of model, with new graph windows:
 
                  "addView = TRUE, frameModels = Args$frameModels, 
                  frameViews = Args$frameViews, graphWindow = NULL, ..."
 
-	       o For adding model, with new graph window:
+               o For adding model, with new graph window:
 
                  "addModel = TRUE, frameModels = Args$frameModels, 
                  frameViews = NULL, graphWindow = NULL, ..."
 
-	       o For replacing model, in the current graph window:
+               o For replacing model, in the current graph window:
 
                  "overwrite = TRUE, addModel = TRUE,
                   frameModels = Args$frameModels, 
@@ -192,61 +312,61 @@
  2004-08-31: Same model in several windows, but different views
              (2-section, factor, moral, essential, ...)
 
-	     - Arguments "viewType" for selection the "class" of the view 
+             - Arguments "viewType" for selection the "class" of the view 
 
-	     - Select "viewType" from the "Graph" main menu
+             - Select "viewType" from the "Graph" main menu
 
-	     - "redrawGraphWindow" now replaced by two layers:
-	       "drawModel" and "redrawView"
+             - "redrawGraphWindow" now replaced by two layers:
+               "drawModel" and "redrawView"
 
-	     - Now: ViewProto-class, SimpleViewProto-class
+             - Now: ViewProto-class, SimpleViewProto-class
                FactorViewProto-class, MoralViewProto-class,
                EssentialViewProto-class, 
 
-	     - New view types can be defined,
+             - New view types can be defined,
 
-	       o Argument viewClasses = validViewClasses() 
-	         of dynamicGraphMain
+               o Argument viewClasses = validViewClasses() 
+                 of dynamicGraphMain
 
-	     - For "communicating" the model between views:
+             - For "communicating" the model between views:
 
-	       o The method "returnGraphComponents" of the model object
-	         for returning the objects to draw in the view, 
-	         depending on the viewType.
+               o The method "returnGraphComponents" of the model object
+                 for returning the objects to draw in the view, 
+                 depending on the viewType.
 
-	       o The method "setGraphComponents" of the model object
-	         is called on the model object when the model is modified.
+               o The method "setGraphComponents" of the model object
+                 is called on the model object when the model is modified.
 
-	     - Example "3.R" added
+             - Example "3.R" added
 
  
  2004-08-29: Edge class added:
 
 
-	     - New edge types can be defined,
+             - New edge types can be defined,
 
-	       o Argument edgeClasses = validEdgeClasses() 
-	         of dynamicGraphMain
+               o Argument edgeClasses = validEdgeClasses() 
+                 of dynamicGraphMain
 
              - DashedVertexEdgeProto, DottedVertexEdgeProto,
                DoubleArrowVertexEdgeProto, DoubleConnectedVertexEdgeProto
                TripleConnectedVertexEdgeProto
 
-	     - slot "dash": For dash patern
+             - slot "dash": For dash pattern
 
-	     - The "draw" method, returned values from the method:
+             - The "draw" method, returned values from the method:
 
-	       o "lines" for line objects between pairs of vertices,
-		 with coordinates at the vertices
+               o "lines" for line objects between pairs of vertices,
+                 with coordinates at the vertices
 
-	       o "tags" for objects between pairs of vertices,
-		 with coordinates at the middle of the two vertices
+               o "tags" for objects between pairs of vertices,
+                 with coordinates at the middle of the two vertices
 
-	     - Example "Circle.newEdge.R" added
+             - Example "Circle.newEdge.R" added
 
 
  2004-08-28: Fix: More factor- or extra-vertices than vertices gave
-		  invalid index
+                  invalid index
 
 
  2004-08-27: New: Select set of edges by holding SHIFT or/and CONTROL
@@ -256,7 +376,7 @@
 
 
  2004-08-27: "invisible()" returned from "redrawView", and thus also 
-	     from "drawModel", "dynamicGraphMain", and "DynamicGraph"
+             from "drawModel", "dynamicGraphMain", and "DynamicGraph"
 
 
  1.6.6:

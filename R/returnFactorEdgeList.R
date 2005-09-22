@@ -1,6 +1,6 @@
 "returnFactorEdgeList" <-
 function (edge.list, vertices, factorvertices = NULL, width = 2, 
-    color = "DarkSlateGrey", type = NULL) 
+    color = "DarkSlateGrey", N = 3, type = NULL) 
 {
     "newFactorEdgeList" <- function(list) return(new("dg.FactorEdgeList", 
         nodeList = list))
@@ -8,8 +8,16 @@ function (edge.list, vertices, factorvertices = NULL, width = 2,
     if (is.null(edge.list)) 
         edge.list <- vector("list", length = 0)
     n <- length(edge.list)
+    if (!is.null(width) && (length(width) == 1)) 
+        width <- rep(width, n)
+    if (!is.null(width) && !(length(width) == n)) 
+        warning("Invalid length of argument 'width'")
+    if (!is.null(color) && (length(color) == 1)) 
+        color <- rep(color, n)
+    if (!is.null(color) && !(length(color) == n)) 
+        warning("Invalid length of argument 'color'")
     if (n == 0) 
-        result <- .emptyDgList("dg.FactorEdgeList")
+        result <- new("dg.FactorEdgeList")
     else {
         result <- vector("list", n)
         for (i in seq(along = edge.list)) {
@@ -23,8 +31,9 @@ function (edge.list, vertices, factorvertices = NULL, width = 2,
             else if (edge[j] < 0) 
                 edge.vertices[[j]] <- factorvertices[[-edge[j]]]
             class(edge.vertices) <- "dg.VertexList"
-            result[[i]] <- newFactorEdge(edge, edge.vertices, 
-                width = width, color = color, type = type)
+            result[[i]] <- new("dg.FactorEdge", vertex.indices = edge, 
+                vertices = edge.vertices, width = width[i], color = color[i], 
+                N = N)
         }
         class(result) <- "dg.FactorEdgeList"
         names(result) <- Labels(result)

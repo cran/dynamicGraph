@@ -9,6 +9,8 @@
 \alias{Names}
 \alias{Names<-}
 \alias{Colors}
+\alias{Constrained<-}
+\alias{Constrained}
 \alias{Colors<-}
 \alias{Labels}
 \alias{Labels<-}
@@ -41,6 +43,8 @@
 \alias{Blockindices,dg.list-method}
 \alias{Closed<-,dg.list-method}
 \alias{Closed,dg.list-method}
+\alias{Constrained<-,dg.list-method}
+\alias{Constrained,dg.list-method}
 \alias{Colors<-,dg.list-method}
 \alias{Colors,dg.list-method}
 \alias{Dashes<-,dg.list-method}
@@ -52,10 +56,18 @@
 \alias{Labels,dg.list-method}
 \alias{Names<-,dg.list-method}
 \alias{Names,dg.list-method}
+\alias{Parents<-,dg.list-method}
+\alias{Parents,dg.list-method}
+\alias{Children<-,dg.list-method}
+\alias{Children,dg.list-method}
 \alias{NodeAncestors<-,dg.list-method}
 \alias{NodeAncestors,dg.list-method}
 \alias{NodeDescendants<-,dg.list-method}
 \alias{NodeDescendants,dg.list-method}
+\alias{Parents<-,dg.list-method}
+\alias{Parents,dg.list-method}
+\alias{Children<-,dg.list-method}
+\alias{Children,dg.list-method}
 \alias{NodeIndices,dg.list-method}
 \alias{NodeTypes,dg.list-method}
 \alias{Oriented<-,dg.list-method}
@@ -114,10 +126,13 @@ Class \code{"list"}, by class \code{"dg.NodeList"}.
     \item{Blockindices}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Closed<-}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Closed}{\code{signature(objectlist = "dg.list")}: ... }
+    \item{Constrained<-}{\code{signature(objectlist = "dg.list")}: ... }
+    \item{Constrained}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Colors<-}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Colors}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Dashes<-}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Dashes}{\code{signature(objectlist = "dg.list")}: ... }
+  % \item{Indices<-}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Indices}{\code{signature(objectlist = "dg.list")}: ... }
     \item{LabelPositions<-}{\code{signature(objectlist = "dg.list")}: ... }
     \item{LabelPositions}{\code{signature(objectlist = "dg.list")}: ... }
@@ -125,6 +140,10 @@ Class \code{"list"}, by class \code{"dg.NodeList"}.
     \item{Labels}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Names<-}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Names}{\code{signature(objects = "dg.list")}: ... }
+    \item{Parents<-}{\code{signature(objectlist = "dg.list")}: ... }
+    \item{Parents}{\code{signature(objectlist = "dg.list")}: ... }
+    \item{Children<-}{\code{signature(objectlist = "dg.list")}: ... }
+    \item{Children}{\code{signature(objectlist = "dg.list")}: ... }
     \item{NodeAncestors<-}{\code{signature(objectlist = "dg.list")}: ... }
     \item{NodeAncestors}{\code{signature(objectlist = "dg.list")}: ... }
     \item{NodeDescendants<-}{\code{signature(objectlist = "dg.list")}: ... }

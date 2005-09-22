@@ -2,23 +2,37 @@
 \docType{class}
 
 \alias{dg.Model-class}
+
 \alias{modifyModel,dg.Model-method}
 \alias{testEdge,dg.Model-method}
+
+\alias{initialize,dg.Model-method}
+
 \alias{setGraphComponents,dg.Model-method}
 \alias{returnGraphComponents,dg.Model-method}
 \alias{graphComponents,dg.Model-method}
-\alias{vertexEdges,dg.Model-method}
-\alias{vertexEdges<-,dg.Model-method}
+
+\alias{setGraphEdges,dg.Model-method}
+\alias{graphEdges,dg.Model-method}
+\alias{setSlots,dg.Model-method}
+
+% \alias{vertexEdges,dg.Model-method}
+% \alias{vertexEdges<-,dg.Model-method}
+
 \alias{Str,dg.Model-method}
+
 \alias{setGraphComponents}
 \alias{returnGraphComponents}
 \alias{graphComponents}
-\alias{vertexEdges}
-\alias{vertexEdges<-}
+
+\alias{setGraphEdges}
+\alias{graphEdges}
+
+% \alias{vertexEdges}
+% \alias{vertexEdges<-}
 
 \alias{newDefaultModelObject}
 
-\alias{newDefaultModelObject}
 \alias{modifyModel}
 \alias{testEdge}
 
@@ -33,7 +47,7 @@ This is an example of the object for interface between
 
 The model object of the call of \code{\link{dynamicGraphMain}}
 should have the methods \code{modifyModel}, \code{testEdge},
-\code{graphComponents} and \code{setGraphComponents}.
+\code{graphEdges} and \code{setGraphEdges}.
 
 When the graph is modified, by adding or dropping vertices or edge,
 the method \code{modifyModel} is called on the argument \code{object}
@@ -43,11 +57,13 @@ If a value different from NULL is returned from \code{modifyModel} at the
 key event "add edge" then the edge is added to the the view of the model,
 the graph window.
 
-If NULL is returned from \code{modifyModel} then \code{\link{drawModel}}
-can be used to draw the new graph.
+If NULL is returned from \code{modifyModel} then the methods
+\code{\link{addModel}} and \code{\link{replaceModel}}
+can be used to draw the new graph inside \code{modifyModel}.
 If a value different from NULL is returned from \code{modifyModel} then 
-\code{\link{redrawView}} and \code{\link{drawModel}} should not be called
-from \code{modifyModel} for the action add edge.
+the methods \code{\link{addView}} ,\code{\link{addModel}},
+\code{\link{replaceView}}, and \code{\link{replaceModel}}
+should not be called from \code{modifyModel} for the action add edge.
 
 If the edge is to be added in a slave window then the edges to
 draw can be returned in a component with name \code{edgeList} (or
@@ -66,31 +82,34 @@ components \code{FactorEdges} and \code{FactorVertices}.
 
 Similar for the key events "dropEdge", "addVertex" and "dropVertex".
 
-The methods \code{graphComponents} and \code{setGraphComponents}
+The methods \code{graphEdges} and \code{setGraphEdges}
 are used to communicate the graph components between several views
 of the same model in \code{dynamicGraphMain}.
-The method \code{graphComponents} of the model object is for returning
-the objects to draw in the view, depending on the \code{viewType}.
 
+The method \code{graphEdges} of the model object is for returning
+an object of class \code{\link{dg.graphedges-class}}
+to draw in the view, depending on the \code{viewType}.
+
+[[ UPDATE:
 If \code{NULL} is returned for a component in the returned list
-from \code{graphComponents} then the corresponding value of
+from \code{graphEdges} then the corresponding value of
 \code{Arguments} is used in \code{\link{redrawView}}.
 To force an empty list, return the value \code{list()}
 (or \code{numeric(0)} for \code{VisibleVertices}
 and \code{VisibleBlocks}). See also the argument
-\code{factorVertexList} of \code{\link{drawModel}}.
+\code{factorVertexList} of \code{\link{drawModel}}. ]]
 
-The method \code{setGraphComponents} of the model object
+The method \code{setGraphEdges} of the model object
 is called on the model object when the model is modified.
 
 The methods \code{testEdge} of \code{object} should return
 an object with the methods \code{label} and \code{width}
-for labeling edges, see \code{\link{newDefaultTestObject}}.
+for labeling edges, see \code{\link{dg.Test-class}}.
 
 % Objects can be created by calls of the form \code{new("dg.Model", ...)}.
 }
 
-\usage{newDefaultModelObject(name)}
+% \usage{newDefaultModelObject(name)}
 
 \arguments{\item{name}{ Text string with the \code{name} of the model object.}}
 
@@ -142,8 +161,10 @@ for labeling edges, see \code{\link{newDefaultTestObject}}.
     % \item{vertexEdges}{\code{signature(object = "dg.Model")}: ... }
     \item{modifyModel}{\code{signature(object = "dg.Model")}: ... }
     % \item{returnGraphComponents}{\code{signature(object = "dg.Model")}: ... }
-    \item{graphComponents}{\code{signature(object = "dg.Model")}: ... }
-    \item{setGraphComponents}{\code{signature(object = "dg.Model")}: ... }
+    \item{graphEdges}{\code{signature(object = "dg.Model")}: ... }
+    \item{initialize}{\code{signature(.Object = "dg.Model")}: ... }
+    \item{setGraphEdges}{\code{signature(object = "dg.Model")}: ... }
+    \item{Str}{\code{signature(object = "dg.Model")}: ... }
     \item{testEdge}{\code{signature(object = "dg.Model")}: ... }
   }
 }
@@ -164,6 +185,9 @@ for labeling edges, see \code{\link{newDefaultTestObject}}.
 % \code{\link{newDefaultModelObject}}, and \code{\link{newDefaultTestObject}}.
 }
 
+% # "newYourModelObject" <- function(name)
+% #   return(new("your.Model", name = name, dg = new("dg.graphedges")))
+
 \examples{
 # Part of the example "defaultObjects" of demo:
 
@@ -172,159 +196,137 @@ for labeling edges, see \code{\link{newDefaultTestObject}}.
 #
 # - Change the name "your.Model"
 #
-# - Work out how the get names, types and edges from the model object.
+# - Work out how the get names, types and edges from your model object.
 #
 # - At "message", insert the relevant code for testing and modifying the model.
 #
-# - The slots visibleVertices, visibleBlocks, extraVertices, vertexEdges, 
-#   blockEdges, factorVertices, factorEdges, and, extraEdges should be
-#   eliminated, and you should in "graphComponents" return relevant lists.
+# - The slots visibleVertices, visibleBlocks, extraVertices, edges, 
+#    blockEdges, factorVertices, factorEdges should be eliminated,
+#    and you should in "graphEdges" return relevant lists.
 #
 
-
-
 setClass("your.Model", 
-         representation(name             = "character",
-                        visibleVertices  = "numeric",
-                        visibleBlocks    = "numeric",
-                        extraVertices    = "dg.VertexList",
-                        vertexEdges      = "dg.VertexEdgeList",
-                        blockEdges       = "dg.BlockEdgeList",
-                        factorVertices   = "dg.FactorVertexList",
-                        factorEdges      = "dg.FactorEdgeList",
-                        extraEdges       = "dg.ExtraEdgeList"))
+         representation(name = "character",
+                        dg   = "dg.graphedges"))
 
-"newYourModelObject"<- function(name) {
-    result <- new("your.Model", name = name,
-                  extraVertices  = .emptyDgList("dg.VertexList"),
-                  vertexEdges    = .emptyDgList("dg.VertexEdgeList"),
-                  blockEdges     = .emptyDgList("dg.BlockEdgeList"),
-                  factorVertices = .emptyDgList("dg.FactorVertexList"),
-                  factorEdges    = .emptyDgList("dg.FactorEdgeList"),
-                  extraEdges     = .emptyDgList("dg.ExtraEdgeList"))
-    return(result)
-  }
+# "newDefaultModelObject"<-
+#   function(name)
+#   {
+#     result <- new("your.Model", name = name, dg = new("dg.graphedges"))
+#     return(result)
+#   }
 
-if (!isGeneric("graphComponents")) {
-  if (is.function("graphComponents"))
-    fun <- graphComponents
-  else
-    fun <- function(object, viewType = NULL, ...)
-    standardGeneric("graphComponents")
-  setGeneric("graphComponents", fun)
-}
+setMethod("setSlots", "your.Model",
+          function(object, arguments) { 
+            for (i in seq(along = arguments)) {
+              name <- names(arguments)[i]
+              if (is.element(name, slotNames(object)))
+                slot(object, name) <- arguments[[i]]
+              else
+                message(paste("Argument '", name, "' not valid slot of '", 
+                              class(object), "', thus ignored.",
+                              sep = "")) }
+            return(object)
+          })
 
-setMethod("graphComponents", "your.Model",
+setMethod("initialize", "your.Model",
+          function(.Object, ...) {
+              # print(c("initialize", "your.Model", class(.Object)))
+              Args <- list(...)
+              .Object <- setSlots(.Object, Args)
+              return(.Object)
+            }
+          )
+
+setMethod("graphEdges", "your.Model",
           function(object, viewType = NULL, ...)
-          { # print(viewType); print ("graphComponents")
-            args <- list(...)
-            Args <- args$Arguments
-            Edges <- object@vertexEdges
-            Vertices <- Args$vertexList
-            VisibleVertices <- object@visibleVertices
+          { # print(viewType); print ("graphEdges")
+
+            dots           <- list(...)
+            localArguments <-      dots$Arguments
+            Vertices       <-      localArguments$vertexList
+
+            Edges           <- object@dg@edgeList
+            VisibleVertices <- object@dg@visibleVertices
+
             if (viewType == "Factor") {
               factors <- .cliquesFromEdges(Edges, Vertices, VisibleVertices)
+              # print(factors)
               if (is.null(factors) || (length(factors) == 0)) {
-                FactorVertices  <- .emptyDgList("dg.FactorVertexList")
-                FactorEdges     <- .emptyDgList("dg.FactorEdgeList")
+                FactorVertices  <- new("dg.FactorVertexList")
+                FactorEdges     <- new("dg.FactorEdgeList")
               } else {
                 result <- returnFactorVerticesAndEdges(Vertices, factors)
                 FactorVertices  <- result$FactorVertices
                 FactorEdges     <- result$FactorEdges
               }
-              list(vertexEdges     = object@vertexEdges, 
-                   blockEdges      = object@blockEdges, 
-                   factorVertices  = FactorVertices,
-                   factorEdges     = FactorEdges,
-                   visibleVertices = object@visibleVertices, 
-                   visibleBlocks   = object@visibleBlocks, 
-                   extraVertices   = object@extraVertices, 
-                   extraEdges      = object@extraEdges)
+              new("dg.graphedges", 
+                   viewType         = viewType, 
+                   oriented         = object@dg@oriented, 
+                   edgeList         = object@dg@edgeList, 
+                   blockEdgeList    = object@dg@blockEdgeList, 
+                   factorVertexList = FactorVertices,
+                   factorEdgeList   = FactorEdges,
+                   visibleVertices  = object@dg@visibleVertices, 
+                   visibleBlocks    = object@dg@visibleBlocks, 
+                   extraList        = object@dg@extraList, 
+                   extraEdgeList    = object@dg@extraEdgeList)
             } else if (viewType == "Moral") {
               message("Moral view not implemented; ")
-              list(vertexEdges     = object@vertexEdges, 
-                   blockEdges      = .emptyDgList("dg.BlockEdgeList"),
-                   factorVertices  = .emptyDgList("dg.FactorVertexList"),
-                   factorEdges     = .emptyDgList("dg.FactorEdgeList"),
-                   visibleVertices = object@visibleVertices, 
-                   visibleBlocks   = numeric(), 
-                   extraVertices   = object@extraVertices, 
-                   extraEdges      = object@extraEdges)
+              new("dg.graphedges", 
+                   viewType         = viewType, 
+                   oriented         = object@dg@oriented, 
+                   edgeList         = object@dg@edgeList, 
+                 # blockEdgeList    = new("dg.BlockEdgeList"),
+                 # factorVertexList = new("dg.FactorVertexList"),
+                 # factorEdgeList   = new("dg.FactorEdgeList"),
+                   visibleVertices  = object@dg@visibleVertices, 
+                   visibleBlocks    = numeric(), 
+                   extraList        = object@dg@extraList, 
+                   extraEdgeList    = object@dg@extraEdgeList)
             } else if (viewType == "Essential") {
               message("Essential view not implemented; ")
-              list(vertexEdges      = object@vertexEdges, 
-                   blockEdges      = .emptyDgList("dg.BlockEdgeList"),
-                   factorVertices  = .emptyDgList("dg.FactorVertexList"),
-                   factorEdges     = .emptyDgList("dg.FactorEdgeList"),
-                   visibleVertices = object@visibleVertices, 
-                   visibleBlocks   = numeric(), 
-                   extraVertices   = object@extraVertices, 
-                   extraEdges      = object@extraEdges)
+              new("dg.graphedges", 
+                   viewType         = viewType, 
+                   oriented         = object@dg@oriented, 
+                   edgeList         = object@dg@edgeList, 
+                 # blockEdgeList    = new("dg.BlockEdgeList"),
+                 # factorVertexList = new("dg.FactorVertexList"),
+                 # factorEdgeList   = new("dg.FactorEdgeList"),
+                   visibleVertices  = object@dg@visibleVertices, 
+                   visibleBlocks    = numeric(), 
+                   extraList        = object@dg@extraList, 
+                   extraEdgeList    = object@dg@extraEdgeList)
             } else if (viewType == "Simple") {
-              list(vertexEdges     = object@vertexEdges, 
-                   blockEdges      = object@blockEdges, 
-                   factorVertices  = .emptyDgList("dg.FactorVertexList"),
-                   factorEdges     = .emptyDgList("dg.FactorEdgeList"),
-                   visibleVertices = object@visibleVertices, 
-                   visibleBlocks   = object@visibleBlocks, 
-                   extraVertices   = object@extraVertices, 
-                   extraEdges      = object@extraEdges)
+              new("dg.graphedges", 
+                   viewType         = viewType, 
+                   oriented         = object@dg@oriented, 
+                   edgeList         = object@dg@edgeList, 
+                   blockEdgeList    = object@dg@blockEdgeList, 
+                 # factorVertexList = new("dg.FactorVertexList"),
+                 # factorEdgeList   = new("dg.FactorEdgeList"),
+                   visibleVertices  = object@dg@visibleVertices, 
+                   visibleBlocks    = object@dg@visibleBlocks, 
+                   extraList        = object@dg@extraList, 
+                   extraEdgeList    = object@dg@extraEdgeList)
             } else 
               message("View type not implemented; ")
           })
 
-if (!isGeneric("setGraphComponents")) {
-  if (is.function("setGraphComponents"))
-    fun <- setGraphComponents
-  else
-    fun <- function(object, viewType = NULL,
-                    visibleVertices = NULL,
-                    extraVertices   = NULL,
-                    vertexEdges     = NULL,
-                    blockEdges      = NULL,
-                    factorVertices  = NULL,
-                    factorEdges     = NULL,
-                    extraEdges      = NULL, ...)
-      standardGeneric("setGraphComponents")
-  setGeneric("setGraphComponents", fun)
-}
-
-setMethod("setGraphComponents", signature(object = "your.Model"),
-          function(object, viewType = NULL,
-                   visibleVertices = NULL,
-                   visibleBlocks   = NULL,
-                   extraVertices   = NULL,
-                   vertexEdges     = NULL,
-                   blockEdges      = NULL,
-                   factorVertices  = NULL,
-                   factorEdges     = NULL,
-                   extraEdges      = NULL, ...)
+setMethod("setGraphEdges", signature(object = "your.Model"),
+          function(object, dg = NULL, ...)
  {
-    if (!is.null(visibleVertices)) object@visibleVertices <- visibleVertices
-    if (!(viewType == "Moral"))
-      if (!is.null(visibleBlocks  )) object@visibleBlocks   <- visibleBlocks
-    if (!is.null(extraVertices  )) object@extraVertices   <- extraVertices
-    if (!is.null(vertexEdges    )) object@vertexEdges     <- vertexEdges
-    if (!is.null(blockEdges     )) object@blockEdges      <- blockEdges
-    if ((viewType == "Factor")) {
-      if (!is.null(factorVertices )) object@factorVertices  <- factorVertices
-      if (!is.null(factorEdges    )) object@factorEdges     <- factorEdges
-    }
+    if (!is.null(dg)) object@dg <- dg
     return(object)
  })
 
 
-if (!isGeneric("dynamic.Graph")) {
-  if (is.function("dynamic.Graph"))
-    fun <- dynamic.Graph
-  else
-    fun <- function(object, ...)
-  standardGeneric("dynamic.Graph")
-  setGeneric("dynamic.Graph", fun)
-}
-
-setMethod("dynamic.Graph", signature(object = "your.Model"),
-          function(object, ...)
+setMethod("dg", signature(object = "your.Model"),
+          function(object, 
+                   modelObject = NULL,
+                   modelObjectName = NULL,
+                   control = dg.control(...), 
+                   ...) 
   {
 
     Names <- Your.function.for.extracting.variable.names.from.object(
@@ -334,95 +336,102 @@ setMethod("dynamic.Graph", signature(object = "your.Model"),
     Edges <- Your.function.for.extracting.variable.edges.from.object(
              object = object)
 
-    DynamicGraph(names = Names, types = Types, 
-                 from = Edges[,1], to = Edges[,2], 
-                 object = object, ...)
+    simpleGraph <- new("dg.simple.graph", vertex.names = Names, 
+                      types = Types, # edge.list = Edges,
+                      from = Edges[,1], to = Edges[,2])
+
+    graph <- simpleGraphToGraph(simpleGraph)
+
+    dg(graph, object = object, ...)
+
  })
 
-
-if (!isGeneric("testEdge")) {
-  if (is.function("testEdge"))
-    fun <- testEdge
-  else
-    fun <- function(object, action, name.1, name.2, ...) 
-           standardGeneric("testEdge")
-  setGeneric("testEdge", fun)
-}
 
 setMethod("testEdge", signature(object = "your.Model"),
           function(object, action, name.1, name.2, ...)
  {
-    args <- list(...)
-    from.type <- args$from.type
-    to.type <- args$to.type
+    dots <- list(...)
+    from.type <- dots$from.type
+    to.type <- dots$to.type
     f <- function(type) if(is.null(type)) "" else paste("(", type, ")")
     message(paste("Should return an object with the edge from",
                   name.1, f(from.type), "to", name.2, f(to.type),
                   "deleted from the argument object"))
-    return(newYourTestObject())
+    return(new("your.Test", name = "TestObject"))
  })
 
-
-if (!isGeneric("modifyModel")) {
-  if (is.function("modifyModel"))
-    fun <- modifyModel
-  else
-    fun <- function(object, action, name, name.1, name.2, ...)
-                    standardGeneric("modifyModel")
-  setGeneric("modifyModel", fun)
-}
 
 setMethod("modifyModel", signature(object = "your.Model"),
           function(object, action, name, name.1, name.2, ...)
  {
-    args <- list(...)
-    Args <- args$Arguments
-    Edges <- args$newEdges$vertexEdges
-    Vertices <- Args$vertexList
+    dots           <- list(...)
+    localArguments <-      dots$Arguments
+    Edges          <-      dots$newEdges$vertexEdges
+    Vertices       <-      localArguments$vertexList
+
+    viewType <- "Simple"
 
     DoFactors <- FALSE
-    if (!is.null(args$Arguments)
-        && !is.null(args$Arguments$factorVertexList)
-        && (length(args$Arguments$factorVertexList) > 0)
-        && !is.null(args$Arguments$vertexList))
+    if (!is.null(dots$Arguments)
+        && !is.null(dots$Arguments$factorVertexList)
+        && (length(dots$Arguments$factorVertexList) > 0)
+        && !is.null(dots$Arguments$vertexList))
       DoFactors <- TRUE
 
-    FactorVertices  <- NULL
-    FactorEdges     <- NULL
-    BlockEdges      <- NULL
-    VisibleVertices <- Args$visibleVertices
-    VisibleBlocks   <- Args$visibleBlocks
-    ExtraVertices   <- NULL
-    ExtraEdges      <- NULL
+    if (DoFactors)
+      viewType <- "Factor"
+
+    # print(names(dots))
+    # str(dots)
+
+    # print(names(localArguments))
+
+    # print(localArguments$visibleVertices)
+
+    # str(localArguments$selectedNodes)
+    # if (length(dots$selectedNodes) > 0)
+    #   str(dots$selectedNodes)
+
+    # str(localArguments$selectedEdges)
+    # if (length(dots$selectedEdges) > 0)
+    #   str(dots$selectedEdges)
+
+    FactorVertices  <- new("dg.FactorVertexList")
+    FactorEdges     <- new("dg.FactorEdgeList")
+    BlockEdges      <- new("dg.BlockEdgeList")
+    VisibleVertices <- localArguments$visibleVertices
+    VisibleBlocks   <- localArguments$visibleBlocks
+    ExtraVertices   <- new("dg.VertexList")
+    ExtraEdges      <- new("dg.ExtraEdgeList")
 
     f <- function(type) if (is.null(type)) "" else paste("(", type, ")")
     g <- function(type) if (is.null(type)) "" else type
     if (action == "dropEdge") {
       message(paste("Should return an object with the edge from",
-                    name.1, f(args$from.type), "to", name.2, f(args$to.type),
+                    name.1, f(dots$from.type), "to", name.2, f(dots$to.type),
                     "deleted from the argument object"))
-      if ((g(args$from.type) == "Factor") || (g(args$from.type) == "Factor"))
+      if ((g(dots$from.type) == "Factor") || (g(dots$from.type) == "Factor"))
         return(NULL)
     } else if (action == "addEdge") {
        message(paste("Should return an object with the edge from",
-                     name.1, f(args$from.type), "to", name.2, f(args$to.type),
+                     name.1, f(dots$from.type), "to", name.2, f(dots$to.type),
                      "added to the argument object"))
-      if ((g(args$from.type) == "Factor") || (g(args$from.type) == "Factor"))
+      if ((g(dots$from.type) == "Factor") || (g(dots$from.type) == "Factor"))
         return(NULL)
     } else if (action == "dropVertex")  {
        message(paste("Should return an object with the vertex", 
-                     name, f(args$type),
+                     name, f(dots$type),
                      "deleted from the argument object"))
-      if ((g(args$type) == "Factor"))
+      if ((g(dots$type) == "Factor"))
         return(NULL)
-      VisibleVertices <- VisibleVertices[VisibleVertices != args$index]
-      if (DoFactors && (args$index > 0)) {
-        x <- (args$Arguments$factorVertexList)
+      VisibleVertices <- VisibleVertices[VisibleVertices != dots$index]
+      if (DoFactors && (dots$index > 0)) {
+        x <- (localArguments$factorVertexList)
         factors <- lapply(x, function(i) i@vertex.indices)
         types   <- lapply(x, function(i) class(i))
         factors <- lapply(factors, 
                           function(x) { 
-                            y <- x[x != args$index]
+                            y <- x[x != dots$index]
                             if (length(y) > 0) return(y) else return(NULL) } )
 
 
@@ -442,69 +451,92 @@ setMethod("modifyModel", signature(object = "your.Model"),
           factors <- factors[!unlist(s)]
           if (!(is.null(factors))) {
             result <- returnFactorVerticesAndEdges(
-                            args$Arguments$vertexList, factors, types, 
+                            localArguments$vertexList, factors, types, 
                             factorClasses = validFactorClasses())
             FactorVertices <- result$FactorVertices
             FactorEdges <- result$FactorEdges
           }
         } else { 
           DoFactors <- FALSE
-          FactorVertices <- .emptyDgList("dg.FactorVertexList")
-          FactorEdges    <- .emptyDgList("dg.FactorEdgeList")
+          FactorVertices <- new("dg.FactorVertexList")
+          FactorEdges    <- new("dg.FactorEdgeList")
         }
       }
     } else if (action == "addVertex") {
-      VisibleVertices <- c(VisibleVertices, args$index)
+      VisibleVertices <- c(VisibleVertices, dots$index)
       message(paste("Should return an object with the vertex", 
-                    name, f(args$type), args$index, 
+                    name, f(dots$type), dots$index, 
                     "added to the argument object"))
-      if (DoFactors && (args$index > 0)) {
-        x <- (args$Arguments$factorVertexList)
+      if (DoFactors && (dots$index > 0)) {
+        x <- (localArguments$factorVertexList)
         factors <- lapply(x, function(i) i@vertex.indices)
         types   <- lapply(x, function(i) class(i))
         if (!is.null(factors))
           factors <- .removeNull(factors)
         if (is.null(factors)) {
-          factors <- list(args$index)
+          factors <- list(dots$index)
           types   <- validFactorClasses()[1, 1]
         } else { 
           n <- length(types)
-          factors <- append(factors, list(args$index))
+          factors <- append(factors, list(dots$index))
           types   <- append(types, types[n])
         }
         if (!(is.null(factors))) {
           result <- returnFactorVerticesAndEdges(
-                          args$Arguments$vertexList, factors, types, 
+                          localArguments$vertexList, factors, types, 
                           factorClasses = validFactorClasses())
           FactorVertices <- result$FactorVertices
-          FactorEdges <- result$FactorEdges } }
+          FactorEdges <- result$FactorEdges
+        }
+      }
     }
     if (is.null(FactorVertices) && DoFactors && !is.null(Edges)) {
 
       factors <- .cliquesFromEdges(Edges, Vertices, VisibleVertices)
 
       if (is.null(factors) || (length(factors) == 0)) {
-        FactorVertices <- .emptyDgList("dg.FactorVertexList")
-        FactorEdges    <- .emptyDgList("dg.FactorEdgeList")
+        FactorVertices <- new("dg.FactorVertexList")
+        FactorEdges    <- new("dg.FactorEdgeList")
       } else {
         result <- returnFactorVerticesAndEdges(Vertices, factors)
         FactorVertices  <- result$FactorVertices
-        FactorEdges     <- result$FactorEdges } }
-    return(list(object          = object,
-                BlockEdges      = BlockEdges, 
-                FactorVertices  = FactorVertices,
-                FactorEdges     = FactorEdges,
-                VisibleVertices = VisibleVertices, 
-                VisibleBlocks   = VisibleBlocks, 
-                ExtraVertices   = ExtraVertices,
-                ExtraEdges      = ExtraEdges))
+        FactorEdges     <- result$FactorEdges
+      }
+    }
+    dg <- new("dg.graphedges", 
+              edgeList         = Edges,
+              viewType         = viewType, 
+            # oriented         = oriented, 
+              blockEdgeList    = BlockEdges, 
+              factorVertexList = FactorVertices,
+              factorEdgeList   = FactorEdges,
+              visibleVertices  = VisibleVertices, 
+              visibleBlocks    = VisibleBlocks, 
+              extraList        = ExtraVertices,
+              extraEdgeList    = ExtraEdges)
+    ".IsEmpty" <- function(x) {
+      if (is.null(x) || (length(x) == 0) ||
+          (length(x) == 1) && is.null(x[[1]]))
+        return(TRUE)
+      else
+        return(FALSE)
+      }
+    if (.IsEmpty(FactorEdges) && (viewType == "Factor")) {
+      object <- setGraphEdges(object, dg = dg)
+      graphContent <- graphEdges(object, viewType = viewType, 
+                                 Arguments = localArguments)
+      dg <- graphContent
+    }
+    return(list(object  = object, dg = dg))
  })
 
 setMethod("Str", "your.Model",
           function(object, setRowLabels = FALSE, title = "", ...) {
               message(object@name) })
 
-newYourModelObject("ModelObject")
+
+new("your.Model", name = "YourModelObject")
+
 }
 
 \keyword{classes}

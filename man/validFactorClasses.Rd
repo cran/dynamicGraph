@@ -15,6 +15,7 @@ and the valid factor vertex classes. }
  is by default the returned value of this function.
  If new factor vertex classes are created then \code{factorClasses}
  should be set to a value with this returned value extended appropriate. }
+
 \value{Matrix of text strings with labels (used in dialog windows)
        of valid factor vertex classes and the valid factor 
        vertex classes (used to create the factor vertices).}

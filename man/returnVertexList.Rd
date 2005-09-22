@@ -4,6 +4,7 @@
 \alias{returnVertexList}
 
 \alias{dg.VertexList-class}
+\alias{initialize,dg.VertexList-method}
 
 % \alias{Names}
 % \alias{Names<-}
@@ -86,13 +87,28 @@ returnVertexList(names, labels = NULL, types = NULL,
 }
 
 \section{Extends}{
+% Class \code{"dg.NodeList"}, directly.
+% Class \code{"dg.list"}, by class \code{"dg.NodeList"}.
+% Class \code{"list"}, by class \code{"dg.NodeList"}.
+
+% Class \code{"list"}, from data part.
+% Class \code{"dg.list"}, directly.
+% Class \code{"dg.NodeList"}, directly.
+
 Class \code{"dg.NodeList"}, directly.
-Class \code{"dg.list"}, by class \code{"dg.NodeList"}.
-Class \code{"list"}, by class \code{"dg.NodeList"}.
+Class \code{"dg.list"}, directly.
+Class \code{"list"}, from data part.
+% Class \code{"vector"}, by class \code{"dg.NodeList"}.
+Class \code{"vector"}, by class \code{"dg.NodeList"}.
+Class \code{"vector"}, by class \code{"dg.list"}.
+Class \code{"vector"}, by class \code{"list"}.
+
 }
 
 \section{Methods}{
-No methods defined with class "dg.VertexList" in the signature.
+  \describe{
+    \item{initialize}{\code{signature(.Object = "dg.VertexList")}: ... }
+  }
 }
 
 \author{Jens Henrik Badsberg}
@@ -120,6 +136,12 @@ No methods defined with class "dg.VertexList" in the signature.
 
 \examples{
 vertices <- returnVertexList(c("A", "B", "C", "D"),
+                             labels = c("OrdinalVertex", "TextVertex", 
+                               "ContinuousVertex", "DiscreteVertex"), 
+                             types = c("Ordinal", "TextVertex",
+                                       "Continuous", "Discrete"), N = 2)
+
+vertices <- new("dg.VertexList", names = c("A", "B", "C", "D"),
                              labels = c("OrdinalVertex", "TextVertex", 
                                "ContinuousVertex", "DiscreteVertex"), 
                              types = c("Ordinal", "TextVertex",

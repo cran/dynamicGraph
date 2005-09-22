@@ -10,11 +10,9 @@ and the valid edge classes}
 
 \usage{validEdgeClasses()}
 
-\details{The argument \code{edgeClasses} to
-    \code{\link{dynamicGraphMain}} and
-    \code{\link{DynamicGraph}}, and to
-    \code{\link{newVertexEdge}} and
-    \code{\link{returnEdgeList}}
+\details{The argument \code{edgeClasses} to the functions
+    \code{\link{dynamicGraphMain}} and \code{\link{DynamicGraph}}, and to
+    \code{\link{dg.VertexEdge-class}} and \code{\link{returnEdgeList}}
     is by default the returned value of this
     function. If new edge classes are created then \code{edgeClasses}
     should be set to a value with this returned value extended appropriate. }
@@ -39,7 +37,7 @@ require(tcltk)
 
 # Test with new edge class (demo(Circle.newEdge)):
 
-setClass("NewEdge", contains = "dg.VertexEdge")
+setClass("NewEdge", contains = c("dg.VertexEdge", "dg.Edge", "dg.Node"))
 
 myEdgeClasses <- rbind(validEdgeClasses(), 
                        NewEdge = c("NewEdge", "NewEdge"))
@@ -98,71 +96,37 @@ setMethod("addToPopups", "NewEdge",
                      command = function() { print(name(object))})
           })
 
-# Why are these 2 * 7 methods not avaliable from "dg.VertexEdge" ?
-
-setMethod("color", "NewEdge", function(object) object@color)
-setReplaceMethod("color", "NewEdge",
-                 function(x, value) {x@color <- value; x} )
-
-setMethod("label", "NewEdge", function(object) object@label)
-setReplaceMethod("label", "NewEdge",
-                 function(x, value) {x@label <- value; x} )
-
-setMethod("name", "NewEdge", function(object) object@label)
-setReplaceMethod("name", "NewEdge",
-                 function(x, value) {x@label <- value; x} )
-
-setMethod("labelPosition", "NewEdge",
-          function(object) object@label.position)
-setReplaceMethod("labelPosition", "NewEdge",
-                 function(x, value) {x@label.position <- value; x} )
-
-setMethod("nodeIndices", "NewEdge", function(object) object@vextex.indices)
-setReplaceMethod("nodeIndices", "NewEdge",
-                 function(x, value) {x@vextex.indices <- value; x} )
-
-setMethod("width", "NewEdge", function(object) object@width)
-setReplaceMethod("width", "NewEdge",
-                 function(x, value) {x@width <- value; x} )
-
-setMethod("dash", "NewEdge", function(object) object@dash)
-setReplaceMethod("dash", "NewEdge",
-                 function(x, value) {x@dash <- value; x} )
-
-setMethod("propertyDialog", "NewEdge",
-          function(object, classes = NULL, title = class(object),
-                   sub.title = label(object), name.object = name(object),
-                   okReturn = TRUE,
-                   fixedSlots = NULL, difficultSlots = NULL,
-                   top = NULL, entryWidth = 20, do.grab = FALSE) {
-  .propertyDialog(object, classes = classes, title = title,
-                  sub.title = sub.title, name.object = name.object,
-                  okReturn = okReturn, 
-                  fixedSlots = fixedSlots, difficultSlots = difficultSlots,
-                  top = top, entryWidth = entryWidth, do.grab = do.grab)
-  })
 
 
 V.Types <- c("Discrete", "Ordinal", "Discrete",
              "Continuous", "Discrete", "Continuous")
-
 V.Names <- c("Sex", "Age", "Eye", "FEV", "Hair", "Shosize")
 V.Labels <- paste(V.Names, 1:6, sep ="/")
 
 From <- c(1, 2, 3, 4, 5, 6, 3)
 To   <- c(2, 3, 4, 5, 6, 1, 6)
 
-Z <- DynamicGraph(V.Names, V.Types, From, To, texts = c("Gryf", "gaf"),
-                  edge.types = c("NewEdge",
-                                 "VertexEdge",
-                                 "Dashed",
-                                 "Dotted",
-                                 "DoubleArrow",
-                                 "DoubleConnected",
-                                 "TripleConnected"),
-                  labels = V.Labels, 
-                  updateEdgeLabels = FALSE, edgeColor = "green", 
-                  vertexColor = "blue", edgeClasses = myEdgeClasses)
+control <- dg.control(updateEdgeLabels = FALSE,
+                      edgeColor = "green", vertexColor = "blue",
+                      edgeClasses = myEdgeClasses)
+
+simpleGraph.Z.nE <- new("dg.simple.graph", vertex.names = V.Names, 
+                        types = V.Types, labels = V.Labels,
+                        from = From, to = To,
+                        edge.types = c("NewEdge",
+                                       "VertexEdge",
+                                       "Dashed",
+                                       "Dotted",
+                                       "DoubleArrow",
+                                       "DoubleConnected",
+                                       "TripleConnected"), 
+                        texts = c("Gryf", "gaf"))
+
+graph.Z.nE <- simpleGraphToGraph(simpleGraph.Z.nE, control = control)
+
+Object <- NULL
+
+Z.nE <- dg(graph.Z.nE, modelObject = Object, control = control, title = "Z")
 
 }
 

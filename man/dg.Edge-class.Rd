@@ -4,6 +4,7 @@
 
 \alias{dg.Edge-class}
 \alias{draw,dg.Edge-method}
+\alias{initialize,dg.Edge-method}
 \alias{name,dg.Edge-method}
 \alias{nodeIndicesOfEdge<-,dg.Edge-method}
 \alias{nodeIndicesOfEdge,dg.Edge-method}
@@ -14,7 +15,8 @@
 \alias{dash,dg.Edge-method}
 \alias{dash<-,dg.Edge-method}
 \alias{nodeIndices,dg.Edge-method}
-\alias{propertyDialog,dg.Edge-method}
+
+% \alias{propertyDialog,dg.Edge-method}
 
 \title{Class "dg.Edge" }
 
@@ -91,6 +93,7 @@ Class \code{"dg.Node"}, directly.
     \item{dash}{\code{signature(object = "dg.Edge")}:
        Return the \code{dash} pattern of the edge. }
     \item{draw}{\code{signature(object = "dg.Edge")}: ... }
+    \item{initialize}{\code{signature(.Object = "dg.Edge")}: ... }
     \item{label<-}{\code{signature(x = "dg.Edge")}:
        Set the \code{label} of the edge. }
     \item{label}{\code{signature(object = "dg.Edge")}:

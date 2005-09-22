@@ -24,7 +24,7 @@
 \alias{dg.DoubleArrowEdge}
 \alias{dg.DoubleConnectedEdge}
 \alias{dg.TripleConnectedEdge}
-\alias{newVertexEdge}
+
 \alias{nodeIndicesOfEdge}
 \alias{nodeIndicesOfEdge<-}
 \alias{nodeTypesOfEdge}
@@ -46,35 +46,45 @@ and the method for drawing the edge.
 % Objects can be created by calls of the form \code{new("dg.VertexEdge", ...)}.
 }
 
-\usage{
-newVertexEdge(vertex.indices, vertices = NULL, width = 2,
-              color = "DarkOliveGreen", oriented = FALSE, type = "VertexEdge",
-              label = ifelse(is.null(vertices), "",
-                             paste(Labels(vertices), collapse = "~")),
-              dash = "", N = 3, edgeClasses = validEdgeClasses())
-}
+% \usage{
+% newVertexEdge(vertex.indices, vertices = NULL, width = 2,
+%               color = "DarkOliveGreen", oriented = NA, type = "VertexEdge",
+%               label = ifelse(is.null(vertices), "",
+%                              paste(Labels(vertices), collapse = "~")),
+%               dash = "", N = 3, edgeClasses = validEdgeClasses())
+% }
 
-\arguments{
-  \item{vertex.indices}{ Integer vector of the \code{vertex.indices} 
-      of the vertices of the edge. These are the indices of the
-      vertices in the list of vertices. }
-  \item{vertices}{ All the \code{vertices} of the edge, and only the
-     vertices of the edge. Currently, only used for setting the default label. }
-  \item{width}{ Numeric, for the \code{width} of the edge. }
-  \item{color}{ Text string for the \code{color} of the edge. }
-  \item{oriented}{ Logical, TRUE if the edge is \code{oriented},
-      also when no blocks are used in \code{\link{dynamicGraphMain}}. }
-  \item{type}{ Text string for the \code{type} of the edge. 
-      Currently not used. 
-      Intended to set which class the edge should be class of
-      containing the  class \code{dg.Edge}.}
-  \item{label}{ Text string for the \code{label} of the edge.
-                By default set by concatenating the labels of the vertices. }
-  \item{dash}{ Text string for the \code{color} pattern of the edge. }
-  \item{N}{ Integer, \code{N} is the number of coordinates of the vertices. }
-  \item{edgeClasses}{ Returned value from \code{\link{validEdgeClasses}},
-                      or extension of this matrix. }
-}
+% \arguments{
+%   \item{vertex.indices}{ Integer vector of the \code{vertex.indices} 
+%       of the vertices of the edge. These are the indices of the
+%       vertices in the list of vertices. }
+%   \item{vertices}{ All the \code{vertices} of the edge, and only the
+%      vertices of the edge. 
+%      Currently, only used for setting the default label. }
+%   \item{width}{ Numeric, for the \code{width} of the edge. }
+%   \item{color}{ Text string for the \code{color} of the edge. }
+%   \item{oriented}{ Logical. If \code{oriented} is \code{NA} then
+%       the edge is drawn as an arrow if the vertices of the edge
+%       are in different blocks, oriented according to the strata
+%       of the blocks. 
+%       If \code{oriented} is \code{NA} and the vertices of the
+%       edge are in the same block, then an undirected edge is drawn.
+%       If \code{oriented} is TRUE then an arrow is drawn from
+%       the first vertex of the edge to the second.
+%       If \code{oriented} is FALSE then an undirected edge is drawn,
+%       also between blocks.
+%       }
+%   \item{type}{ Text string for the \code{type} of the edge. 
+%       Currently not used. 
+%       Intended to set which class the edge should be class of
+%       containing the  class \code{dg.Edge}.}
+%   \item{label}{ Text string for the \code{label} of the edge.
+%                 By default set by concatenating the labels of the vertices. }
+%   \item{dash}{ Text string for the \code{color} pattern of the edge. }
+%   \item{N}{ Integer, \code{N} is the number of coordinates of the vertices. }
+%   \item{edgeClasses}{ Returned value from \code{\link{validEdgeClasses}},
+%                       or extension of this matrix. }
+% }
 
 \details{
     Edges are not constrained to have two vertices.
@@ -83,20 +93,38 @@ newVertexEdge(vertex.indices, vertices = NULL, width = 2,
 \section{Slots}{
   \describe{
     \item{\code{oriented}:}{Object of class \code{"logical"}.
-       If TRUE, then the edge is \code{oriented},
-       and thus drawn by an \code{arrow}, also when no blocks are pressent. }
-    \item{\code{vertex.indices}:}{Object of class \code{"numeric"}, see \code{"dg.Edge"}. }
-    \item{\code{width}:}{Object of class \code{"numeric"}, see \code{"dg.Edge"}. }
-    \item{\code{dash}:}{Object of class \code{"character"}, see \code{"dg.Edge"}. }
-    \item{\code{color}:}{Object of class \code{"character"}, see \code{"dg.Edge"}. }
-    \item{\code{label}:}{Object of class \code{"character"}, see \code{"dg.Edge"}. }
-    \item{\code{label.position}:}{Object of class \code{"numeric"}, see \code{"dg.Edge"}. }
+       If \code{oriented} is \code{NA} then
+       the edge is drawn as an arrow if the vertices of the edge
+       are in different blocks, oriented according to the strata
+       of the blocks. 
+       If \code{oriented} is \code{NA} and the vertices of the
+       edge are in the same block, then an undirected edge is drawn.
+       If \code{oriented} is TRUE then an arrow is drawn from
+       the first vertex of the edge to the second.
+       If \code{oriented} is FALSE then an undirected edge is drawn,
+       also between blocks.
+       }
+    \item{\code{vertex.indices}:}{Object of class \code{"numeric"},
+                                  see \code{"dg.Edge"}. 
+        These are the indices of the vertices in the list of vertices.}
+    \item{\code{width}:}{Object of class \code{"numeric"},
+                         see \code{"dg.Edge"}. }
+    \item{\code{dash}:}{Object of class \code{"character"},
+                         see \code{"dg.Edge"}. }
+    \item{\code{color}:}{Object of class \code{"character"},
+                         see \code{"dg.Edge"}. }
+    \item{\code{label}:}{Object of class \code{"character"},
+                         see \code{"dg.Edge"}. }
+    \item{\code{label.position}:}{Object of class \code{"numeric"},
+                         see \code{"dg.Edge"}. }
   }
 }
 
 \section{Extends}{
+% Class \code{"dg.Edge"}, directly.
+% Class \code{"dg.Node"}, by class \code{"dg.Edge"}.
 Class \code{"dg.Edge"}, directly.
-Class \code{"dg.Node"}, by class \code{"dg.Edge"}.
+Class \code{"dg.Node"}, directly.
 }
 
 \section{Methods}{
@@ -135,9 +163,39 @@ Class \code{"dg.Node"}, by class \code{"dg.Edge"}.
     and factor edges (\code{dg.FactorEdge}).
 }
 
+% # "newVertexEdge" <-
+% # function (vertex.indices, vertices = NULL, width = 2, 
+% #     color = "DarkOliveGreen", oriented = NA, type = "VertexEdge", 
+% #     label = ifelse(is.null(vertices), 
+% #                    "", paste(Labels(vertices), collapse = "~")), 
+% #                              dash = "", 
+% #     N = 3, edgeClasses = validEdgeClasses()) 
+% # {
+% #     if (!is.na(type) && type == "VertexEdge") 
+% #         prototype <- "dg.VertexEdge"
+% #     else {
+% #         prototype <- "dg.VertexEdge"
+% #         x <- match(type, edgeClasses[, 1])
+% #         if (is.null(x) || all(is.na(x))) 
+% #             x <- match(type, edgeClasses[, 2])
+% #         if (!is.null(x) && !all(is.na(x))) 
+% #             prototype <- paste(edgeClasses[, 2][x])
+% #     }
+% #     result <- new(prototype, vertex.indices = vertex.indices, 
+% #         width = width, color = color, oriented = oriented, label = label, 
+% #         label.position = rep(0, N), dash = dash)
+% #     return(result)
+% # }
+
+% vertices <- returnVertexList(paste("V", 1:4, sep = ""))
+
+% # f <- newVertexEdge(c(1, 2, 3), vertices = new("dg.VertexList", 
+% #                                               vertices[1:3]))
+
 \examples{
 vertices <- returnVertexList(paste("V", 1:4, sep = ""))
-e <- newVertexEdge(c(1, 2, 3), vertices = new("dg.VertexList", vertices[1:3]))
+e <- new("dg.VertexEdge", vertex.indices = c(1, 2, 3), 
+         vertices = new("dg.VertexList", vertices[1:3]))
 
 str(e)
 
@@ -157,11 +215,6 @@ oriented(e) <- TRUE
 nodeIndicesOfEdge(e) <- c(1, 2)
 
 str(e)
-
-
-
-
-
 }
 
 \keyword{classes}

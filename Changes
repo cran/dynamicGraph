@@ -1,0 +1,240 @@
+
+ Changes from version 1.6.6 of October 2004 to version 1.7 of august 2005:
+
+ Many changes have been performed.
+
+ For your application to run with this version of dynamicGraph you
+ probably only have add the argument "visibleBlocks = NULL" to your
+ method "setGraphComponents", and precede 'options' by "$control" in
+ your methods and in functions of menus, e.g. change "Args$edgeClasses"
+ to "Args$control$edgeClasses" (and "Args$title" to "Args$control$label").
+
+ ( But "setGraphComponents" and "graphComponents" should be replaced by
+ "setGraphEdges" and "graphEdges", which respectively has as an argument
+ or returns an object of class "dg.graphedges", see the following. )
+
+ To see the necessary changes, run a "diff" on "defaultObjects.R" of
+ the directory "Demo" with the file of same name of the directory
+ "demo" of version 1.6.6 of dynamicGraph. Similar with "usermenus.R".
+
+ Of course, it is recommended you do more changes, similar to how
+ files "defaultObjects.R" and "usermenus.R" now are implemented 
+ in the directory "demo.source". See also the help page of
+ "dg.Model-class" and "dg.graphedges-class.Rd".
+
+ ( The current demos will use "defaultObjects.R" and "usermenus.R"
+ of "demo.source".  To run the versions in "Demo", use the "old" demos
+ of the directory "old.demos", by first renaming the catalog "demo"
+ to, e.g., "new.demos", and renaming the catalog "old.demos" to "demo",
+ and run the demos in R. )
+
+
+ CHANGES (See also the file HISTORY):
+
+
+ Arguments and objects for graphs:
+
+ The long argument list to 'dynamicGraphMain' and 'DynamicGraph' has
+ been eliminated, by packing the options into a list named 'control'
+ and by collecting the lists of the 'graph' in an object.
+
+ The default values of 'control' are returned by the function 'dg.control'.
+
+ The function 'DynamicGraph' is the interface to dynamicGraph, where 
+ the vertices are specified by vectors of character strings or integers,
+ edges by pairs of indeces or names of vertices, etc. These vectors
+ now have to given by an object of class "dg.simple.graph". (I do not
+ like this name of the class.)
+
+ The function 'dynamicGraphMain' is now given the lists of objects for
+ edges, block edges, factors, factor edges, extra vertices, and extra edges
+ in an object of class "dg.graphedges". Object of class "dg.graph" will
+ also hold the items shared by different "models", e.i. the vertices and 
+ the blocks.
+
+ - The methods "setGraphComponents" and "graphComponents" in your
+   application should be replaced by "setGraphEdges" and "graphEdges",
+   which has as an argument or returns an object of class "dg.graphedges".
+   See the help page of "dg.Model-class".
+
+ - The function 'simpleGraphToGraph' is implemented for converting an
+   object of class "dg.simple.graph" to "dg.graph". The code of this
+   function was the major part of the function 'DynamicGraph'.
+   The method "as" will use this function.
+
+ - The method "dg" is implemented for calling 'dynamicGraphMain' on
+   objects of class "dg.simple.graph", "dg.graph", ...
+   You should also implement this method for your application.
+   See the help page of "dg.Model-class".
+
+ - The remaing part of 'DynamicGraph' on adding models and views
+   are now achieved by the methods "addModel", "replaceModel",
+   "addView", and "replaceView", thus 'DynamicGraph' is depricated.
+
+ - 'blockTree' has been removed from 'dynamicGraphMain', since this 
+   structure was only used when converting the three to the 'blockList'.
+   (this is done in 'simpleGraphToGraph'.)
+
+ - See the item "Test of 'Arguments'" of the example on "userMenu" of the
+   help page of "dg.graphedges-class.Rd" about extracting values from,
+   e.g., control.
+
+ - The methods "addModel", "replaceModel", "addView", and "replaceView"
+   have been implemented with "dg.graph", "dg.graphedges", or
+   "dg.simple.graph" as the first argument.   "frameModels" is the 
+   second argument to "addModel" (for where should the model be added).
+   "modelIndex" ("frameViews") is also argument for "addView", and
+   finally also "viewIndex" ("graphWindow") for the last two methods.
+
+
+ Loading the library, classes and methods:
+
+ - Classes and methods are no longer defined in a function in 
+   'dynamicGraph', but "directly" in the R-file (to make the lazy
+   loading much factor under Windows).
+
+ - The stuff with "setGeneric("...", fun)" should not be done for
+   the following methods in your application. You should first load
+   'dynamicGraph', then define the methods:
+
+     "label and "width" (also in ".onLoad.dynamicGraphInterface"), 
+     has to be exported from 'dynamicGraph' for edges, nodes, ect.
+
+     "setSlots": Has to be exported from 'dynamicGraph' for ...
+
+     (Deprecated: "setGraphComponents" and "graphComponents" ("dg.Model"):
+      Exported from 'dynamicGraph' for defining arguments.)
+
+     "setGraphEdges" and "graphEdges" ("dg.Model"):
+     Exported from 'dynamicGraph' for defining arguments.
+
+     "dg": Has to be exported from 'dynamicGraph' for DynamicGraph-class, etc.
+
+     "modifyModel" and "testEdge" ("dg.Model"):
+     Now exported from 'dynamicGraph' for defining arguments.
+
+     - thus the stuff with "setGeneric("...", fun)" should not be done
+       for the above methods!
+
+
+ Temporary variables and size of saved workspace:
+
+ - 'top', 'box' 'canvas', 'viewLabel', and 'tags', and the
+   functions 'drawModel', 'redrawView', and 'update' are now
+   put into a tree of environments in the 'dynamicGraph' environment.
+
+ This reduces the size of the saved workspace.
+
+ - Methods are avaliable for extracting the 'top', 'box', 'canvas',
+   'viewLabel', and 'tags' form the view of the graph, the object of
+   class "DynamicGraphView".  The mehod for "box" is named "vbox".
+
+
+ Speed up:
+
+ - "learning" / "model search" of edges are now avoided: 
+   Edges are not drawn before they are used.
+
+ - Pop up menus are now "lazy": The are not created before asked for. 
+
+
+ New canvas and left side panel (similar to "path finder" and "favorites") 
+ for vertices and blocks. One version with only a list of variable names,
+ and one version (only avaliable when "BWidget" installed on your computer)
+ with a tree of the blocks with variables:
+
+ - Panel for the variable list (try e.g. demo(Cyclic)):
+
+   o In variableList <Button-1> will "select" of "deselect"
+     (tkselection.set) the vertex (name).
+
+     - Select a variable name, and use the item "popup selected in panel"
+       of the file menu for action as <Button-3>.
+
+   o In variableList <Double-Button-1> will "add" or "delete" the variable.
+
+   o In variableList <Button-2> are bound to dialog box for properties
+     (propertyNode) for vertex with tkselection.set different for
+     visibleVertices. (This is not good!)
+
+   o In variableList <Button-3> are bound to pop up menu for last selected
+     (blue) vertex (popupSelectedInPanel) (but the pop up window closed
+     when button-3 released).
+
+
+ - Panel for block tree (list) when "BWidget" is installed on your computer
+   (try e.g. demo(BlockstreeText)): 
+
+   o In blockList <Button-1> will "select" or "deselect"
+     (tkselection.set) the vertex (name).
+
+     - Select a variable name, and use the item "popup selected in panel"
+       of the file menu for pop up menu for last selected vertex or block
+       (popupSelectedInPanel).
+
+   o In blockList dragging block or vertex by <Button-1> will update
+     the block tree or block of the vertex.
+
+   o Similar, if the vertex is moved to an other block by dragging the vertex
+     in the canvas plot of the graph, the panel tree is updated.
+
+   o [ <Button-3> not avaliable "BWidget" for binding in panel for blocks,
+       except for dragevent. "bindImage" and "bindText" not available !!! ] 
+
+ - This panel needs some testing: It is (was) possible to "corrupt" the drawing
+   of the graph. Then make a slave window, and close the corrupted window.
+
+
+ Oriented edge:
+
+ - "oriented" now has tree possible values: NA, FALSE and TRUE.
+
+   o If "oriented" is TRUE then the edge is drawn directed
+     according to the order of the vertices.
+   o If "oriented" is FALSE then the edge is drawn as an undirected
+     edge, also if the vertices of the edge are in different blocks.
+   o If "oriented" is NA then the edge is drawn directed
+     according to the strata of the blocks of the vertices of the edge.
+
+ 
+ Blocks:
+
+ - The "family" structure in blockList is checked, based on slots "parent"
+   of the blocks.
+
+
+ Minor changes:
+
+ - Flickering edges labels:
+
+   1) When no edge labels was selected, namesOnEdges = FALSE,
+      the edge labels returned when moving vertices,
+
+   2) After delete of edgelabels, edgelabels returned when adding 
+      edges, but are remove for old edges when moving vertices.
+
+   Both problems fixed: When namesOnEdges is FALSE the edgelabels are
+   cleared in the edge lists (if namesOnEdges is NA, the edge
+   labels is not drawn).  Edge label can now be deleted "for good",
+   (e.i. namesOnEdges is set to FALSE, and the labels of the list
+   cleared), or "temporary" (e.i. from the view until vertices
+   moved or edges added).
+
+ - The 'newVertex', 'newVertexEdge', ... functions are replaced by
+   "initialize" methods.
+
+ - "initialize" methods for dg.VertexList, dg.EdgeList, ..., are implemented
+    (but not to replace returnFactorVerticesAndEdges and setBlocks).
+
+ - Vertices constrained to blocks implemented (by slot of vertices).
+
+ - Position of vertices not in a block corrected.
+
+ - Label on the top block: Use the argument "root.label" in the function
+   'setTreeBlocks'.
+
+ - The function '.asDataFrame': Objects of class "dist" now handled.
+
+ - The function '.propertyDialog': Objects of class "is.language"
+                                   now handled. Fix of "<<-".
+

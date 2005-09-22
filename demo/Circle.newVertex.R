@@ -1,9 +1,12 @@
 
 # Test with new vertex class:
 
-demo("startup.0", package = "dynamicGraph", verbose = FALSE)
+# demo("startup.0", package = "dynamicGraph", verbose = FALSE)
 
-setClass("NewVertex", contains = "dg.Vertex", 
+source(paste(system.file(package = "dynamicGraph"), 
+             "demo.source/startup.0.R", sep = "/"))
+
+setClass("NewVertex", contains = c("dg.Node", "dg.Vertex"),
          representation(my.text   = "character",
                         my.number = "numeric"), 
          prototype(my.text    = "",
@@ -76,68 +79,23 @@ setMethod("my.number", "NewVertex",
 setReplaceMethod("my.number", "NewVertex",
                  function(x, value) {x@my.number <- value; x} )
 
-# Why are these 2 * 7 methods not avaliable from "dg.Vertex" ?
 
-setMethod("color", "NewVertex",
-          function(object) object@color)
-setReplaceMethod("color", "NewVertex",
-                 function(x, value) {x@color <- value; x} )
-
-setMethod("label", "NewVertex",
-          function(object) object@label)
-setReplaceMethod("label", "NewVertex",
-                 function(x, value) {x@label <- value; x} )
-
-setMethod("labelPosition", "NewVertex",
-          function(object) object@label.position)
-setReplaceMethod("labelPosition", "NewVertex",
-                 function(x, value) {x@label.position <- value; x} )
-
-setMethod("name", "NewVertex",
-          function(object) object@name)
-setReplaceMethod("name", "NewVertex",
-                 function(x, value) {x@name <- value; x} )
-
-setMethod("index", "NewVertex",
-          function(object) object@index)
-setReplaceMethod("index", "NewVertex",
-                 function(x, value) {x@index <- value; x} )
-
-setMethod("position", "NewVertex", 
-          function(object) object@position)
-setReplaceMethod("position", "NewVertex",
-                 function(x, value) {x@position <- value; x} )
-
-setMethod("stratum", "NewVertex",
-          function(object) object@stratum)
-setReplaceMethod("stratum", "NewVertex",
-                 function(x, value) {x@stratum <- value; x} )
-
-setMethod("propertyDialog", "NewVertex",
-          function(object, classes = NULL, title = class(object),
-                   sub.title = label(object), name.object = name(object),
-                   okReturn = TRUE,
-                   fixedSlots = NULL, difficultSlots = NULL,
-                   top = NULL, entryWidth = 20, do.grab = FALSE) {
-  .propertyDialog(object, classes = classes, title = title,
-                  sub.title = sub.title, name.object = name.object,
-                  okReturn = okReturn, 
-                  fixedSlots = fixedSlots, difficultSlots = difficultSlots,
-                  top = top, entryWidth = entryWidth, do.grab = do.grab)
-  })
-
-V.Types <- rep("NewVertex", 6)
-
+V.Types <- c(rep("NewVertex", 3), "Discrete", "Ordinal", "Continuous")
 V.Names <- c("Sex", "Age", "Eye", "FEV", "Hair", "Shosize")
 V.Labels <- paste(V.Names, 1:6, sep ="/")
 
 From <- c(1, 2, 3, 4, 5, 6)
 To   <- c(2, 3, 4, 5, 6, 1)
 
-Z <- DynamicGraph(V.Names, V.Types, From, To, texts = c("Gryf", "gaf"),
-                  labels = V.Labels, object = Object, UserMenus = Menus, 
-                  updateEdgeLabels = FALSE,
-                  edgeColor = "green", vertexColor = "blue", 
-                  debug.strata = debug.strata, debug.edges = debug.edges, 
-                  debug.position = debug.position, debug.update = debug.update,
-                  vertexClasses = myVertexClasses)
+control <- dg.control(UserMenus = Menus, updateEdgeLabels = FALSE,
+                      edgeColor = "green", vertexColor = "blue",
+                      vertexClasses = myVertexClasses, 
+                      title = "<<Circle - newVertex>>")
+
+simpleGraph.Z.nV <- new("dg.simple.graph", vertex.names = V.Names, 
+                        types = V.Types, labels = V.Labels,
+                        from = From, to = To, texts = c("Gryf", "gaf"))
+
+graph.Z.nV <- simpleGraphToGraph(simpleGraph.Z.nV, control = control)
+
+Z.nV <- dg(graph.Z.nV, modelObject = Object, control = control, title = "Z.nv")

@@ -54,7 +54,8 @@ Menus <-
            command = function(object, ...) {
              Args <- list(...)$Arguments
              ReturnVal <- modalDialog("Test modalDialog Entry", "Enter name",
-                                      Args$title, graphWindow = Args$graphWindow)
+                                      Args$control$title, 
+                                      graphWindow = Args$graphWindow)
              print(ReturnVal)
              if (ReturnVal == "ID_CANCEL")
                return() } )

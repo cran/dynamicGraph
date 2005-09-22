@@ -56,9 +56,15 @@ function (Vertices, factors = NULL, types = "Generator", factorVertexColor = "de
                 type <- types
             }
             class(edge.vertices) <- "dg.VertexList"
-            FactorVertices[[i]] <- newFactor(edge, edge.vertices, 
-                type = type, index = -i - offset, width = width, 
-                color = color, factorClasses = factorClasses)
+            prototype <- "dg.Generator"
+            x <- match(type, factorClasses[, 1])
+            if (!is.null(x)) 
+                prototype <- paste(factorClasses[, 2][x])
+            if (color == "default") 
+                color <- c("yellow", "cyan", "magenta", "blue")[x]
+            FactorVertices[[i]] <- new(prototype, vertex.indices = edge, 
+                vertices = edge.vertices, index = -i - offset, 
+                color = color)
         }
         class(FactorVertices) <- "dg.FactorVertexList"
         if (is.null(names(factors))) 

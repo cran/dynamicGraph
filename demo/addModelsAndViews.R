@@ -1,33 +1,43 @@
 
 # Test of "link" and "add":
 
-demo("startup", package = "dynamicGraph", verbose = FALSE)
+# demo("startup", package = "dynamicGraph", verbose = FALSE)
 
-From <- c(1, 2, 3)
-To   <- c(2, 3, 1)
+source(paste(system.file(package = "dynamicGraph"), 
+             "demo.source/startup.R", sep = "/"))
 
-Z <- DynamicGraph(V.Names[1:3], V.Types[1:3], 
-                  from = From, to = To, object = Object, UserMenus = Menus, 
-                  returnLink = TRUE, width = 150, height = 200, margin = 200,
-		  title = "Z")
+control <- dg.control(UserMenus = Menus, returnLink = TRUE, 
+                      width = 150, height = 200, margin = 200)
 
-From <- c(2, 3)
-To   <- c(3, 1)
+simpleGraph.Z.1 <- new("dg.simple.graph", 
+                       vertex.names = V.Names[1:3], types = V.Types[1:3], 
+                       from = c(1, 2, 3), to = c(2, 3, 1))
 
-W <- DynamicGraph(from = From, to = To, object = Object, UserMenus = Menus, 
-                  returnLink = TRUE, width = 150, height = 200, margin = 200, 
-                  title = "W", frameModels = Z, addModel = TRUE)
+graph.Z.1 <- as(simpleGraph.Z.1, "dg.graph")
 
-V <- DynamicGraph(from = From, to = To, object = Object, UserMenus = Menus, 
-                  returnLink = TRUE, width = 150, height = 200, margin = 200, 
-                  frameModels = W, frameViews = W@models[[2]], 
-                  title = "V", addView = TRUE, viewType = "Factor")
+Z <- dg(graph.Z.1, modelObject = Object, control = control, title = "Z")
 
-From <- 1
-To   <- 2
 
-U <- DynamicGraph(from = From, to = To, object = Object, UserMenus = Menus, 
-                  returnLink = TRUE, width = 150, height = 200, margin = 200, 
-                  title = "U", frameModels = Z, frameViews = Z@models[[1]], 
-                  graphWindow =  Z@models[[1]]@graphs[[1]], addModel = TRUE, 
-                  overwrite = TRUE)
+simpleGraph.WV.1 <- new("dg.simple.graph", from = c(2, 3), to = c(3, 1))
+
+graph.WV.1 <- simpleGraphToGraph(simpleGraph.WV.1,
+                               vertexList = graph.Z.1@vertexList,
+                               blockList = graph.Z.1@blockList)
+
+W <- addModel(graph.WV.1, 
+              frameModels = Z, control = control, title = "W")
+
+V <- addView(graph.WV.1, 
+             frameModels = Z, modelIndex = 1, control = control,
+             viewType = "Factor", title = "W")
+
+
+simpleGraph.U.1 <- new("dg.simple.graph", from = 1, to = 2)
+
+graph.U.1 <- simpleGraphToGraph(simpleGraph.U.1,
+                               Vertices = graph.Z.1@vertexList,
+                               BlockList = graph.Z.1@blockList)
+
+U <- replaceModel(graph.U.1, 
+                  frameModels = Z, modelIndex = 1, graphIndex = 1, 
+                  control = control, title = "U")

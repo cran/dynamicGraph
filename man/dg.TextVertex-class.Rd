@@ -36,6 +36,8 @@ Objects has the methods for extracting and setting the slots for vertices.
        with the \code{blockindex} of the vertex. }
     \item{\code{stratum}:}{Object of class \code{"numeric"} 
        with the \code{stratum} of the vertex. }
+    \item{\code{constrained}:}{Object of class \code{"logical"}, 
+       see \code{"dg.Vertex"}. }
     \item{\code{color}:}{Object of class \code{"character"}
        with the \code{color} of the vertex. }
     \item{\code{label}:}{Object of class \code{"character"}
@@ -48,8 +50,10 @@ Objects has the methods for extracting and setting the slots for vertices.
 }
 
 \section{Extends}{
+Class \code{"dg.Node"}, directly.
 Class \code{"dg.Vertex"}, directly.
-Class \code{"dg.Node"}, by class \code{"dg.Vertex"}.
+% Class \code{"dg.Vertex"}, directly.
+% Class \code{"dg.Node"}, by class \code{"dg.Vertex"}.
 }
 \section{Methods}{
   \describe{
@@ -60,7 +64,7 @@ Class \code{"dg.Node"}, by class \code{"dg.Vertex"}.
 \author{Jens Henrik Badsberg}
 
 \seealso{
-\code{\link{newVertex}},
+\code{\link{dg.Vertex-class}},
 \code{\link{returnVertexList}},
 \code{\link{dg.Node-class}}, and
 \code{\link{dg.ExtraEdge-class}}.

@@ -1,8 +1,15 @@
 \name{setTreeBlocks}
 
 \alias{setTreeBlocks}
+
 \alias{Closed}
 \alias{Closed<-}
+
+\alias{Parents<-}
+\alias{Parents}
+\alias{Children<-}
+\alias{Children}
+
 \alias{NodeAncestors}
 \alias{NodeAncestors<-}
 \alias{NodeDescendants}
@@ -166,9 +173,11 @@ setTreeBlocks(block.tree, vertices, root.label = "", N = 3,
       Ancestors and descendants are set in \code{\link{setTreeBlocks}}.
       Ancestors are used in the function \code{\link{returnBlockEdgeList}} to
       find the edges between blocks and between blocks and vertices.
+
       Descendants are used in \code{\link{dynamicGraphMain}}
       when closing, opening and moving blocks,
       and when adding or dropping edges from and to blocks.
+
       The methods \code{\link{NodeAncestors}}, \code{\link{NodeAncestors<-}}
       \code{\link{NodeDescendants}} and \code{\link{NodeDescendants<-}}
       can be used on the block list resulting of 
@@ -312,10 +321,14 @@ To   <- match(FromTo[,2], V.Names)
 V.Types <- rep("Discrete", length(V.Names))
 
 Object <- NULL
-Z <- DynamicGraph(V.Names, V.Types, From, To, block.tree = Block.tree, 
-                  object = Object, width = 600, height = 600, 
-                  drawblocks = TRUE, drawBlockFrame = TRUE, 
-                  overlaying = TRUE, title = "Pedegree.G")
+
+graph <- new("dg.simple.graph", vertex.names = V.Names, types = V.Types,
+             from = From, to = To, block.tree = Block.tree)
+
+W <- dg(graph,
+        control = dg.control(width = 600, height = 600, 
+                             drawblocks = TRUE, drawBlockFrame = TRUE, 
+                             overlaying = TRUE, title = "Pedegree.G"))
 }
 
 \keyword{ methods }

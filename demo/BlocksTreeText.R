@@ -1,7 +1,10 @@
 
 # Test with block recursive model:
 
-demo("startup.0", package = "dynamicGraph", verbose = FALSE)
+# demo("startup.0", package = "dynamicGraph", verbose = FALSE)
+
+source(paste(system.file(package = "dynamicGraph"), 
+             "demo.source/startup.0.R", sep = "/"))
 
 Block.tree <- list(Vertices = c("country"),
                    X = list(Vertices = c("sex", "race"),
@@ -20,14 +23,27 @@ V.Names <- v[grep("Vertices", names(v))]
 rm(v)
 names(V.Names) <- NULL
 
+V.Names <- c("alfa", V.Names, "z")
+
 V.Types <- rep("Discrete", length(V.Names))
 
 From <- match(From, V.Names)
 To   <- match(To, V.Names)
 
-Z <- DynamicGraph(V.Names, V.Types, From, To, block.tree = Block.tree,
-                  object = Object, margin = 400,
-                  width = 600, height = 600, drawblocks = TRUE,
-                  UserMenus = Menus, overlaying = FALSE,
-                  debug.strata = debug.strata, debug.edges = debug.edges, 
-                  debug.position = debug.position, debug.update = debug.update)
+control <- dg.control(UserMenus = Menus, updateEdgeLabels = FALSE,
+                      useNamesForLabels = FALSE,
+                      margin = 400, width = 600, height = 600, 
+                      drawblocks = TRUE, overlaying = FALSE,
+                      edgeColor = "green", vertexColor = "blue")
+
+simpleGraph.Z.BTT <- new("dg.simple.graph", vertex.names = V.Names, 
+                         types = V.Types, block.tree = Block.tree,
+                         from = From, to = To,
+                         # title = "<< BlocksTreeText.R >>",
+                         texts = c("One\nlittle\ntext", 
+                                   "An other\nlittle text"))
+
+graph.Z.BTT <- simpleGraphToGraph(simpleGraph.Z.BTT, control = control)
+
+Z.BTT <- dg(graph.Z.BTT, modelObject = Object, control = control,
+            title = "BlocksTreeText.R")

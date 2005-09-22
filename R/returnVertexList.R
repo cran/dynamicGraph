@@ -38,9 +38,20 @@ function (names, labels = NULL, types = NULL, strata = NULL,
         if (is.null(strata)) 
             stratum <- 0
         else stratum <- strata[i]
-        result[[i]] <- newVertex(names[i], label, type, index = i, 
-            position = position, stratum = stratum, color = colors[i], 
-            vertexClasses = vertexClasses)
+        if (!is.na(type) && type == "TextVertex") 
+            prototype <- "dg.TextVertex"
+        else {
+            prototype <- "dg.Vertex"
+            x <- match(type, vertexClasses[, 1])
+            if (!is.null(x) && !all(is.na(x))) 
+                prototype <- paste(vertexClasses[, 2][x])
+        }
+        if (prototype == "dg.TextVertex") 
+            index <- -i
+        else index <- i
+        result[[i]] <- new(prototype, name = names[i], label = label, 
+            index = index, position = position, blockindex = 0, 
+            stratum = stratum, color = colors[i])
     }
     class(result) <- "dg.VertexList"
     names(result) <- Names(result)

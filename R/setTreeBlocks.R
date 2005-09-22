@@ -1,5 +1,5 @@
 "setTreeBlocks" <-
-function (block.tree, vertices, root.label = "", N = 3, delta = ifelse(overlaying, 
+function (block.tree, vertices, root.label = "Root", N = 3, delta = ifelse(overlaying, 
     1, 0), Delta = ifelse(overlaying, 0, 1.5), d = 5, f = 1/4, 
     blockColors = NULL, overlaying = FALSE) 
 {
@@ -38,6 +38,13 @@ function (block.tree, vertices, root.label = "", N = 3, delta = ifelse(overlayin
             for (i in 1:length(tree$sub.blocks)) result <- c(result, 
                 blockTreeDescendants(tree$sub.blocks[[i]]))
         tree$block@descendants <- result
+        return(result)
+    }
+    "blockChildren" <- function(sub.blocks) {
+        result <- NULL
+        if (!is.null((sub.blocks))) 
+            for (i in 1:length(sub.blocks)) result <- c(result, 
+                sub.blocks[[i]]$block@stratum)
         return(result)
     }
     "returnTreeBlocks" <- function(block.tree, label, ancestors = NULL, 
@@ -172,9 +179,11 @@ function (block.tree, vertices, root.label = "", N = 3, delta = ifelse(overlayin
                 depth <- round(depth * blockColors[1])
             block.color <- paste("grey", 100 - depth, sep = "")
         }
-        Block <- newBlock(stratum = Stratum, index = -Stratum, 
-            position = position, color = block.color, label = label, 
-            closed = closed, ancestors = ancestors)
+        Block <- new("dg.Block", stratum = Stratum, index = -Stratum, 
+            position = position, color = block.color, closed = closed, 
+            label = label, ancestors = if (is.null(ancestors)) 
+                0
+            else ancestors)
         result <- NULL
         if (count.blocks > 0) {
             if (horizontal) 
@@ -234,9 +243,14 @@ function (block.tree, vertices, root.label = "", N = 3, delta = ifelse(overlayin
             des <- blockTreeDescendants(list(block = Block, sub.blocks = result))
             Block@descendants <- des[!((des == Block@stratum) | 
                 (des == 0))]
+            cld <- blockChildren(result)
+            Block@children <- cld[!((cld == Block@stratum) | 
+                (cld == 0))]
         }
         return(list(block = Block, sub.blocks = result))
     }
+    for (i in seq(along = vertices)) position(vertices[[i]]) <- c(100 * 
+        (i - 0.5)/length(vertices) - 50, -48.5, rep(0, N - 2))
     Stratum <- 0
     result <- returnTreeBlocks(block.tree, label = root.label, 
         NULL, N = N, delta = delta, Delta = Delta, d = d, f = f, 

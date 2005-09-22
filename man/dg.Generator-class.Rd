@@ -11,8 +11,8 @@
 \alias{dg.QuadraticGenerator-class}
 \alias{draw,dg.QuadraticGenerator-method}
 
-\title{Classses "dg.Generator", "dg.DiscreteGenerator", "dg.Linear"\-"Generator",
-and "dg.QuadraticGenerator" }
+\title{Classses "dg.Generator", "dg.DiscreteGenerator",
+       "dg.Linear"\-"Generator", and "dg.QuadraticGenerator" }
 
 \description{ The class for factor vertices for general terms,
  discrete terms, linear terms, and quadratic terms. 
@@ -48,6 +48,8 @@ and "dg.QuadraticGenerator" }
           see \code{"dg.Vertex"}. }
     \item{\code{stratum}:}{Object of class \code{"numeric"},
           see \code{"dg.Vertex"}. }
+    \item{\code{constrained}:}{Object of class \code{"logical"}, 
+          see \code{"dg.Vertex"}. }
     \item{\code{color}:}{Object of class \code{"character"},
           see \code{"dg.Vertex"}.
        Default is \code{yellow} for general, \code{cyan} for discrete,
@@ -60,9 +62,12 @@ and "dg.QuadraticGenerator" }
 }
 
 \section{Extends}{
+% Class \code{"dg.FactorVertex"}, directly.
+% Class \code{"dg.Vertex"}, by class \code{"dg.FactorVertex"}.
+% Class \code{"dg.Node"}, by class \code{"dg.FactorVertex"}.
 Class \code{"dg.FactorVertex"}, directly.
-Class \code{"dg.Vertex"}, by class \code{"dg.FactorVertex"}.
-Class \code{"dg.Node"}, by class \code{"dg.FactorVertex"}.
+Class \code{"dg.Vertex"}, directly.
+Class \code{"dg.Node"}, directly.
 }
 
 \section{Methods}{
