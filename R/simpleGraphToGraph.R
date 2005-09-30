@@ -256,6 +256,7 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
                 result <- returnFactorVerticesAndEdges(Vertices, 
                   sdg@factors, factorVertexColor = control$factorVertexColor, 
                   factorEdgeColor = control$factorEdgeColor, 
+                  fixedFactorPositions = control$fixedFactorPositions, 
                   factorClasses = control$factorClasses)
                 if (!is.null(Arguments$FactorVertices)) {
                   FactorVertices <- Arguments$FactorVertices
@@ -269,13 +270,22 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
                   sdg@to <- result$PairEdges[, 2]
                 }
             }
+            Oriented <- sdg@oriented
+            if (is.list(Oriented)) 
+                Oriented <- unlist(Oriented)
+            if (.IsEmpty(Oriented)) 
+                Oriented <- NA
+            if (length(Oriented) == 0) 
+                Oriented <- NA
             if (.IsEmpty(sdg@edge.list)) 
                 sdg@edge.list <- two.to.pairs(sdg@from, sdg@to)
             if (!is.null(Arguments$Edges)) 
                 Edges <- Arguments$Edges
             else Edges <- returnEdgeList(sdg@edge.list, Vertices, 
-                color = control$edgeColor, oriented = sdg@oriented, 
+                color = control$edgeColor, oriented = Oriented, 
                 N = control$N, types = sdg@edge.types, edgeClasses = control$edgeClasses)
+            if (length(Oriented) > 1) 
+                Oriented <- TRUE
             BlockEdges <- NULL
             if (!is.null(Arguments$BlockEdges)) 
                 BlockEdges <- Arguments$BlockEdges
@@ -284,21 +294,15 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
                   message("Edges between blocks and factors not implemented!")
                 if (is.null(BlockList) && !is.null(BlockTree)) 
                   BlockList <- blockTreeToList(BlockTree)
-                o <- if (length(sdg@oriented) > 1) 
-                  TRUE
-                else sdg@oriented
                 if (.IsEmpty(BlockList)) 
                   BlockEdges <- NULL
                 else BlockEdges <- returnBlockEdgeList(sdg@edge.list, 
                   Vertices, BlockList, color = control$blockEdgeColor, 
-                  oriented = o)
+                  oriented = Oriented)
             }
         }
-        o <- if (length(sdg@oriented) > 1) 
-            TRUE
-        else sdg@oriented
         dg <- .newDgGraph(viewType = sdg@viewType, vertexList = Vertices, 
-            edgeList = Edges, oriented = o, blockList = BlockList, 
+            edgeList = Edges, oriented = Oriented, blockList = BlockList, 
             blockEdgeList = BlockEdges, factorVertexList = FactorVertices, 
             factorEdgeList = FactorEdges, extraList = ExtraVertices, 
             extraEdgeList = ExtraEdges)

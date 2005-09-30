@@ -399,15 +399,25 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   prototype <- paste(control$viewClasses[, 2][x])
                 top <- tktoplevel()
                 f0.box <- NULL
+                viewLabel <- NULL
+                tags <- NULL
                 if (control$permitZoom) {
+                  f <- tkframe(top)
+                  tkpack(f, expand = "yes", side = "top", fill = "both")
                   if (control$variableFrame) {
-                    tkwm.title(top, "Test of paned canvas")
-                    tkcmd("wm", "iconname", top, "paned")
-                    f <- tkframe(top)
-                    tkpack(f, expand = "yes", side = "top", fill = "both")
-                    w.pane <- tkcmd("panedwindow", .Tk.subwin(f))
+                    w.pane <- FALSE
+                    try(w.pane <- tkcmd("panedwindow", .Tk.subwin(f)), 
+                      silent = TRUE)
+                    has.paned <- (class(w.pane) != "logical")
+                    if (!has.paned) {
+                      control$variableFrame <<- has.paned
+                      message("'panedwindow' not in your version of 'Tcl/tk'")
+                    }
+                  }
+                  if (control$variableFrame) {
                     tkpack(w.pane, side = "top", expand = "yes", 
                       fill = "both", pady = 2, padx = "2m")
+                    tkcmd("wm", "iconname", top, "Paned window")
                     myTclRequire <- function(package, warn = TRUE) {
                       a <- tclvalue(.Tcl(paste("package versions ", 
                         package)))
@@ -701,8 +711,6 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     tkfocus(top)
                   }
                   else {
-                    f <- tkframe(top)
-                    tkpack(f, expand = "yes", side = "top", fill = "both")
                     viewLabel <- tklabel(f, text = viewType, 
                       foreground = "DarkSlateBlue", background = "LightGrey")
                     xscr <- tkscrollbar(f, repeatinterval = 5, 
@@ -968,7 +976,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
             }
             "getTag" <- function(text, number, setTag = TRUE) {
-                tag <- paste(text, number, GraphWindow@id, sep = "-")
+                tag <- paste(text, abs(number), GraphWindow@id, 
+                  sep = ".")
                 if (is.null(GW.tags[[1]])) 
                   GW.tags <<- list(tag)
                 else if (!any(unlist(lapply(GW.tags, function(i) i == 
@@ -2861,68 +2870,77 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
             }
             "insertEdgeItems" <- function(R, edge, i, edge.type = "VertexEdge", 
                 newE = FALSE, reinsert = FALSE) {
-                for (k in 1:length(R)) {
-                  if (!reinsert) 
-                    positionsEdgeLabels <<- rbind(positionsEdgeLabels, 
-                      rep(0, local.N))
-                  f <- R[[k]]$from
-                  t <- R[[k]]$to
-                  edge.oriented <- NA
-                  if (is.element("oriented", slotNames(edge))) 
-                    edge.oriented <- edge@oriented
-                  if (is.null(R[[k]]$lines)) {
-                    edgeNode <- list(nr = i, type = edge.type, 
-                      to = t, tag = NULL, oriented = edge.oriented, 
-                      reverse = FALSE, edges = NULL, tags = NULL, 
-                      label = NULL, label.number = nrow(positionsEdgeLabels))
-                    setEdgeItem(f, edge.type = edge.type, c(edgeItem(f, 
-                      edge.type = edge.type), list(edgeNode)))
-                    edgeNode <- list(nr = i, type = edge.type, 
-                      to = f, tag = NULL, oriented = edge.oriented, 
-                      reverse = TRUE, edges = NULL, tags = NULL, 
-                      label = NULL, label.number = nrow(positionsEdgeLabels))
-                    setEdgeItem(t, edge.type = edge.type, c(edgeItem(t, 
-                      edge.type = edge.type), list(edgeNode)))
-                  }
-                  else {
-                    tag <- getTag(edge.type, i)
-                    tkaddtag(canvas, tag, "withtag", R[[k]]$label)
-                    for (l in 1:length(R[[k]]$lines)) tkaddtag(canvas, 
-                      tag, "withtag", R[[k]]$lines[[l]])
-                    if (length(R[[k]]$tags) > 0) 
-                      for (l in 1:length(R[[k]]$tags)) tkaddtag(canvas, 
-                        tag, "withtag", R[[k]]$tags[[l]])
-                    edgeNode <- list(nr = i, type = edge.type, 
-                      to = t, tag = tag, oriented = edge.oriented, 
-                      reverse = FALSE, edges = R[[k]]$lines, 
-                      tags = R[[k]]$tags, label = R[[k]]$label, 
-                      label.number = nrow(positionsEdgeLabels))
-                    if (reinsert) {
-                      reinsertEdgeItem(edgeNode, from = f, to = t, 
-                        nr = i, edge.type = edge.type)
+                if (!is.null(R)) {
+                  for (k in 1:length(R)) {
+                    if (!reinsert) 
+                      positionsEdgeLabels <<- rbind(positionsEdgeLabels, 
+                        rep(0, local.N))
+                    f <- R[[k]]$from
+                    t <- R[[k]]$to
+                    edge.oriented <- NA
+                    if (is.element("oriented", slotNames(edge))) 
+                      edge.oriented <- edge@oriented
+                    if (is.null(R[[k]]$lines)) {
+                      edgeNode <- list(nr = i, type = edge.type, 
+                        to = t, tag = NULL, oriented = edge.oriented, 
+                        reverse = FALSE, edges = NULL, tags = NULL, 
+                        label = NULL, label.number = nrow(positionsEdgeLabels))
+                      setEdgeItem(f, edge.type = edge.type, c(edgeItem(f, 
+                        edge.type = edge.type), list(edgeNode)))
+                      edgeNode <- list(nr = i, type = edge.type, 
+                        to = f, tag = NULL, oriented = edge.oriented, 
+                        reverse = TRUE, edges = NULL, tags = NULL, 
+                        label = NULL, label.number = nrow(positionsEdgeLabels))
+                      setEdgeItem(t, edge.type = edge.type, c(edgeItem(t, 
+                        edge.type = edge.type), list(edgeNode)))
                     }
-                    else setEdgeItem(f, edge.type = edge.type, 
-                      c(edgeItem(f, edge.type = edge.type), list(edgeNode)))
-                    subSetEdgeCoords(edgeNode, f, t, width = control$w)
-                    if (newE) 
-                      tkitemconfigure(canvas, R[[k]]$label, text = edge@label)
-                    edgeNode <- list(nr = i, type = edge.type, 
-                      to = f, tag = tag, oriented = edge.oriented, 
-                      reverse = TRUE, edges = R[[k]]$lines, tags = R[[k]]$tags, 
-                      label = R[[k]]$label, label.number = nrow(positionsEdgeLabels))
-                    if (reinsert) {
-                      reinsertEdgeItem(edgeNode, from = t, to = f, 
-                        nr = i, edge.type = edge.type)
-                    }
-                    else setEdgeItem(t, edge.type = edge.type, 
-                      c(edgeItem(t, edge.type = edge.type), list(edgeNode)))
-                    for (l in 1:length(R[[k]]$lines)) setBindEdge(canvas, 
-                      edge, R[[k]]$lines[[l]], R[[k]]$label, 
-                      i, f, t, control$UserMenus, edge.type = edge.type)
-                    if (length(R[[k]]$tags) > 0) 
-                      for (l in 1:length(R[[k]]$tags)) setBindEdge(canvas, 
-                        edge, R[[k]]$tags[[l]], R[[k]]$label, 
+                    else {
+                      if (length(R) > 1) 
+                        tag <- getTag(edge.type, round(i + (k - 
+                          1)/length(R), digits = 2))
+                      else tag <- getTag(edge.type, i)
+                      tkaddtag(canvas, tag, "withtag", R[[k]]$label)
+                      for (l in 1:length(R[[k]]$lines)) tkaddtag(canvas, 
+                        tag, "withtag", R[[k]]$lines[[l]])
+                      if (length(R[[k]]$tags) > 0) 
+                        for (l in 1:length(R[[k]]$tags)) tkaddtag(canvas, 
+                          tag, "withtag", R[[k]]$tags[[l]])
+                      edgeNode <- list(nr = i, type = edge.type, 
+                        to = t, tag = tag, oriented = edge.oriented, 
+                        reverse = FALSE, edges = R[[k]]$lines, 
+                        tags = R[[k]]$tags, label = R[[k]]$label, 
+                        label.number = nrow(positionsEdgeLabels))
+                      if (reinsert) {
+                        reinsertEdgeItem(edgeNode, from = f, 
+                          to = t, nr = i, edge.type = edge.type)
+                      }
+                      else setEdgeItem(f, edge.type = edge.type, 
+                        c(edgeItem(f, edge.type = edge.type), 
+                          list(edgeNode)))
+                      subSetEdgeCoords(edgeNode, f, t, width = control$w)
+                      if (newE) 
+                        tkitemconfigure(canvas, R[[k]]$label, 
+                          text = edge@label)
+                      edgeNode <- list(nr = i, type = edge.type, 
+                        to = f, tag = tag, oriented = edge.oriented, 
+                        reverse = TRUE, edges = R[[k]]$lines, 
+                        tags = R[[k]]$tags, label = R[[k]]$label, 
+                        label.number = nrow(positionsEdgeLabels))
+                      if (reinsert) {
+                        reinsertEdgeItem(edgeNode, from = t, 
+                          to = f, nr = i, edge.type = edge.type)
+                      }
+                      else setEdgeItem(t, edge.type = edge.type, 
+                        c(edgeItem(t, edge.type = edge.type), 
+                          list(edgeNode)))
+                      for (l in 1:length(R[[k]]$lines)) setBindEdge(canvas, 
+                        edge, R[[k]]$lines[[l]], R[[k]]$label, 
                         i, f, t, control$UserMenus, edge.type = edge.type)
+                      if (length(R[[k]]$tags) > 0) 
+                        for (l in 1:length(R[[k]]$tags)) setBindEdge(canvas, 
+                          edge, R[[k]]$tags[[l]], R[[k]]$label, 
+                          i, f, t, control$UserMenus, edge.type = edge.type)
+                    }
                   }
                 }
             }
@@ -4425,15 +4443,17 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
             }
             setFactorVertexPosition <- function(i, vertex.indices) {
-                posFrom <- retVertexPos(-i, "Factor")
-                positions <- NULL
-                for (j in seq(along = vertex.indices)) if (vertex.indices[j] > 
-                  0) 
-                  positions <- rbind(positions, positionsVertices[vertex.indices[j], 
-                    ])
-                position <- apply(positions, 2, mean)
-                posTo <- positionsCanvas(project(position))
-                subMoveVertex(-i, "Factor", posFrom, posTo)
+                if (!dg@factorVertexList[[abs(i)]]@fixed.positions) {
+                  posFrom <- retVertexPos(-i, "Factor")
+                  positions <- NULL
+                  for (j in seq(along = vertex.indices)) if (vertex.indices[j] > 
+                    0) 
+                    positions <- rbind(positions, positionsVertices[vertex.indices[j], 
+                      ])
+                  position <- apply(positions, 2, mean)
+                  posTo <- positionsCanvas(project(position))
+                  subMoveVertex(-i, "Factor", posFrom, posTo)
+                }
             }
             moveFactorVertex <- function(vertex) {
                 if (!is.null(itemsFactors)) 

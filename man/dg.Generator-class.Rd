@@ -38,6 +38,8 @@
     %      see \code{"dg.FactorVertex"}. }
     \item{\code{vertex.indices}:}{Object of class \code{"numeric"},
           see \code{"dg.FactorVertex"}. }
+    \item{\code{fixed.positions}:}{Object of class \code{"logical"}, 
+                        see \code{"dg.FactorVertex"}. }
     \item{\code{name}:}{Object of class \code{"character"},
           see \code{"dg.Vertex"}. }
     \item{\code{index}:}{Object of class \code{"numeric"},

@@ -18,7 +18,7 @@ dg.control(label = "dynamicGraph",
            extraEdgeColor = "peru", 
            drawblocks = TRUE, right.to.left = FALSE, 
            nested.blocks = FALSE, overlaying = TRUE, 
-           diagonal = TRUE, N = 3, 
+           fixedFactorPositions = FALSE, diagonal = TRUE, N = 3, 
            vertexClasses = validVertexClasses(), 
            factorClasses = validFactorClasses(), 
            edgeClasses = validEdgeClasses(), 
@@ -106,6 +106,9 @@ dg.control(label = "dynamicGraph",
   \item{overlaying}{ Logical. If \code{overlaying} is set to FALSE
         then children of a block are not drawn inside the block.
         See \code{\link{setTreeBlocks}}. 
+        (\code{\link{simpleGraphToGraph}})}
+  \item{fixedFactorPositions}{ Logical. If \code{fixedFactorPositions} is set
+        to TRUE then the factor vertices will not follow the moved vertices.
         (\code{\link{simpleGraphToGraph}})}
   \item{diagonal}{ Logical. If \code{diagonal} is set to TRUE
         then the extra vertices are by default positioned along a diagonal. 

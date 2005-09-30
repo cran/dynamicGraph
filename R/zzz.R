@@ -477,7 +477,7 @@
     setClass("dg.simple.graph", representation(viewType = "character", 
         vertex.names = "vector", types = "character", labels = "vector", 
         from = "vector", to = "vector", edge.list = "list", edge.types = "character", 
-        blocks = "list", block.tree = "list", oriented = "logical", 
+        blocks = "list", block.tree = "list", oriented = "vector", 
         factors = "list", texts = "character", extra.from = "vector", 
         extra.to = "vector", extra.edge.list = "list"), prototype = list(viewType = "Simple", 
         vertex.names = vector(), labels = vector(), types = "", 
@@ -859,9 +859,10 @@
         return(.Object)
     })
     setClass("dg.FactorVertex", contains = c("dg.Vertex", "dg.Node"), 
-        representation(vertex.indices = "numeric"), prototype = list(color = "black", 
-            label = "Label", label.position = c(0, 0, 0), name = "Name", 
-            index = 0, position = c(0, 0, 0), constrained = FALSE, 
+        representation(vertex.indices = "numeric", fixed.positions = "logical"), 
+        prototype = list(color = "black", label = "Label", label.position = c(0, 
+            0, 0), name = "Name", index = 0, position = c(0, 
+            0, 0), constrained = FALSE, fixed.positions = FALSE, 
             blockindex = 0, stratum = 0, vertex.indices = c(0, 
                 0)))
     setMethod("initialize", "dg.FactorVertex", function(.Object, 
@@ -1073,6 +1074,22 @@
     setReplaceMethod("constrained", "dg.Vertex", function(x, 
         value) if (("constrained" %in% slotNames(x))) {
         x@constrained <- value
+        x
+    })
+    if (!isGeneric("fixed.positions")) {
+        if (is.function("fixed.positions")) 
+            fun <- fixed.positions
+        else fun <- function(object) standardGeneric("fixed.positions")
+        setGeneric("fixed.positions", fun)
+    }
+    setMethod("fixed.positions", "dg.FactorVertex", function(object) if (("fixed.positions" %in% 
+        slotNames(object))) 
+        object@fixed.positions
+    else FALSE)
+    setGeneric("fixed.positions<-", function(x, value) standardGeneric("fixed.positions<-"))
+    setReplaceMethod("fixed.positions", "dg.FactorVertex", function(x, 
+        value) if (("fixed.positions" %in% slotNames(x))) {
+        x@fixed.positions <- value
         x
     })
     if (!isGeneric("position")) {
@@ -1637,6 +1654,29 @@
                 ]
         }
         else warning("Invalid list of values for labelpositions")
+        objectlist
+    })
+    if (!isGeneric("FixedPositions")) {
+        if (is.function("FixedPositions")) 
+            fun <- FixedPositions
+        else fun <- function(objectlist) standardGeneric("FixedPositions")
+        setGeneric("FixedPositions", fun)
+    }
+    setMethod("FixedPositions", "dg.list", function(objectlist) {
+        fixed.positions <- lapply(objectlist, function(x) if (!is.null(x)) 
+            fixed.positions(x))
+        names(fixed.positions) <- Names(objectlist)
+        return(unlist(fixed.positions))
+    })
+    setGeneric("FixedPositions<-", function(objectlist, value) standardGeneric("FixedPositions<-"))
+    setReplaceMethod("FixedPositions", "dg.list", function(objectlist, 
+        value) {
+        if (length(objectlist) == length(value)) {
+            for (i in seq(along = objectlist)) if (("fixed.positions" %in% 
+                slotNames(objectlist[[i]]))) 
+                objectlist[[i]]@fixed.positions <- value[i]
+        }
+        else warning("Invalid list of values for fixed.positions")
         objectlist
     })
     if (!isGeneric("Constrained")) {

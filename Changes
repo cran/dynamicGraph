@@ -22,11 +22,11 @@
  in the directory "demo.source". See also the help page of
  "dg.Model-class" and "dg.graphedges-class.Rd".
 
- ( The current demos will use "defaultObjects.R" and "usermenus.R"
- of "demo.source".  To run the versions in "Demo", use the "old" demos
- of the directory "old.demos", by first renaming the catalog "demo"
- to, e.g., "new.demos", and renaming the catalog "old.demos" to "demo",
- and run the demos in R. )
+ ( The current demos will use "defaultObjects.R" and "usermenus.R" of
+ "demo.source".  To run the versions in "old.demos/Demo", use the "old"
+ demos of the directory "old.demos", by first renaming the catalog "demo"
+ to, e.g., "new.demos",  move "Demo" from "old.demos" to ".../dynamicGraph",
+ and renaming the catalog "old.demos" to "demo", and run the demos in R. )
 
 
  CHANGES (See also the file HISTORY):

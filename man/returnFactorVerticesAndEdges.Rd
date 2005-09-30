@@ -19,6 +19,7 @@ returnFactorVerticesAndEdges(Vertices, factors = NULL, types = "Generator",
                              factorVertexColor = "default", 
                              factorEdgeColor = "DarkOliveGreen", 
                              % oriented = FALSE, 
+                             fixedFactorPositions = FALSE,
                              factorClasses = validFactorClasses())
 }
 
@@ -39,6 +40,9 @@ returnFactorVerticesAndEdges(Vertices, factors = NULL, types = "Generator",
       of the factor vertices. }
   \item{factorEdgeColor}{ The \code{factorEdgeColor} of the factor edges. }
   % \item{oriented}{ Logical, if TRUE then the edges are \code{oriented}. }
+  \item{fixedFactorPositions}{ Logical. 
+        If \code{fixedFactorPositions} is setto TRUE then the factor 
+        vertices will not follow the moved vertices. }
   \item{factorClasses}{ The valid \code{\link{factorClasses}}. }
 }
 

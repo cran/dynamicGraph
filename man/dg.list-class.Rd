@@ -36,6 +36,8 @@
 \alias{Widths<-}
 \alias{Dashes}
 \alias{Dashes<-}
+\alias{FixedPositions<-,dg.list-method}
+\alias{FixedPositions,dg.list-method}
 \alias{Oriented}
 \alias{Oriented<-}
 
@@ -132,6 +134,8 @@ Class \code{"list"}, by class \code{"dg.NodeList"}.
     \item{Colors}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Dashes<-}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Dashes}{\code{signature(objectlist = "dg.list")}: ... }
+    \item{FixedPositions<-}{\code{signature(objectlist = "dg.list")}: ... }
+    \item{FixedPositions}{\code{signature(objectlist = "dg.list")}: ... }
   % \item{Indices<-}{\code{signature(objectlist = "dg.list")}: ... }
     \item{Indices}{\code{signature(objectlist = "dg.list")}: ... }
     \item{LabelPositions<-}{\code{signature(objectlist = "dg.list")}: ... }

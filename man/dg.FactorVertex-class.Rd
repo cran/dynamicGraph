@@ -3,6 +3,8 @@
 \docType{class}
 
 \alias{dg.FactorVertex-class}
+\alias{fixed.positions<-,dg.FactorVertex-method}
+\alias{fixed.positions,dg.FactorVertex-method}
 \alias{nodeIndices<-,dg.FactorVertex-method}
 \alias{nodeIndices,dg.FactorVertex-method}
 \alias{initialize,dg.FactorVertex-method}
@@ -53,6 +55,9 @@
   \describe{
 %    \item{\code{test.position}:}{Object of class \code{"numeric"}:
 %       The \code{position} of a test statistic for the factor. }
+    \item{\code{fixed.positions}:}{Object of class \code{"logical"}:
+       If FALSE, then the factor will follow the vertices when
+       the positions of the vertices are changed. }
     \item{\code{vertex.indices}:}{Object of class \code{"numeric"}:
        The \code{vertex.indices} of the vertices of the factor. }
     \item{\code{name}:}{Object of class \code{"character"},
@@ -85,6 +90,8 @@ Class \code{"dg.Node"}, directly.
 
 \section{Methods}{
   \describe{
+    \item{fixed.positions<-}{\code{signature(x = "dg.FactorVertex")}: ... }
+    \item{fixed.positions}{\code{signature(object = "dg.FactorVertex")}: ... }
     \item{index<-}{\code{signature(x = "dg.FactorVertex")}: ... }
     \item{index}{\code{signature(object = "dg.FactorVertex")}: ... }
     \item{initialize}{\code{signature(.Object = "dg.FactorVertex")}:

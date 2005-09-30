@@ -1,4 +1,16 @@
 
+ 2.0...:
+ =======
+
+ 2005-09-25: Class of "oriented" in "dg.simple.graph" changed
+	     from "logical" to "vector" (to permit "list()" for "giRaph").
+
+ 2005-09-25: "Demo" moved til "old.demos" in "inst"
+             (for name not conflicting with "demo" under windows).
+
+ 2005-09-25: Test for "panedwindow" present in "Tcl/tk"
+             (for test on CRAN probably with version 8.3.5 of Tcl/Tk).
+
 
  1.7...:
  =======

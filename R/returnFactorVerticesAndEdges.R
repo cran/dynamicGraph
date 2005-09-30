@@ -1,6 +1,7 @@
 "returnFactorVerticesAndEdges" <-
 function (Vertices, factors = NULL, types = "Generator", factorVertexColor = "default", 
-    factorEdgeColor = "DarkOliveGreen", factorClasses = validFactorClasses()) 
+    factorEdgeColor = "DarkOliveGreen", fixedFactorPositions = FALSE, 
+    factorClasses = validFactorClasses()) 
 {
     "newFactorVertexList" <- function(list) return(new("dg.FactorVertexList", 
         nodeList = list))
@@ -64,7 +65,7 @@ function (Vertices, factors = NULL, types = "Generator", factorVertexColor = "de
                 color <- c("yellow", "cyan", "magenta", "blue")[x]
             FactorVertices[[i]] <- new(prototype, vertex.indices = edge, 
                 vertices = edge.vertices, index = -i - offset, 
-                color = color)
+                color = color, fixed.positions = fixedFactorPositions)
         }
         class(FactorVertices) <- "dg.FactorVertexList"
         if (is.null(names(factors))) 
