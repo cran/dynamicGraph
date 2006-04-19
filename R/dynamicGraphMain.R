@@ -241,7 +241,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     else selectedVertices <- sv
                   }
                   else {
-                    sv <- tclvalue(tkcmd(box, "selection", "get"))
+                    sv <- tclvalue(tcl(box, "selection", "get"))
                     selectedVertices <- c(selectedVertices, grepVertices(sv))
                     selectedBlocks <- c(selectedBlocks, grepBlocks(sv))
                   }
@@ -264,7 +264,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
             "bindBox" <- function(box, label = "newGraph") {
                 if (control$debug.position) 
                   print(label)
-                tkcmd("bind", box, "<F11>", function(...) {
+                tcl("bind", box, "<F11>", function(...) {
                   print("<<<F11>>>")
                 })
                 tkbind(box, "<F12>", function(...) {
@@ -275,7 +275,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     print("<Button-1>")
                   vv <- returnVisibleVertices()
                   if (!(get("type", box$env) == "variableList")) {
-                    sv <- tclvalue(tkcmd(box, "selection", "get"))
+                    sv <- tclvalue(tcl(box, "selection", "get"))
                   }
                   else {
                     sv <- as.numeric(tkcurselection(box)) + 1
@@ -313,7 +313,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   if (control$debug.position) 
                     print("<Button-2>")
                   if (!(get("type", box$env) == "variableList")) {
-                    sv <- tclvalue(tkcmd(box, "selection", "get"))
+                    sv <- tclvalue(tcl(box, "selection", "get"))
                     if (control$debug.position) 
                       print(sv)
                   }
@@ -343,7 +343,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     }
                   }
                   else {
-                    sv <- tclvalue(tkcmd(box, "selection", "get"))
+                    sv <- tclvalue(tcl(box, "selection", "get"))
                     if (control$debug.position) 
                       print(sv)
                   }
@@ -364,7 +364,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   if ((get("type", box$env) == "variableList")) {
                   }
                   else {
-                    sv <- tclvalue(tkcmd(box, "selection", "get"))
+                    sv <- tclvalue(tcl(box, "selection", "get"))
                     if (control$debug.position) 
                       print(sv)
                   }
@@ -406,7 +406,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   tkpack(f, expand = "yes", side = "top", fill = "both")
                   if (control$variableFrame) {
                     w.pane <- FALSE
-                    try(w.pane <- tkcmd("panedwindow", .Tk.subwin(f)), 
+                    try(w.pane <- tcl("panedwindow", .Tk.subwin(f)), 
                       silent = TRUE)
                     has.paned <- (class(w.pane) != "logical")
                     if (!has.paned) {
@@ -417,7 +417,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   if (control$variableFrame) {
                     tkpack(w.pane, side = "top", expand = "yes", 
                       fill = "both", pady = 2, padx = "2m")
-                    tkcmd("wm", "iconname", top, "Paned window")
+                    tcl("wm", "iconname", top, "Paned window")
                     myTclRequire <- function(package, warn = TRUE) {
                       a <- tclvalue(.Tcl(paste("package versions ", 
                         package)))
@@ -442,7 +442,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                             1
                         }
                         else {
-                          sv <- tclvalue(tkcmd(box, "selection", 
+                          sv <- tclvalue(tcl(box, "selection", 
                             "get"))
                         }
                         print(paste(" Node: ", list(...)[[1]], 

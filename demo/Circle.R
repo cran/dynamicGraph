@@ -25,3 +25,4 @@ graph.Z.e <- simpleGraphToGraph(simpleGraph.Z.e, diagonal = TRUE)
 Z.e <- dg(graph.Z.e, modelObject = Object, control = control, 
           title = "Circle with extra vertices")
 
+Z <- Z.e
