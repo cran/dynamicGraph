@@ -34,8 +34,7 @@ DynamicGraphModel-class
                         Class "DynamicGraphModel"
 DynamicGraphView-class
                         Class "DynamicGraphView"
-modalDialog             Modal dialog window for returning a text
-                        string
+modalDialog             Modal dialog window for returning a text string
 nameToVertexIndex       The indices of vertices
 replaceBlockList        Replace the block list of model frame
 replaceControls         Replace the controls of model frame
@@ -43,8 +42,7 @@ replaceVertexList       Replace the vertex list of model frame
 returnBlockEdgeList     Class "dg.BlockEdgeList": The block edge list
 returnEdgeList          Class "dg.VertexEdgeList": The edge list
 returnExtraEdgeList     Class "dg.ExtraEdgeList": The extra edge list
-returnFactorEdgeList    Class "dg.FactorEdgeList": The factor edge
-                        list
+returnFactorEdgeList    Class "dg.FactorEdgeList": The factor edge list
 returnFactorVerticesAndEdges
                         Class "dg.FactorVertexList": The factor vertex
                         list

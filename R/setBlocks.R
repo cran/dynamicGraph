@@ -64,7 +64,7 @@ function (block.list, vertices, labels = NULL, right.to.left = FALSE,
                 else position <- c(80/n * (i - 0.5) + 20/(1 + 
                   n) * i + 0.8 * 40 * cos(2 * pi * j/m)/n - 50, 
                   0 + 40 * sin(2 * pi * j/m), rep(0 + 40 * cos(2 * 
-                    pi * j/m), N - 2), )
+                    pi * j/m), N - 2))
                 position(vertices[[name.list[j]]]) <<- position
             }
             stratum(vertices[[name.list[j]]]) <<- ifelse(right.to.left, 

@@ -2,12 +2,12 @@ Title: dynamicGraph
 Package: dynamicGraph
 Namespace: dynamicGraph
 Description: Interactive graphical tool for manipulating graphs
-Version: 0.2.0.2
-Date: 2006/04/19
-Author: Jens Henrik Badsberg <JensHenrik.Badsberg@agrsci.dk>
-Maintainer: Jens Henrik Badsberg <JensHenrik.Badsberg@agrsci.dk>
-Depends: R (>= 1.8.1), methods
+Version: 0.2.2
+Date: 2007/10/01
+Author: Jens Henrik Badsberg <coco@badsberg.eu>
+Maintainer: Jens Henrik Badsberg <coco@badsberg.eu>
+Depends: R (>= 1.8.1), methods, ggm, tcltk
 License: GPL Version 2 or later.
-URL: http://www.agrsci.org
-Address: Danish Institute of Agricultural Sciences, 8830 Tjele, Denmark
-Packaged: Wed Apr 19 13:48:12 2006; jhb
+URL: http://www.badsberg.eu
+Address: Andreas Bjorns Gade 21, 2. tv, 1428 Kobenhavn K, Denmark
+Packaged: Tue Oct  2 22:35:12 2007; CoCo

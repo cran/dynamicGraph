@@ -157,7 +157,7 @@ function (Edges, Vertices, VisibleVertices)
         lapply(e, function(i) X[i[1], i[2]] <<- 1)
         dimnames(X) <- list(n, n)
         X <- X[VisibleVertices, VisibleVertices]
-        factors <- cliques(X + t(X))
+        factors <- cliques(X + t(X)) # 'cliques' from 'ggm' ???
     }
     return(factors)
 }

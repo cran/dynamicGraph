@@ -1267,6 +1267,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     if (hasMethod("graphComponents", class(object))) 
                       graphContent <- graphComponents(object, 
                         viewType = dg@viewType, Arguments = Arguments)
+                    # 'returnGraphComponents' !!!
                     else graphContent <- returnGraphComponents(object, 
                       viewType = dg@viewType, Arguments = Arguments)
                   }
@@ -1705,8 +1706,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   tkfocus(GW.top)
                   print("rockPlot")
                   angle <- 10
-                  p1 <- sphereRand(N)
-                  p2 <- sphereRand(N)
+                  p1 <- sphereRand(control$N) # 'N' ???
+                  p2 <- sphereRand(control$N) # 'N' ???
                   for (i in 1:k) applyTransformation(makeRotation(p1, 
                     p2, alpha = angle, use.alpha = TRUE), draw.box = FALSE, 
                     redraw = TRUE)
@@ -2473,7 +2474,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     drawEdge(edges[[edgeNode$nr]], edgeNode$nr, 
                       lower = TRUE, edge.type = edgeNode$type, 
                       reinsert = TRUE)
-                    edgeNodes <- edgeItem(f, edge.type = edge.type)
+                    edgeNodes <- edgeItem(f, edge.type = edgeNode$type) # 'edge.type' = edgeNode$type ???
                     if (length(edgeNodes) > 0) 
                       for (e in edgeNodes) {
                         if (!(is.null(e))) 
@@ -5471,16 +5472,19 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       else {
                         message(paste("Blockindex of vertices only used when positions", 
                           " of vertices relative blocks are ignored ; "))
-                        if (FALSE && .IsEmpty(blockList)) 
-                          if (vertex.type == "Vertex") {
-                            blockindexVertices[i] <<- ReturnVal$blockindex
-                          }
-                          else if (vertex.type == "Factor") {
-                            blockindexFactorVertices[-i] <<- ReturnVal$blockindex
-                          }
-                          else if (vertex.type == "Extra") {
-                            blockindexExtraVertices[i] <<- ReturnVal$blockindex
-                          }
+                        # if (FALSE && .IsEmpty(blockList)) 
+                          # if (vertex.type == "Vertex") {
+                          #   blockindexVertices[i] <<- ReturnVal$blockindex
+                          # 'blockindexVertices' !!!
+                          # }
+                          # else if (vertex.type == "Factor") {
+                          #   blockindexFactorVertices[-i] <<- ReturnVal$blockindex
+                          # 'blockindexFactorVertices' !!!
+                          # }
+                          # else if (vertex.type == "Extra") {
+                          #   blockindexExtraVertices[i] <<- ReturnVal$blockindex
+                          # 'blockindexExtraVertices' !!!
+                          # }
                       }
                     }
                     if ("stratum" %in% names(ReturnVal$values)) {
@@ -6227,7 +6231,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 tkadd(edgesMenu, "command", label = paste("'addEdge', selected vertices and edges"), 
                   command = function() subAddEdge(0, 0, "none", 
                     "none", edge.type = "selected", slave = FALSE, 
-                    edgeClass = edgeClass))
+                    edgeClass = NULL)) # 'edgeClass' = NULL ???
                 tkadd(edgesMenu, "command", label = paste("'dropEdge', selected vertices and edges"), 
                   command = function() subSubDropEdge(0, 0, 0, 
                     "none", "none", edge.type = "selected", slave = FALSE))

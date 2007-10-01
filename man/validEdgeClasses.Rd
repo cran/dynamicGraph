@@ -48,7 +48,8 @@ setMethod("draw", "NewEdge",
                    y = lapply(position, function(e) e[2]),
                    stratum = as.vector(rep(0, length(position)),
                                        mode = "list"), 
-                   w = 2, color = "green", background = "white")
+                   w = 2, color = "green", background = "white", 
+                   font.edge.label = "8x16")
           {
             f <- function(i, j) {
               dash <- "."

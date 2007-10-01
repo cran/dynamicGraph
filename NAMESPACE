@@ -1,4 +1,7 @@
 import(methods)
+
+#importFunctions("returnGraphComponents")
+
 export(# ".onLoad.dynamicGraph", 
        ".onLoad.dynamicGraphInterface",
        # "blockAncestors", "blockDescendants",

@@ -351,5 +351,5 @@ your.LabelAllEdges <- function(object, slave = FALSE, ...)
              print(name)
              print(c(list(...)$index))
            }
-          ),
+          )
      )

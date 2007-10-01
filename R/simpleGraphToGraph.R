@@ -226,7 +226,8 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
                 1:length(sdg@texts), sep = ""), labels = sdg@texts, 
                 types = rep("TextVertex", length(sdg@texts)), 
                 line = TRUE, N = control$N, colors = rep(control$extraVertexColor, 
-                  length(sdg@texts)), vertexClasses = vertexClasses)
+                  length(sdg@texts)), vertexClasses = control$vertexClasses)
+                  # 'vertexClasses' = control$vertexClasses ???
             if (!is.null(ExtraVertices) && !is.null(control$diagonal) && 
                 control$diagonal) {
                 i <- 1:length(ExtraVertices) - 2
