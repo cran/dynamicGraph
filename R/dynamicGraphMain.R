@@ -3860,7 +3860,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     extraEdgeList = R$ExtraEdges)
                 }
                 if (slave) {
-                  drawModel(frameModels = dgm.frameModels, frameViews = dm.frameViews, 
+                  drawModel(frameModels = dgm.frameModels,
+                  # frameViews = dm.frameViews, 
                     graphWindow = NULL, dg = ldg, object = R$object, 
                     control = control, Arguments = Arguments)
                 }
@@ -5084,7 +5085,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 force(vertex.type)
                 force(selectClass)
                 function(...) {
-                  edgeClass = NULL
+                  edgeClass = control$edgeClasses[, 1][[1]]
                   if (selectClass) {
                     ReturnVal <- selectDialog("Select class of edge", 
                       "Select class", control$edgeClasses[, 1], 

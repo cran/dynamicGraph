@@ -1,4 +1,26 @@
 
+ 2.2...:
+ =======
+
+ 2007-10-09: 'frameViews = dm.frameViews' removed from call of 'drawModel'
+             in 'drawResult'.
+
+ 2007-10-04: ',)' changed to ')' in UserMenu of demo.
+
+ 2007-10-04: 'N' changed to 'control$N' in 'sphereRand'.
+
+ 2007-10-04: 'edgeNodes <- edgeItem(f, edge.type = edgeNode$type)' in
+             "subSetEdgeCoords"
+
+ 2007-10-04: 'edgeClass = NULL' changed to
+             'edgeClass = control$edgeClasses[, 1][[1]]' in "newEdge"
+
+ 2007-10-04: 'edgeClass = edgeClass))' changed to
+             'edgeClass = NULL))' for 
+             'tkadd(edgesMenu, "command", 
+              label = paste("'addEdge', selected vertices and edges"), '
+
+
  2.0...:
  =======
 

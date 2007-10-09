@@ -15,7 +15,7 @@ dg.Generator-class      Classses "dg.Generator",
                         "dg.Linear"\-"Generator", and
                         "dg.QuadraticGenerator"
 dg.graph-class          Class "dg.graph"
-dg.graphedges-class     Class "dg.graph"
+dg.graphedges-class     Class "dg.graphedges"
 dg.list-class           Class "dg.list", "dg.NodeList", and
                         "dg.EdgeList"
 dg.Model-class          Class "dg.Model"
