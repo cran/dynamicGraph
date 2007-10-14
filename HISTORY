@@ -2,6 +2,24 @@
  2.2...:
  =======
 
+ 2007-10-14: message("Using 'setGraphEdges' for your model class.")
+             removed
+
+ 2007-10-14: debug.update = FALSE in "dg.control"
+
+ 2007-10-12: 'if (any(slotNames(object) == ".title"))' in "drawResult"
+             then this title is used as label of the graph window
+
+ 2007-10-12: MoveEdgeLabel relative current position
+
+ 2007-10-12: moveCanves added for "<B2-Motion>" ("<B1-Motion>" would be perfered)
+
+ 2007-10-10: "subDropVertex" and "subAddVertex":
+                no setVisibleVertices(visible.Vertices) if (slave || redraw)
+
+ 2007-10-10: "subDropVertex" and "subAddVertex":
+                no 'tkdelete' and 'tkinsert' if (slave || redraw)
+
  2007-10-09: 'frameViews = dm.frameViews' removed from call of 'drawModel'
              in 'drawResult'.
 

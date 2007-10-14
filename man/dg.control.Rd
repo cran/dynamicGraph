@@ -30,7 +30,7 @@ dg.control(label = "dynamicGraph",
            saveTkReferences = TRUE, saveFunctions = TRUE, 
            returnNull = FALSE, hasMethods = TRUE, variableFrame = TRUE,
            debug.strata = FALSE, debug.edges = FALSE, 
-           debug.position = FALSE, debug.update = TRUE, ...)
+           debug.position = FALSE, debug.update = FALSE, ...)
 }
 
 \arguments{

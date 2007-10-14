@@ -14,7 +14,7 @@ function (label = "dynamicGraph", width = 400, height = 400,
     updateAllViews = TRUE, saveTkReferences = TRUE, saveFunctions = TRUE, 
     returnNull = FALSE, hasMethods = TRUE, variableFrame = TRUE, 
     debug.strata = FALSE, debug.edges = FALSE, debug.position = FALSE, 
-    debug.update = TRUE, ...) 
+    debug.update = FALSE, ...) 
 {
     args <- list(...)
     if (!is.null(args$returnLink)) {

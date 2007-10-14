@@ -5,6 +5,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
     if ((is.null(dg))) 
         dg <- .newDgGraphEdges(vertexList = vertexList, blockList = blockList, 
             ...)
+    args <- list(...)
     if (!is.null(args$title) && (control$label == "dynamicGraph")) {
         control$label <- args$title
     }
@@ -65,11 +66,19 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
         if ((is.null(dg))) 
             dg <- .newDgGraphEdges(vertexList = vertexList, blockList = blockList, 
                 ...)
+        args <- list(...)
+        if (!is.null(args$title)) {
+            control$label <- args$title
+        }
         "redrawView" <- function(frameModels = NULL, frameViews = NULL, 
             graphWindow = NULL, dg = NULL, initialWindow = FALSE, 
             returnNewMaster = FALSE, redraw = FALSE, returnFrameModel = TRUE, 
             setUpdateCountModelMain = FALSE, control = NULL, 
             ...) {
+            args <- list(...)
+            if (!is.null(args$title)) {
+                control$label <- args$title
+            }
             "setSrcLabel" <- function(viewLabel) {
                 g <- function(x, i, max) {
                   if (!is.null(zoomCenter)) 
@@ -384,6 +393,29 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 if (control$debug.position) 
                   print("<Button-3>")
             }
+
+            moveCanvas <- function() {
+                o.x <- NULL
+                o.y <- NULL
+                function(x, y) {
+                  n.x <- as.numeric(x) * d.x / min.x
+                  n.y <- as.numeric(y) * d.y / min.y
+                  if (!is.null(o.y)) { 
+                    d.x <- n.x - o.x
+                    d.y <- n.y - o.y
+                    if ((abs(d.x) < 0.1) && (abs(d.y) < 0.1)) {
+                      r.x <- as.numeric(tkxview(GW.top$env$canvas))[1]
+                      r.y <- as.numeric(tkyview(GW.top$env$canvas))[1]
+                      tkxview.moveto(GW.top$env$canvas, r.x + d.x)
+                      tkyview.moveto(GW.top$env$canvas, r.y + d.y)
+                      setSrcLabel(GW.top$env$viewLabel)
+                    }
+                  }
+                  o.x <<- n.x
+                  o.y <<- n.y
+                }
+            }
+
             "newGraph" <- function(viewType, ldg, title = "Graph diddler", 
                 index = -1, id = 0, close.enough = control$closeenough, 
                 parent = "", background = "white", width = 400, 
@@ -1227,7 +1259,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   print(c(updateCountModel, updateCountModelMain))
                 }
                 if (hasMethod("setGraphEdges", class(R.object))) {
-                  message("Using 'setGraphEdges' for your model class.")
+                  # message("Using 'setGraphEdges' for your model class.")
                   object <<- setGraphEdges(R.object, dg = dg, 
                     ...)
                 }
@@ -3503,9 +3535,9 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       vertex.type, slave = FALSE))
                   else tkitembind(canvas, item, "<Button-1>", 
                     newEdge(i, vertex.type, slave = FALSE))
-                  tkitembind(canvas, item, "<Button-2>", function(...) {
-                    print("--2--")
-                  })
+                  # tkitembind(canvas, item, "<Button-2>", function(...) {
+                  #   print("--2--")
+                  # })
                   tkitembind(canvas, item, "<Up>", function(...) {
                     function(...) print("--UP%--")
                   })
@@ -3859,17 +3891,22 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     factorEdgeList = R$FactorEdges, extraList = R$ExtraVertices, 
                     extraEdgeList = R$ExtraEdges)
                 }
+                if (any(slotNames(R$object) == ".title"))
+                  newtitle <- R$object@.title
+                else
+                  newtitle <- dgm.frameModels@label
                 if (slave) {
                   drawModel(frameModels = dgm.frameModels,
                   # frameViews = dm.frameViews, 
                     graphWindow = NULL, dg = ldg, object = R$object, 
-                    control = control, Arguments = Arguments)
+                    title = newtitle, control = control, Arguments = Arguments)
                 }
                 else {
+                  tktitle(GW.top) <- newtitle
                   setModel(R$object, dg = ldg, txt = txt, RR = R)
                   redrawView(frameModels = dgm.frameModels, frameViews = dm.frameViews, 
-                    graphWindow = GraphWindow, dg = ldg, control = control, 
-                    Arguments = Arguments)
+                    graphWindow = GraphWindow, dg = ldg,
+                    control = control, Arguments = Arguments)
                 }
             }
             "updateNode" <- function(i, vertex.type = "Vertex", 
@@ -4606,8 +4643,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 Arguments <- Args()
                 visible.Vertices <- returnVisibleVertices()
                 if (i != 0) 
-                  visible.Vertices <- visible.Vertices[visible.Vertices != 
-                    i]
+                  visible.Vertices <- visible.Vertices[visible.Vertices != i]
                 if (!is.null(object) && (control$hasMethods || 
                   hasMethod("modifyModel", class(object)))) {
                   if (i == 0) 
@@ -4621,10 +4657,12 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
                 if (!is.null(R)) {
                   objectAssign(R)
-                  setVisibleVertices(visible.Vertices)
                   if (slave || redraw) 
                     drawResult(newEdges, R, slave, "dropVertex")
                   else {
+                    if (any(slotNames(R$object) == ".title"))
+                      tktitle(GW.top) <- R$object@.title
+                    setVisibleVertices(visible.Vertices)
                     if (i != 0) 
                       subSubUndisplayVertex(i)
                     updateSelectedEdges(R, vertexEdges, edge.type = NULL)
@@ -4636,12 +4674,13 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 if (control$variableFrame) {
                   index <- i
                   if ((get("type", GW.top$env$box$env) == "variableList")) {
-                    tkdelete(GW.top$env$box, index - 1)
-                    tkinsert(GW.top$env$box, index - 1, tdv(namesVertices[[index]]))
+                    if (!(slave || redraw)) {
+                      tkdelete(GW.top$env$box, index - 1)
+                      tkinsert(GW.top$env$box, index - 1, tdv(namesVertices[[index]]))
+                    }
                     if (tkselectionForVisibleVertices) {
                       for (i in 1:length(vertexList)) {
-                        tkselection.clear(GW.top$env$box, i - 
-                          1)
+                        tkselection.clear(GW.top$env$box, i - 1)
                       }
                       for (i in returnVisibleVertices()) {
                         tkselection.set(GW.top$env$box, i - 1)
@@ -4809,7 +4848,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                               f, e$to)
                             X <- replaceXY(x, y, pos)
                             dxy <- findDifference(X, pos)
-                            tkcoords(canvas, e$label, x, y)
+                            # tkcoords(canvas, e$label, x, y)
+                            tkmove(canvas, e$label, dxy[1], dxy[2])
                             setEdgeLabelPos(e, e$label.number, 
                               X, dxy, f = f)
                           }
@@ -4919,6 +4959,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     if (slave || redraw) 
                       drawResult(newEdges, R, slave, "addEdge")
                     else {
+                      if (any(slotNames(R$object) == ".title"))
+                        tktitle(GW.top) <- R$object@.title
                       for (i in seq(along = result)) {
                         E <- append.index.edge(result[[i]], edge.type = "VertexEdge", 
                           edgeClass = edgeClass)
@@ -5242,6 +5284,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   if (slave || redraw) 
                     drawResult(newEdges, R, slave, "dropEdge")
                   else {
+                    if (any(slotNames(R$object) == ".title"))
+                      tktitle(GW.top) <- R$object@.title
                     subSubDeleteEdge(i, f, t, edge.type = edge.type)
                     clearEdge(i, edge.type = edge.type)
                     if (edge.type == "BlockEdge") {
@@ -5937,10 +5981,12 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
                 if (!is.null(R)) {
                   objectAssign(R)
-                  setVisibleVertices(visible.Vertices)
                   if (slave || redraw) 
                     drawResult(newEdges, R, slave, "addVertex")
                   else {
+                    if (any(slotNames(R$object) == ".title"))
+                      tktitle(GW.top) <- R$object@.title
+                    setVisibleVertices(visible.Vertices)
                     drawVertex(index, w = control$w, vertexcolor = control$vertexColor, 
                       vertex.type = "Vertex")
                     updateSelectedEdges(R, vertexEdges, edge.type = NULL)
@@ -5949,8 +5995,10 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 else message("Null result in addVertex")
                 if (control$variableFrame) {
                   if ((get("type", GW.top$env$box$env) == "variableList")) {
-                    tkdelete(GW.top$env$box, index - 1)
-                    tkinsert(GW.top$env$box, index - 1, namesVertices[[index]])
+                    if (!(slave || redraw)) {
+                      tkdelete(GW.top$env$box, index - 1)
+                      tkinsert(GW.top$env$box, index - 1, namesVertices[[index]])
+                    }
                     if (tkselectionForVisibleVertices) 
                       for (i in returnVisibleVertices()) {
                         tkselection.set(GW.top$env$box, i - 1)
@@ -6202,9 +6250,9 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() selectOtherDialog())
                 tkadd(variableMenu, "command", label = "Select vertex among variables not displayed (here)", 
                   command = function() selectOtherDialog(slave = FALSE))
-                tkadd(variableMenu, "command", label = paste("'addVertex', selected vertices and edges"), 
-                  command = function() subAddVertex(0, vertex.type = "selected", 
-                    slave = FALSE))
+              # tkadd(variableMenu, "command", label = paste("'addVertex', selected vertices and edges"), 
+              #   command = function() subAddVertex(0, vertex.type = "selected", 
+              #     slave = FALSE))
                 tkadd(variableMenu, "command", label = paste("'dropVertex', selected vertices and edges"), 
                   command = function() subDropVertex(0, vertex.type = "selected", 
                     slave = FALSE))
@@ -6911,6 +6959,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
             if (initialWindow) 
                 update.edge.labels()
             setMainMenu()
+            # tkbind(canvas, "<B1-Motion>", moveCanvas())
+            tkbind(canvas, "<B2-Motion>", moveCanvas())
             tkbind(canvas, "<B3-Motion>", doHandRotate())
             tkbind(canvas, "<F12>", rockPlot(k = 1))
             tkbind(canvas, "<F1>", zoomIn())
@@ -6984,7 +7034,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 print("--A1#--")
             })
             if (control$debug.update) 
-                tkbind(GW.top$env$viewLabel, "<Enter>", function() print(dg@viewType))
+                tkbind(GW.top$env$viewLabel, "<Enter>", 
+                       function() print(dg@viewType))
             tkbind(canvas, "<Configure>", resizeCanvas())
             if (control$enterLeaveUpdate) {
                 tkbind(canvas, "<Enter>", updatePositions("Enter"))
@@ -7016,7 +7067,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
             if (!initialWindow) 
                 updateBlockEdges()
             if (hasMethod("setGraphEdges", class(object))) {
-                message("Using 'setGraphEdges' for your model class.")
+                # message("Using 'setGraphEdges' for your model class.")
                 object <<- setGraphEdges(object, dg = dg, ...)
             }
             else if (hasMethod("setGraphComponents", class(object))) {
