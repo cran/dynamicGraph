@@ -36,7 +36,7 @@
 \alias{modifyModel}
 \alias{testEdge}
 
-\title{Class "dg.Model" }
+\title{Class dg.Model}
 
 \description{  An example class for the model object of dynamicGraph. }
 

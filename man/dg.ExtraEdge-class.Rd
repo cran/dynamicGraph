@@ -9,7 +9,7 @@
 
 \alias{dg.ExtraEdge}
 
-\title{Class "dg.ExtraEdge" }
+\title{Class dg.ExtraEdge}
 
 \description{  The class for the edges between vertices and extra vertices. }
 

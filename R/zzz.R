@@ -1,23 +1,25 @@
-    setClass("dg.list", contains = "list", representation("list"), 
-        prototype = list())
-    setClass("dg.NodeList", contains = c("dg.list", "list"))
-    setClass("dg.VertexList", contains = c("dg.NodeList", "dg.list", 
-        "list"))
-    setClass("dg.BlockList", contains = c("dg.NodeList", "dg.list", 
-        "list"))
-    setClass("dg.FactorVertexList", contains = c("dg.NodeList", 
-        "dg.list", "list"))
-    setClass("dg.EdgeList", contains = c("dg.NodeList", "list"))
-    setClass("dg.VertexEdgeList", contains = c("dg.EdgeList", 
-        "dg.list", "list"))
-    setClass("dg.BlockEdgeList", contains = c("dg.EdgeList", 
-        "dg.list", "list"))
-    setClass("dg.FactorEdgeList", contains = c("dg.EdgeList", 
-        "dg.list", "list"))
-    setClass("dg.ExtraEdgeList", contains = c("dg.EdgeList", 
-        "dg.list", "list"))
-    setMethod("initialize", "dg.VertexList", function(.Object, 
-        ...) {
+    setClass("dg.list", contains = "list", 
+        representation("list"), prototype = list())
+    setClass("dg.NodeList", 
+        contains = c("dg.list", "list"))
+    setClass("dg.VertexList", 
+        contains = c("dg.NodeList", "dg.list", "list"))
+    setClass("dg.BlockList", 
+        contains = c("dg.NodeList", "dg.list", "list"))
+    setClass("dg.FactorVertexList", 
+        contains = c("dg.NodeList", "dg.list", "list"))
+    setClass("dg.EdgeList", 
+        contains = c("dg.NodeList", "list"))
+    setClass("dg.VertexEdgeList", 
+        contains = c("dg.EdgeList", "dg.list", "list"))
+    setClass("dg.BlockEdgeList", 
+        contains = c("dg.EdgeList", "dg.list", "list"))
+    setClass("dg.FactorEdgeList", 
+        contains = c("dg.EdgeList", "dg.list", "list"))
+    setClass("dg.ExtraEdgeList", 
+        contains = c("dg.EdgeList", "dg.list", "list"))
+    setMethod("initialize", "dg.VertexList", 
+        function(.Object, ...) {
         Args <- list(...)
         if (length(Args) > 0) {
             if (is.element("names", names(Args)) || is.element("types", 
@@ -28,8 +30,8 @@
                 strata <- NULL
                 line <- FALSE
                 N <- 3
-                colors <- ifelse(types == "TextVertex", "FloralWhite", 
-                  "DarkRed")
+                colors <- ifelse(types == "TextVertex", 
+                                 "FloralWhite", "DarkRed")
                 vertexClasses <- validVertexClasses()
                 if (is.element("names", names(Args))) 
                   names <- Args$names
@@ -57,8 +59,8 @@
         }
         return(.Object)
     })
-    setMethod("initialize", "dg.VertexEdgeList", function(.Object, 
-        ...) {
+    setMethod("initialize", "dg.VertexEdgeList", 
+        function(.Object, ...) {
         Args <- list(...)
         if (length(Args) > 0) {
             if (is.element("edge.list", names(Args))) {
@@ -97,8 +99,8 @@
         }
         return(.Object)
     })
-    setMethod("initialize", "dg.ExtraEdgeList", function(.Object, 
-        ...) {
+    setMethod("initialize", "dg.ExtraEdgeList", 
+        function(.Object, ...) {
         Args <- list(...)
         if (length(Args) > 0) {
             if (is.element("edge.list", names(Args))) {
@@ -133,8 +135,8 @@
         }
         return(.Object)
     })
-    setMethod("initialize", "dg.BlockEdgeList", function(.Object, 
-        ...) {
+    setMethod("initialize", "dg.BlockEdgeList", 
+        function(.Object, ...) {
         Args <- list(...)
         if (length(Args) > 0) {
             if (is.element("edge.list", names(Args))) {
@@ -166,8 +168,10 @@
                 if (is.element("type", names(Args))) 
                   type <- Args$type
                 result <- returnBlockEdgeList(edge.list = edge.list, 
-                  vertices = vertices, blocks = blocks, visibleBlocks = visibleBlocks, 
-                  width = width, color = color, N = N, oriented = oriented, 
+                  vertices = vertices, blocks = blocks, 
+                  visibleBlocks = visibleBlocks, 
+                  width = width, color = color, N = N, 
+                  oriented = oriented, 
                   type = type)
                 .Object@.Data <- result
             }
@@ -176,8 +180,8 @@
         }
         return(.Object)
     })
-    setMethod("initialize", "dg.FactorEdgeList", function(.Object, 
-        ...) {
+    setMethod("initialize", "dg.FactorEdgeList", 
+        function(.Object, ...) {
         Args <- list(...)
         if (length(Args) > 0) {
             if (is.element("edge.list", names(Args))) {
@@ -215,43 +219,45 @@
     if (!isGeneric("descendantsBlockList")) {
         if (is.function("descendantsBlockList")) 
             fun <- descendantsBlockList
-        else fun <- function(blockList, index = NULL) standardGeneric("descendantsBlockList")
+        else fun <- function(blockList, index = NULL) 
+                                    standardGeneric("descendantsBlockList")
         setGeneric("descendantsBlockList", fun)
     }
-    setMethod("descendantsBlockList", "dg.BlockList", function(blockList, 
+    setMethod("descendantsBlockList", "dg.BlockList", 
+        function(blockList, 
         index = NULL) {
         if (is.null(index)) {
-            result <- lapply(0:length(blockList), function(i) descendantsBlockList(blockList, 
-                i))
+            result <- lapply(0:length(blockList), 
+                              function(i) descendantsBlockList(blockList, i))
             names(result) <- c("root", Names(blockList))
         }
         else {
             result <- NULL
             if (!.IsEmpty(blockList)) 
                 if (index > 0) {
-                  for (j in children(blockList[[index]])) if (j > 
-                    0) 
-                    result <- unique(sort(c(result, j, descendantsBlockList(blockList, 
-                      index = j))))
+                  for (j in children(blockList[[index]])) if (j > 0) 
+                    result <- unique(sort(c(result, j, 
+                                  descendantsBlockList(blockList, index = j))))
                 }
                 else for (j in 1:length(blockList)) if (index == 
                   parent(blockList[[j]])) 
-                  result <- unique(sort(c(result, j, descendantsBlockList(blockList, 
-                    index = j))))
+                  result <- unique(sort(c(result, j, 
+                                descendantsBlockList(blockList, index = j))))
         }
         return(result)
     })
     if (!isGeneric("ancestorsBlockList")) {
         if (is.function("ancestorsBlockList")) 
             fun <- ancestorsBlockList
-        else fun <- function(blockList, index = NULL) standardGeneric("ancestorsBlockList")
+        else fun <- function(blockList, index = NULL) 
+                              standardGeneric("ancestorsBlockList")
         setGeneric("ancestorsBlockList", fun)
     }
-    setMethod("ancestorsBlockList", "dg.BlockList", function(blockList, 
-        index = NULL) {
+    setMethod("ancestorsBlockList", "dg.BlockList", 
+        function(blockList, index = NULL) {
         if (is.null(index)) {
-            result <- lapply(1:length(blockList), function(i) ancestorsBlockList(blockList, 
-                i))
+            result <- lapply(1:length(blockList), function(i) 
+                                             ancestorsBlockList(blockList, i))
             names(result) <- c(Names(blockList))
         }
         else {
@@ -259,8 +265,8 @@
             if ((index > 0) && !.IsEmpty(blockList)) {
                 parent <- parent(blockList[[index]])
                 if (parent > 0) 
-                  result <- unique(sort(c(result, parent, ancestorsBlockList(blockList, 
-                    index = parent))))
+                  result <- unique(sort(c(result, parent, 
+                    ancestorsBlockList(blockList, index = parent))))
             }
         }
         return(result)
@@ -271,7 +277,8 @@
         else fun <- function(blockList) standardGeneric("checkBlockList")
         setGeneric("checkBlockList", fun)
     }
-    setMethod("checkBlockList", "dg.BlockList", function(blockList) {
+    setMethod("checkBlockList", "dg.BlockList", 
+        function(blockList) {
         for (j in seq(along = blockList)) {
             parent <- parent(blockList[[j]])
             if (parent > 0) {
@@ -303,8 +310,8 @@
         for (j in seq(along = blockList)) {
             x <- descendantsBlockList(blockList, j)
             y <- blockList[[j]]@descendants
-            if (!setequal(x, y) && !(is.null(x) && (length(y) == 
-                1) && (y == 0))) {
+            if (!setequal(x, y) && !(is.null(x) && (length(y) == 1) 
+                && (y == 0))) {
                 message(paste("Descendants of block", j, ",", 
                   name(blockList[[j]]), ",", "changed from", 
                   paste(y, collapse = ","), "to", paste(x, collapse = ","), 
@@ -315,9 +322,10 @@
             }
             x <- ancestorsBlockList(blockList, j)
             y <- blockList[[j]]@ancestors
-            if (!setequal(x, y) && !(is.null(x) && (length(y) == 
-                1) && (y == 0))) {
-                message(paste("Ancestors of block", j, ",", name(blockList[[j]]), 
+            if (!setequal(x, y) && !(is.null(x) && 
+                (length(y) == 1) && (y == 0))) {
+                message(paste("Ancestors of block", j, ",", 
+                  name(blockList[[j]]), 
                   ",", "changed from", paste(y, collapse = ","), 
                   "to", paste(x, collapse = ","), "."))
                 if (is.null(x)) 
@@ -327,26 +335,37 @@
         }
         return(blockList)
     })
-    setClass("dg.graphedges", representation(viewType = "character", 
-        visibleVertices = "numeric", visibleBlocks = "numeric", 
-        oriented = "logical", edgeList = "dg.VertexEdgeList", 
-        blockEdgeList = "dg.BlockEdgeList", factorVertexList = "dg.FactorVertexList", 
-        factorEdgeList = "dg.FactorEdgeList", extraList = "dg.VertexList", 
-        extraEdgeList = "dg.ExtraEdgeList"), prototype = list(viewType = "Simple", 
-        visibleVertices = numeric(), visibleBlocks = numeric(), 
-        edgeList = new("dg.VertexEdgeList"), oriented = NA, blockEdgeList = new("dg.BlockEdgeList"), 
-        factorVertexList = new("dg.FactorVertexList"), factorEdgeList = new("dg.FactorEdgeList"), 
-        extraList = new("dg.VertexList"), extraEdgeList = new("dg.ExtraEdgeList")))
+    setClass("dg.graphedges", 
+        representation(viewType = "character", 
+                       visibleVertices = "numeric", visibleBlocks = "numeric", 
+                       oriented = "logical", edgeList = "dg.VertexEdgeList", 
+                       blockEdgeList = "dg.BlockEdgeList", 
+                       factorVertexList = "dg.FactorVertexList", 
+                       factorEdgeList = "dg.FactorEdgeList", 
+                       extraList = "dg.VertexList", 
+                       extraEdgeList = "dg.ExtraEdgeList"), 
+        prototype = list(viewType = "Simple", 
+                         visibleVertices = numeric(), 
+                         visibleBlocks = numeric(), 
+                         edgeList = new("dg.VertexEdgeList"), 
+                         oriented = NA, 
+                         blockEdgeList = new("dg.BlockEdgeList"), 
+                         factorVertexList = new("dg.FactorVertexList"), 
+                         factorEdgeList = new("dg.FactorEdgeList"), 
+                         extraList = new("dg.VertexList"), 
+                         extraEdgeList = new("dg.ExtraEdgeList")))
     if (!isGeneric("visibleVertices")) {
         if (is.function("visibleVertices")) 
             fun <- visibleVertices
         else fun <- function(object) standardGeneric("visibleVertices")
         setGeneric("visibleVertices", fun)
     }
-    setMethod("visibleVertices", "dg.graphedges", function(object) object@visibleVertices)
-    setGeneric("visibleVertices<-", function(x, value) standardGeneric("visibleVertices<-"))
-    setReplaceMethod("visibleVertices", "dg.graphedges", function(x, 
-        value) {
+    setMethod("visibleVertices", "dg.graphedges", 
+        function(object) object@visibleVertices)
+    setGeneric("visibleVertices<-", 
+        function(x, value) standardGeneric("visibleVertices<-"))
+    setReplaceMethod("visibleVertices", "dg.graphedges", 
+        function(x, value) {
         x@visibleVertices <- value
         x
     })
@@ -356,10 +375,12 @@
         else fun <- function(object) standardGeneric("visibleBlocks")
         setGeneric("visibleBlocks", fun)
     }
-    setMethod("visibleBlocks", "dg.graphedges", function(object) object@visibleBlocks)
-    setGeneric("visibleBlocks<-", function(x, value) standardGeneric("visibleBlocks<-"))
-    setReplaceMethod("visibleBlocks", "dg.graphedges", function(x, 
-        value) {
+    setMethod("visibleBlocks", "dg.graphedges", 
+        function(object) object@visibleBlocks)
+    setGeneric("visibleBlocks<-", 
+        function(x, value) standardGeneric("visibleBlocks<-"))
+    setReplaceMethod("visibleBlocks", "dg.graphedges", 
+        function(x, value) {
         x@visibleBlocks <- value
         x
     })
@@ -369,10 +390,12 @@
         else fun <- function(object) standardGeneric("edgeList")
         setGeneric("edgeList", fun)
     }
-    setMethod("edgeList", "dg.graphedges", function(object) object@edgeList)
-    setGeneric("edgeList<-", function(x, value) standardGeneric("edgeList<-"))
-    setReplaceMethod("edgeList", "dg.graphedges", function(x, 
-        value) {
+    setMethod("edgeList", "dg.graphedges", 
+        function(object) object@edgeList)
+    setGeneric("edgeList<-", 
+        function(x, value) standardGeneric("edgeList<-"))
+    setReplaceMethod("edgeList", "dg.graphedges", 
+        function(x, value) {
         x@edgeList <- value
         x
     })
@@ -382,10 +405,12 @@
         else fun <- function(object) standardGeneric("viewType")
         setGeneric("viewType", fun)
     }
-    setMethod("viewType", "dg.graphedges", function(object) object@viewType)
-    setGeneric("viewType<-", function(x, value) standardGeneric("viewType<-"))
-    setReplaceMethod("viewType", "dg.graphedges", function(x, 
-        value) {
+    setMethod("viewType", "dg.graphedges", 
+        function(object) object@viewType)
+    setGeneric("viewType<-", 
+        function(x, value) standardGeneric("viewType<-"))
+    setReplaceMethod("viewType", "dg.graphedges", 
+        function(x, value) {
         x@viewType <- value
         x
     })
@@ -395,10 +420,12 @@
         else fun <- function(object) standardGeneric("blockList")
         setGeneric("blockList", fun)
     }
-    setMethod("blockList", "dg.graphedges", function(object) object@blockList)
-    setGeneric("blockList<-", function(x, value) standardGeneric("blockList<-"))
-    setReplaceMethod("blockList", "dg.graphedges", function(x, 
-        value) {
+    setMethod("blockList", "dg.graphedges", 
+        function(object) object@blockList)
+    setGeneric("blockList<-", 
+        function(x, value) standardGeneric("blockList<-"))
+    setReplaceMethod("blockList", "dg.graphedges", 
+        function(x, value) {
         x@blockList <- value
         x
     })
@@ -408,10 +435,12 @@
         else fun <- function(object) standardGeneric("blockEdgeList")
         setGeneric("blockEdgeList", fun)
     }
-    setMethod("blockEdgeList", "dg.graphedges", function(object) object@blockEdgeList)
-    setGeneric("blockEdgeList<-", function(x, value) standardGeneric("blockEdgeList<-"))
-    setReplaceMethod("blockEdgeList", "dg.graphedges", function(x, 
-        value) {
+    setMethod("blockEdgeList", "dg.graphedges", 
+        function(object) object@blockEdgeList)
+    setGeneric("blockEdgeList<-", 
+        function(x, value) standardGeneric("blockEdgeList<-"))
+    setReplaceMethod("blockEdgeList", "dg.graphedges", 
+        function(x, value) {
         x@blockEdgeList <- value
         x
     })
@@ -421,10 +450,12 @@
         else fun <- function(object) standardGeneric("factorVertexList")
         setGeneric("factorVertexList", fun)
     }
-    setMethod("factorVertexList", "dg.graphedges", function(object) object@factorVertexList)
-    setGeneric("factorVertexList<-", function(x, value) standardGeneric("factorVertexList<-"))
-    setReplaceMethod("factorVertexList", "dg.graphedges", function(x, 
-        value) {
+    setMethod("factorVertexList", "dg.graphedges", 
+        function(object) object@factorVertexList)
+    setGeneric("factorVertexList<-", 
+        function(x, value) standardGeneric("factorVertexList<-"))
+    setReplaceMethod("factorVertexList", "dg.graphedges", 
+        function(x, value) {
         x@factorVertexList <- value
         x
     })
@@ -434,10 +465,12 @@
         else fun <- function(object) standardGeneric("factorEdgeList")
         setGeneric("factorEdgeList", fun)
     }
-    setMethod("factorEdgeList", "dg.graphedges", function(object) object@factorEdgeList)
-    setGeneric("factorEdgeList<-", function(x, value) standardGeneric("factorEdgeList<-"))
-    setReplaceMethod("factorEdgeList", "dg.graphedges", function(x, 
-        value) {
+    setMethod("factorEdgeList", "dg.graphedges", 
+        function(object) object@factorEdgeList)
+    setGeneric("factorEdgeList<-", 
+        function(x, value) standardGeneric("factorEdgeList<-"))
+    setReplaceMethod("factorEdgeList", "dg.graphedges", 
+        function(x, value) {
         x@factorEdgeList <- value
         x
     })
@@ -447,10 +480,12 @@
         else fun <- function(object) standardGeneric("extraList")
         setGeneric("extraList", fun)
     }
-    setMethod("extraList", "dg.graphedges", function(object) object@extraList)
-    setGeneric("extraList<-", function(x, value) standardGeneric("extraList<-"))
-    setReplaceMethod("extraList", "dg.graphedges", function(x, 
-        value) {
+    setMethod("extraList", "dg.graphedges", 
+        function(object) object@extraList)
+    setGeneric("extraList<-", 
+        function(x, value) standardGeneric("extraList<-"))
+    setReplaceMethod("extraList", "dg.graphedges", 
+        function(x, value) {
         x@extraList <- value
         x
     })
@@ -460,152 +495,206 @@
         else fun <- function(object) standardGeneric("extraEdgeList")
         setGeneric("extraEdgeList", fun)
     }
-    setMethod("extraEdgeList", "dg.graphedges", function(object) object@extraEdgeList)
-    setGeneric("extraEdgeList<-", function(x, value) standardGeneric("extraEdgeList<-"))
-    setReplaceMethod("extraEdgeList", "dg.graphedges", function(x, 
-        value) {
+    setMethod("extraEdgeList", "dg.graphedges", 
+        function(object) object@extraEdgeList)
+    setGeneric("extraEdgeList<-", 
+        function(x, value) standardGeneric("extraEdgeList<-"))
+    setReplaceMethod("extraEdgeList", "dg.graphedges", 
+        function(x, value) {
         x@extraEdgeList <- value
         x
     })
-    setClass("dg.graph", contains = "dg.graphedges", representation(vertexList = "dg.VertexList", 
-        blockList = "dg.BlockList"), prototype = list(viewType = "Simple", 
-        vertexList = new("dg.VertexList"), visibleVertices = numeric(), 
-        visibleBlocks = numeric(), edgeList = new("dg.VertexEdgeList"), 
-        oriented = NA, blockList = new("dg.BlockList"), blockEdgeList = new("dg.BlockEdgeList"), 
-        factorVertexList = new("dg.FactorVertexList"), factorEdgeList = new("dg.FactorEdgeList"), 
-        extraList = new("dg.VertexList"), extraEdgeList = new("dg.ExtraEdgeList")))
-    setClass("dg.simple.graph", representation(viewType = "character", 
-        vertex.names = "vector", types = "character", labels = "vector", 
-        from = "vector", to = "vector", edge.list = "list", edge.types = "character", 
-        blocks = "list", block.tree = "list", oriented = "vector", 
-        factors = "list", texts = "character", extra.from = "vector", 
-        extra.to = "vector", extra.edge.list = "list"), prototype = list(viewType = "Simple", 
-        vertex.names = vector(), labels = vector(), types = "", 
-        from = vector(), to = vector(), edge.list = list(NULL), 
-        edge.types = "", blocks = list(NULL), block.tree = list(NULL), 
-        oriented = NA, factors = list(NULL), texts = "", extra.from = vector(), 
-        extra.to = vector(), extra.edge.list = list(NULL)))
-    setAs("dg.simple.graph", "dg.graph", function(from, to) simpleGraphToGraph(from))
+    setClass("dg.graph", contains = "dg.graphedges", 
+        representation(vertexList = "dg.VertexList", 
+                       blockList = "dg.BlockList"), 
+        prototype = list(viewType = "Simple", 
+                         vertexList = new("dg.VertexList"), 
+                         visibleVertices = numeric(), 
+                         visibleBlocks = numeric(), 
+                         edgeList = new("dg.VertexEdgeList"), 
+                         oriented = NA, blockList = new("dg.BlockList"), 
+                         blockEdgeList = new("dg.BlockEdgeList"), 
+                         factorVertexList = new("dg.FactorVertexList"), 
+                         factorEdgeList = new("dg.FactorEdgeList"), 
+                         extraList = new("dg.VertexList"), 
+                         extraEdgeList = new("dg.ExtraEdgeList")))
+    setClass("dg.simple.graph", 
+        representation(viewType = "character", 
+                       vertex.names = "vector", 
+                       types = "character", labels = "vector", 
+                       from = "vector", to = "vector", 
+                       edge.list = "list", edge.types = "character", 
+                       blocks = "list", block.tree = "list", 
+                       oriented = "vector", factors = "list", 
+                       texts = "character", extra.from = "vector", 
+                       extra.to = "vector", extra.edge.list = "list"), 
+        prototype = list(viewType = "Simple", vertex.names = vector(), 
+                         labels = vector(), types = "", from = vector(), 
+                         to = vector(), edge.list = list(NULL), 
+                         edge.types = "", blocks = list(NULL), 
+                         block.tree = list(NULL), 
+                         oriented = NA, factors = list(NULL), 
+                         texts = "", extra.from = vector(), 
+                         extra.to = vector(), extra.edge.list = list(NULL)))
+    setAs("dg.simple.graph", "dg.graph", 
+        function(from, to) simpleGraphToGraph(from))
     if (!isGeneric("dg")) {
         if (is.function("dg")) 
             fun <- position
         else fun <- function(object, ...) standardGeneric("dg")
         setGeneric("dg", fun)
     }
-    setMethod("dg", "dg.graph", function(object, ...) {
+    setMethod("dg", "dg.graph", 
+        function(object, ...) {
         dots <- list(...)
         modelObject <- dots$modelObject
         modelObjectName <- dots$modelObjectName
-        dynamicGraphMain(vertexList = object@vertexList, blockList = object@blockList, 
-            dg = object, object = modelObject, objectName = modelObjectName, 
-            ...)
+        dynamicGraphMain(vertexList = object@vertexList, 
+            blockList = object@blockList, dg = object, 
+            object = modelObject, objectName = modelObjectName, ...)
     })
-    setMethod("dg", "dg.simple.graph", function(object, ...) {
+    setMethod("dg", "dg.simple.graph", 
+        function(object, ...) {
         dg <- simpleGraphToGraph(sdg = object, ...)
         dg(dg, ...)
     })
     if (!isGeneric("addModel")) {
         if (is.function("addModel")) 
             fun <- position
-        else fun <- function(object, frameModels, ...) standardGeneric("addModel")
+        else fun <- function(object, frameModels, ...) 
+            standardGeneric("addModel")
         setGeneric("addModel", fun)
     }
-    setMethod("addModel", "dg.graph", function(object, frameModels, 
-        ...) .addModel(dg = object, frameModels = frameModels, 
-        overwrite = FALSE, ...))
-    setMethod("addModel", "dg.graphedges", function(object, frameModels, 
-        ...) .addModel(dg = object, frameModels = frameModels, 
-        overwrite = FALSE, ...))
-    setMethod("addModel", "dg.simple.graph", function(object, 
-        frameModels, ...) .addModel(dg = object, frameModels = frameModels, 
-        overwrite = FALSE, ...))
+    setMethod("addModel", "dg.graph", 
+        function(object, frameModels, ...) 
+        .addModel(dg = object, frameModels = frameModels, 
+                  overwrite = FALSE, ...))
+    setMethod("addModel", "dg.graphedges", 
+        function(object, frameModels, ...) 
+        .addModel(dg = object, frameModels = frameModels, 
+                  overwrite = FALSE, ...))
+    setMethod("addModel", "dg.simple.graph", 
+        function(object, frameModels, ...) 
+        .addModel(dg = object, frameModels = frameModels, 
+                  overwrite = FALSE, ...))
     if (!isGeneric("addView")) {
         if (is.function("addView")) 
             fun <- position
-        else fun <- function(object, frameModels, frameViews = frameModels@models[[modelIndex]], 
-            modelIndex = 1, ...) standardGeneric("addView")
+        else fun <- function(object, frameModels, 
+                             frameViews = frameModels@models[[modelIndex]], 
+                             modelIndex = 1, ...) 
+            standardGeneric("addView")
         setGeneric("addView", fun)
     }
-    setMethod("addView", "dg.graph", function(object, frameModels, 
-        frameViews = frameModels@models[[modelIndex]], modelIndex = 1, 
-        ...) .addView(dg = object, frameModels = frameModels, 
-        frameViews = frameViews, graphWindow = NULL, overwrite = FALSE, 
-        ...))
-    setMethod("addView", "dg.graphedges", function(object, frameModels, 
-        frameViews = frameModels@models[[modelIndex]], modelIndex = 1, 
-        ...) .addView(dg = object, frameModels = frameModels, 
-        frameViews = frameViews, graphWindow = NULL, overwrite = FALSE, 
-        ...))
-    setMethod("addView", "dg.simple.graph", function(object, 
-        frameModels, frameViews = frameModels@models[[modelIndex]], 
-        modelIndex = 1, ...) .addView(dg = object, frameModels = frameModels, 
-        frameViews = frameViews, graphWindow = NULL, overwrite = FALSE, 
-        ...))
+    setMethod("addView", "dg.graph", 
+        function(object, frameModels, 
+                 frameViews = frameModels@models[[modelIndex]], 
+                 modelIndex = 1, ...) 
+        .addView(dg = object, frameModels = frameModels, 
+                 frameViews = frameViews, graphWindow = NULL, 
+                 overwrite = FALSE, ...))
+    setMethod("addView", "dg.graphedges", 
+        function(object, frameModels, 
+                 frameViews = frameModels@models[[modelIndex]], 
+                 modelIndex = 1, ...) 
+        .addView(dg = object, frameModels = frameModels, 
+                 frameViews = frameViews, graphWindow = NULL, 
+                 overwrite = FALSE, ...))
+    setMethod("addView", "dg.simple.graph", 
+        function(object, frameModels, 
+                 frameViews = frameModels@models[[modelIndex]], 
+                 modelIndex = 1, ...) 
+        .addView(dg = object, frameModels = frameModels, 
+                 frameViews = frameViews, graphWindow = NULL, 
+                 overwrite = FALSE, ...))
     if (!isGeneric("replaceModel")) {
         if (is.function("replaceModel")) 
             fun <- position
-        else fun <- function(object, frameModels, frameViews = frameModels@models[[modelIndex]], 
-            modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
-            viewIndex = 1, ...) standardGeneric("replaceModel")
+        else fun <- function(object, frameModels, 
+                             frameViews = frameModels@models[[modelIndex]], 
+                             modelIndex = 1, 
+                             graphWindow = frameViews@graphs[[viewIndex]], 
+                             viewIndex = 1, ...) 
+                                 standardGeneric("replaceModel")
         setGeneric("replaceModel", fun)
     }
-    setMethod("replaceModel", "dg.graph", function(object, frameModels, 
-        frameViews = frameModels@models[[modelIndex]], modelIndex = 1, 
-        graphWindow = frameViews@graphs[[viewIndex]], viewIndex = 1, 
-        ...) .addModel(dg = object, frameModels = frameModels, 
-        frameViews = frameViews, graphWindow = graphWindow, overwrite = TRUE, 
-        ...))
-    setMethod("replaceModel", "dg.graphedges", function(object, 
-        frameModels, frameViews = frameModels@models[[modelIndex]], 
-        modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
-        viewIndex = 1, ...) .addModel(dg = object, frameModels = frameModels, 
-        frameViews = frameViews, graphWindow = graphWindow, overwrite = TRUE, 
-        ...))
-    setMethod("replaceModel", "dg.simple.graph", function(object, 
-        frameModels, frameViews = frameModels@models[[modelIndex]], 
-        modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
-        viewIndex = 1, control = dg.control(...), ...) .addModel(dg = object, 
-        frameModels = frameModels, frameViews = frameViews, graphWindow = graphWindow, 
-        overwrite = TRUE, ...))
+    setMethod("replaceModel", "dg.graph", 
+        function(object, frameModels, 
+                 frameViews = frameModels@models[[modelIndex]], 
+                 modelIndex = 1, 
+                 graphWindow = frameViews@graphs[[viewIndex]],
+                 viewIndex = 1, ...) 
+        .addModel(dg = object, frameModels = frameModels, 
+                  frameViews = frameViews, graphWindow = graphWindow, 
+                  overwrite = TRUE, ...))
+    setMethod("replaceModel", "dg.graphedges", 
+        function(object, frameModels, 
+                 frameViews = frameModels@models[[modelIndex]], 
+                 modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
+                 viewIndex = 1, ...) 
+        .addModel(dg = object, frameModels = frameModels, 
+                  frameViews = frameViews, graphWindow = graphWindow, 
+                  overwrite = TRUE, ...))
+    setMethod("replaceModel", "dg.simple.graph", 
+        function(object, frameModels, 
+                 frameViews = frameModels@models[[modelIndex]], 
+                 modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
+                 viewIndex = 1, control = dg.control(...), ...) 
+        .addModel(dg = object, 
+                  frameModels = frameModels, frameViews = frameViews, 
+                  graphWindow = graphWindow, overwrite = TRUE, ...))
     if (!isGeneric("replaceView")) {
         if (is.function("replaceView")) 
             fun <- position
-        else fun <- function(object, frameModels, frameViews = frameModels@models[[modelIndex]], 
-            modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
-            viewIndex = 1, ...) standardGeneric("replaceView")
+        else fun <- function(object, frameModels, 
+                             frameViews = frameModels@models[[modelIndex]], 
+                             modelIndex = 1, 
+                             graphWindow = frameViews@graphs[[viewIndex]], 
+                             viewIndex = 1, ...) standardGeneric("replaceView")
         setGeneric("replaceView", fun)
     }
-    setMethod("replaceView", "dg.graph", function(object, frameModels, 
-        frameViews = frameModels@models[[modelIndex]], modelIndex = 1, 
-        graphWindow = frameViews@graphs[[viewIndex]], viewIndex = 1, 
-        ...) .addView(dg = object, frameModels = frameModels, 
-        frameViews = frameViews, graphWindow = graphWindow, overwrite = TRUE, 
-        ...))
-    setMethod("replaceView", "dg.graphedges", function(object, 
-        frameModels, frameViews = frameModels@models[[modelIndex]], 
-        modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
-        viewIndex = 1, ...) .addView(dg = object, frameModels = frameModels, 
-        frameViews = frameViews, graphWindow = graphWindow, overwrite = TRUE, 
-        ...))
-    setMethod("replaceView", "dg.simple.graph", function(object, 
-        frameModels, frameViews = frameModels@models[[modelIndex]], 
-        modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
-        viewIndex = 1, control = dg.control(...), ...) .addView(dg = object, 
-        frameModels = frameModels, frameViews = frameViews, graphWindow = graphWindow, 
-        overwrite = TRUE, ...))
-    setClass("DynamicGraph", representation(id.env = "character", 
-        label = "character", vertices = "dg.VertexList", blocks = "dg.BlockList", 
-        control = "list", models = "list"))
+    setMethod("replaceView", "dg.graph", 
+        function(object, frameModels, 
+                 frameViews = frameModels@models[[modelIndex]], 
+                 modelIndex = 1, 
+                 graphWindow = frameViews@graphs[[viewIndex]], 
+                 viewIndex = 1, ...) 
+        .addView(dg = object, frameModels = frameModels, 
+                 frameViews = frameViews, graphWindow = graphWindow, 
+                 overwrite = TRUE, ...))
+    setMethod("replaceView", "dg.graphedges", 
+        function(object, frameModels, 
+                 frameViews = frameModels@models[[modelIndex]], 
+                 modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
+                 viewIndex = 1, ...) 
+        .addView(dg = object, frameModels = frameModels, 
+                 frameViews = frameViews, graphWindow = graphWindow, 
+                 overwrite = TRUE, ...))
+    setMethod("replaceView", "dg.simple.graph", 
+        function(object, frameModels, 
+                 frameViews = frameModels@models[[modelIndex]], 
+                 modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
+                 viewIndex = 1, control = dg.control(...), ...) 
+        .addView(dg = object, frameModels = frameModels, 
+                 frameViews = frameViews, 
+                 graphWindow = graphWindow, overwrite = TRUE, ...))
+    setClass("DynamicGraph", 
+             representation(id.env = "character", label = "character", 
+                            vertices = "dg.VertexList", 
+                            blocks = "dg.BlockList", 
+                            control = "list", models = "list"))
     if (!isGeneric("vertices")) {
         if (is.function("vertices")) 
             fun <- vertices
         else fun <- function(object) standardGeneric("vertices")
         setGeneric("vertices", fun)
     }
-    setMethod("vertices", "DynamicGraph", function(object) object@vertices)
-    setGeneric("vertices<-", function(x, value) standardGeneric("vertices<-"))
-    setReplaceMethod("vertices", "DynamicGraph", function(x, 
-        value) {
+    setMethod("vertices", "DynamicGraph", 
+        function(object) object@vertices)
+    setGeneric("vertices<-", 
+        function(x, value) standardGeneric("vertices<-"))
+    setReplaceMethod("vertices", "DynamicGraph", 
+        function(x, value) {
         x@vertices <- value
         replaceVertexList(value, x)
         x
@@ -616,9 +705,12 @@
         else fun <- function(object) standardGeneric("blocks")
         setGeneric("blocks", fun)
     }
-    setMethod("blocks", "DynamicGraph", function(object) object@blocks)
-    setGeneric("blocks<-", function(x, value) standardGeneric("blocks<-"))
-    setReplaceMethod("blocks", "DynamicGraph", function(x, value) {
+    setMethod("blocks", "DynamicGraph", 
+        function(object) object@blocks)
+    setGeneric("blocks<-", 
+        function(x, value) standardGeneric("blocks<-"))
+    setReplaceMethod("blocks", "DynamicGraph", 
+        function(x, value) {
         x@blocks <- value
         replaceBlockList(value, x)
         x
@@ -629,9 +721,12 @@
         else fun <- function(object) standardGeneric("control")
         setGeneric("control", fun)
     }
-    setMethod("control", "DynamicGraph", function(object) object@control)
-    setGeneric("control<-", function(x, value) standardGeneric("control<-"))
-    setReplaceMethod("control", "DynamicGraph", function(x, value) {
+    setMethod("control", "DynamicGraph", 
+        function(object) object@control)
+    setGeneric("control<-", 
+        function(x, value) standardGeneric("control<-"))
+    setReplaceMethod("control", "DynamicGraph", 
+        function(x, value) {
         x@control <- value
         replaceControls(value, x)
         x
@@ -642,13 +737,17 @@
         else fun <- function(object) standardGeneric("models")
         setGeneric("models", fun)
     }
-    setMethod("models", "DynamicGraph", function(object) object@models)
-    setGeneric("models<-", function(x, value) standardGeneric("models<-"))
-    setReplaceMethod("models", "DynamicGraph", function(x, value) {
+    setMethod("models", "DynamicGraph", 
+        function(object) object@models)
+    setGeneric("models<-", 
+        function(x, value) standardGeneric("models<-"))
+    setReplaceMethod("models", "DynamicGraph", 
+        function(x, value) {
         x@models <- value
         x
     })
-    setMethod("dg", "DynamicGraph", function(object, ...) {
+    setMethod("dg", "DynamicGraph", 
+        function(object, ...) {
         dots <- list(...)
         modelObject <- dots$modelObject
         modelObjectName <- dots$modelObjectName
@@ -657,14 +756,18 @@
             control <- object@control
             if (is.null(control)) 
                 control <- dg.control()
-            dynamicGraphMain(vertexList = object@vertices, blockList = object@blocks, 
-                object = modelObject, objectName = modelObjectName, 
-                frameModels = object, redraw = TRUE, control = control, 
-                ...)
+            dynamicGraphMain(vertexList = object@vertices, 
+                             blockList = object@blocks, 
+                             object = modelObject, 
+                             objectName = modelObjectName, 
+                             frameModels = object, redraw = TRUE, 
+                             control = control, ...)
         }
-        else dynamicGraphMain(vertexList = object@vertices, blockList = object@blocks, 
-            object = modelObject, objectName = modelObjectName, 
-            frameModels = object, redraw = TRUE, ...)
+        else dynamicGraphMain(vertexList = object@vertices, 
+                              blockList = object@blocks, 
+                              object = modelObject, 
+                              objectName = modelObjectName, 
+                              frameModels = object, redraw = TRUE, ...)
     })
     setClass("DynamicGraphModel", representation(id.env = "character", 
         label = "character", index = "numeric", model = "list", 
@@ -675,10 +778,12 @@
         else fun <- function(object) standardGeneric("model")
         setGeneric("model", fun)
     }
-    setMethod("model", "DynamicGraphModel", function(object) object@model)
-    setGeneric("model<-", function(x, value) standardGeneric("model<-"))
-    setReplaceMethod("model", "DynamicGraphModel", function(x, 
-        value) {
+    setMethod("model", "DynamicGraphModel", 
+        function(object) object@model)
+    setGeneric("model<-", 
+        function(x, value) standardGeneric("model<-"))
+    setReplaceMethod("model", "DynamicGraphModel", 
+        function(x, value) {
         x@model <- value
         x
     })
@@ -688,15 +793,17 @@
         else fun <- function(object) standardGeneric("graphs")
         setGeneric("graphs", fun)
     }
-    setMethod("graphs", "DynamicGraphModel", function(object) object@graphs)
-    setGeneric("graphs<-", function(x, value) standardGeneric("graphs<-"))
-    setReplaceMethod("graphs", "DynamicGraphModel", function(x, 
-        value) {
+    setMethod("graphs", "DynamicGraphModel", 
+        function(object) object@graphs)
+    setGeneric("graphs<-", 
+        function(x, value) standardGeneric("graphs<-"))
+    setReplaceMethod("graphs", "DynamicGraphModel", 
+        function(x, value) {
         x@graphs <- value
         x
     })
-    setReplaceMethod("control", "DynamicGraphModel", function(x, 
-        value) {
+    setReplaceMethod("control", "DynamicGraphModel", 
+        function(x, value) {
         replaceControls(value, frameViews = x)
         x
     })
@@ -709,32 +816,40 @@
         else fun <- function(object) standardGeneric("label")
         setGeneric("label", fun)
     }
-    setMethod("label", "DynamicGraph", function(object) object@label)
-    setMethod("label", "DynamicGraphModel", function(object) object@label)
-    setMethod("label", "DynamicGraphView", function(object) object@label)
-    setGeneric("label<-", function(x, value) standardGeneric("label<-"))
-    setReplaceMethod("label", "DynamicGraph", function(x, value) {
+    setMethod("label", "DynamicGraph", 
+        function(object) object@label)
+    setMethod("label", "DynamicGraphModel", 
+        function(object) object@label)
+    setMethod("label", "DynamicGraphView", 
+        function(object) object@label)
+    setGeneric("label<-", 
+        function(x, value) standardGeneric("label<-"))
+    setReplaceMethod("label", "DynamicGraph", 
+        function(x, value) {
         x@label <- value
         x
     })
-    setReplaceMethod("label", "DynamicGraphModel", function(x, 
-        value) {
+    setReplaceMethod("label", "DynamicGraphModel", 
+        function(x, value) {
         x@label <- value
         x
     })
-    setReplaceMethod("label", "DynamicGraphView", function(x, 
-        value) {
+    setReplaceMethod("label", "DynamicGraphView", 
+        function(x, value) {
         x@label <- value
         x
     })
-    setMethod("dg", "DynamicGraphView", function(object, ...) object@dg)
-    setGeneric("dg<-", function(x, value) standardGeneric("dg<-"))
-    setReplaceMethod("dg", "DynamicGraphView", function(x, value) {
+    setMethod("dg", "DynamicGraphView", 
+        function(object, ...) object@dg)
+    setGeneric("dg<-", 
+        function(x, value) standardGeneric("dg<-"))
+    setReplaceMethod("dg", "DynamicGraphView", 
+        function(x, value) {
         x@dg <- value
         x
     })
-    setReplaceMethod("control", "DynamicGraphView", function(x, 
-        value) {
+    setReplaceMethod("control", "DynamicGraphView", 
+        function(x, value) {
         replaceControls(value, graphWindow = x)
         x
     })
@@ -744,53 +859,70 @@
         else fun <- function(object) standardGeneric("top")
         setGeneric("top", fun)
     }
-    setMethod("top", "DynamicGraphView", function(object) .get.env.graphWindow(graphWindow = object)$env$top)
+    setMethod("top", "DynamicGraphView", 
+        function(object) .get.env.graphWindow(graphWindow = object)$env$top)
     if (!isGeneric("vbox")) {
         if (is.function("vbox")) 
             fun <- vbox
         else fun <- function(object) standardGeneric("vbox")
         setGeneric("vbox", fun)
     }
-    setMethod("vbox", "DynamicGraphView", function(object) .get.env.graphWindow(graphWindow = object)$env$top$env$box)
+    setMethod("vbox", "DynamicGraphView", 
+        function(object) 
+            .get.env.graphWindow(graphWindow = object)$env$top$env$box)
     if (!isGeneric("canvas")) {
         if (is.function("canvas")) 
             fun <- canvas
         else fun <- function(object) standardGeneric("canvas")
         setGeneric("canvas", fun)
     }
-    setMethod("canvas", "DynamicGraphView", function(object) .get.env.graphWindow(graphWindow = object)$env$top$env$canvas)
+    setMethod("canvas", "DynamicGraphView", 
+        function(object) 
+            .get.env.graphWindow(graphWindow = object)$env$top$env$canvas)
     if (!isGeneric("viewLabel")) {
         if (is.function("viewLabel")) 
             fun <- viewLabel
         else fun <- function(object) standardGeneric("viewLabel")
         setGeneric("viewLabel", fun)
     }
-    setMethod("viewLabel", "DynamicGraphView", function(object) .get.env.graphWindow(graphWindow = object)$env$top$env$viewLabel)
+    setMethod("viewLabel", "DynamicGraphView", 
+        function(object) 
+            .get.env.graphWindow(graphWindow = object)$env$top$env$viewLabel)
     if (!isGeneric("tags")) {
         if (is.function("tags")) 
             fun <- tags
         else fun <- function(object) standardGeneric("tags")
         setGeneric("tags", fun)
     }
-    setMethod("tags", "DynamicGraphView", function(object) .get.env.graphWindow(graphWindow = object)$env$tags)
-    for (prototype in paste(validViewClasses()[, 2])) setClass(prototype, 
-        contains = "DynamicGraphView")
-    setClass("dg.Node", representation(color = "character", label = "character", 
-        label.position = "numeric"), prototype = list(color = "black", 
-        label = "Label", label.position = c(0, 0, 0)))
-    setClass("dg.Vertex", contains = "dg.Node", representation(name = "character", 
-        index = "numeric", position = "numeric", constrained = "logical", 
-        blockindex = "numeric", stratum = "numeric"), prototype = list(color = "black", 
-        label = "Label", label.position = c(0, 0, 0), name = "Name", 
-        index = 0, position = c(0, 0, 0), constrained = FALSE, 
-        blockindex = 0, stratum = 0))
+    setMethod("tags", "DynamicGraphView", 
+        function(object) .get.env.graphWindow(graphWindow = object)$env$tags)
+    for (prototype in paste(validViewClasses()[, 2])) 
+        setClass(prototype, contains = "DynamicGraphView")
+    setClass("dg.Node", 
+             representation(color = "character", label = "character", 
+                            label.position = "numeric"), 
+             prototype = list(color = "black", label = "Label",
+                              label.position = c(0, 0, 0)))
+    setClass("dg.Vertex", contains = "dg.Node", 
+             representation(name = "character", index = "numeric", 
+                            position = "numeric", constrained = "logical", 
+                            blockindex = "numeric", stratum = "numeric"), 
+             prototype = list(color = "black", 
+                              label = "Label", 
+                              label.position = c(0, 0, 0), 
+                              name = "Name", 
+                              index = 0, 
+                              position = c(0, 0, 0), 
+                              constrained = FALSE, 
+                              blockindex = 0, stratum = 0))
     if (!isGeneric("setSlots")) {
         if (is.function("setSlots")) 
             fun <- setSlots
         else fun <- function(object, arguments) standardGeneric("setSlots")
         setGeneric("setSlots", fun)
     }
-    setMethod("setSlots", "dg.Node", function(object, arguments) {
+    setMethod("setSlots", "dg.Node", 
+        function(object, arguments) {
         for (i in seq(along = arguments)) {
             name <- names(arguments)[i]
             if (is.element(name, slotNames(object))) 
@@ -800,10 +932,12 @@
         }
         return(object)
     })
-    setMethod("initialize", "dg.Vertex", function(.Object, ...) {
+    setMethod("initialize", "dg.Vertex", 
+        function(.Object, ...) {
         Args <- list(...)
         if (length(Args) > 0) {
             if (is.element("N", names(Args))) {
+                N <- Args$N
                 .Object@position <- rep(0, N)
                 .Object@label.position <- rep(0, N)
                 Args <- (Args[!names(Args) == "N"])
@@ -826,68 +960,79 @@
         }
         return(.Object)
     })
-    for (prototype in paste(validVertexClasses()[, 2])) setClass(prototype, 
-        contains = c("dg.Vertex", "dg.Node"), prototype = list(color = "black", 
-            label = "Label", label.position = c(0, 0, 0), name = "Name", 
-            index = 0, position = c(0, 0, 0), constrained = FALSE, 
-            blockindex = 0, stratum = 0))
+    for (prototype in paste(validVertexClasses()[, 2])) 
+        setClass(prototype, 
+            contains = c("dg.Vertex", "dg.Node"), 
+            prototype = list(color = "black", label = "Label",
+                             label.position = c(0, 0, 0), name = "Name", 
+                             index = 0, position = c(0, 0, 0), 
+                             constrained = FALSE, blockindex = 0, stratum = 0))
     setClass("dg.TextVertex", contains = c("dg.Vertex", "dg.Node"), 
-        prototype = list(color = "black", label = "Label", label.position = c(0, 
-            0, 0), name = "Name", index = 0, position = c(0, 
-            0, 0), constrained = FALSE, blockindex = 0, stratum = 0))
-    setClass("dg.Block", contains = "dg.Node", representation(stratum = "numeric", 
-        index = "numeric", parent = "numeric", children = "numeric", 
-        ancestors = "numeric", descendants = "numeric", position = "matrix", 
-        closed = "logical", visible = "logical"), prototype = list(color = "black", 
-        label = "Label", label.position = c(0, 0, 0), stratum = 0, 
-        index = 0, parent = 0, children = 0, ancestors = 0, descendants = 0, 
-        position = matrix(rep(0, 6), ncol = 3), closed = TRUE, 
-        visible = TRUE))
-    setMethod("initialize", "dg.Block", function(.Object, ...) {
+        prototype = list(color = "black", label = "Label", 
+            label.position = c(0, 0, 0), name = "Name", 
+            index = 0, position = c(0, 0, 0), 
+            constrained = FALSE, blockindex = 0, stratum = 0))
+    setClass("dg.Block", contains = "dg.Node", 
+        representation(stratum = "numeric", index = "numeric", 
+                       parent = "numeric", children = "numeric", 
+                       ancestors = "numeric", descendants = "numeric", 
+                       position = "matrix", 
+                       closed = "logical", visible = "logical"), 
+        prototype = list(color = "black", label = "Label", 
+                         label.position = c(0, 0, 0), stratum = 0, 
+                         index = 0, parent = 0, children = 0, ancestors = 0, 
+                         descendants = 0, 
+                         position = matrix(rep(0, 6), ncol = 3), 
+                         closed = TRUE, visible = TRUE))
+    setMethod("initialize", "dg.Block", 
+        function(.Object, ...) {
         Args <- list(...)
         if (length(Args) > 0) {
             if (is.element("N", names(Args))) {
+                N <- Args$N
                 .Object@position <- matrix(rep(0, 2 * N), ncol = N)
                 .Object@label.position <- rep(0, N)
                 Args <- (Args[!names(Args) == "N"])
             }
             .Object <- setSlots(.Object, Args)
-            if ((.Object@parent == 0) && !(.Object@ancestors == 
-                0)) 
+            if ((.Object@parent == 0) && !(.Object@ancestors == 0)) 
                 .Object@parent <- .Object@ancestors[length(.Object@ancestors)]
         }
         return(.Object)
     })
     setClass("dg.FactorVertex", contains = c("dg.Vertex", "dg.Node"), 
-        representation(vertex.indices = "numeric", fixed.positions = "logical"), 
-        prototype = list(color = "black", label = "Label", label.position = c(0, 
-            0, 0), name = "Name", index = 0, position = c(0, 
-            0, 0), constrained = FALSE, fixed.positions = FALSE, 
-            blockindex = 0, stratum = 0, vertex.indices = c(0, 
-                0)))
-    setMethod("initialize", "dg.FactorVertex", function(.Object, 
-        ...) {
+        representation(vertex.indices = "numeric", 
+                       fixed.positions = "logical"), 
+        prototype = list(color = "black", label = "Label", 
+                         label.position = c(0, 0, 0), name = "Name", 
+                         index = 0, position = c(0, 0, 0), 
+                         constrained = FALSE, fixed.positions = FALSE, 
+                         blockindex = 0, stratum = 0, 
+                         vertex.indices = c(0, 0)))
+    setMethod("initialize", "dg.FactorVertex", 
+        function(.Object, ...) {
         Args <- list(...)
         if (length(Args) > 0) {
-            if (is.element("vertices", names(Args)) || is.element("vertexList", 
-                names(Args))) {
+            if (is.element("vertices", names(Args)) || 
+                is.element("vertexList", names(Args))) {
                 if (is.element("vertices", names(Args))) {
                   vertices <- Args$vertices
                   if (!(length(vertices) == length(Args$vertex.indices))) 
                     message(paste("Different lengths of 'vertex.indices' ", 
-                      "and 'vertices'. Use argument ", "'vertexList' for subsetting.", 
-                      sep = ""))
+                      "and 'vertices'. Use argument ", 
+                      "'vertexList' for subsetting.", sep = ""))
                 }
-                else vertices <- new("dg.VertexList", Args$vertexList[Args$vertex.indices])
+                else vertices <- new("dg.VertexList", 
+                                         Args$vertexList[Args$vertex.indices])
                 if (length(vertices) > 0) {
                   position <- apply(Positions(vertices), 2, mean)
                   name <- paste(Labels(vertices), collapse = ":")
                   .Object@position <- position
-                  if ((length(.Object@name) > 0) && (.Object@name == 
-                    "Name")) 
+                  if ((length(.Object@name) > 0) && 
+                    (.Object@name == "Name")) 
                     .Object@name <- name
-                  if ((length(.Object@label) > 0) && (.Object@label == 
-                    "Label")) 
+                  if ((length(.Object@label) > 0) && 
+                    (.Object@label == "Label")) 
                     .Object@label <- name
                 }
                 Args <- (Args[!names(Args) == "vertices"])
@@ -905,31 +1050,37 @@
         }
         return(.Object)
     })
-    for (prototype in paste(validFactorClasses()[, 2])) setClass(prototype, 
-        contains = c("dg.FactorVertex", "dg.Vertex", "dg.Node"), 
-        prototype = list(color = "black", label = "Label", label.position = c(0, 
-            0, 0), name = "Name", index = 0, position = c(0, 
-            0, 0), constrained = FALSE, blockindex = 0, stratum = 0, 
-            vertex.indices = c(0, 0)))
-    setClass("dg.Edge", contains = "dg.Node", representation(dash = "character", 
-        vertex.indices = "numeric", width = "numeric"), prototype = list(color = "black", 
-        label = "Label", label.position = c(0, 0, 0), dash = "", 
-        vertex.indices = c(0, 0), width = 2))
-    setMethod("initialize", "dg.Edge", function(.Object, ...) {
+    for (prototype in paste(validFactorClasses()[, 2])) 
+        setClass(prototype, 
+            contains = c("dg.FactorVertex", "dg.Vertex", "dg.Node"), 
+            prototype = list(color = "black", label = "Label", 
+                             label.position = c(0, 0, 0), name = "Name", 
+                             index = 0,  position = c(0, 0, 0), 
+                             constrained = FALSE, blockindex = 0, 
+                             stratum = 0, vertex.indices = c(0, 0)))
+    setClass("dg.Edge", contains = "dg.Node", 
+             representation(dash = "character", 
+                            vertex.indices = "numeric", width = "numeric"), 
+             prototype = list(color = "black", label = "Label", 
+                              label.position = c(0, 0, 0), dash = "", 
+                              vertex.indices = c(0, 0), width = 2))
+    setMethod("initialize", "dg.Edge", 
+        function(.Object, ...) {
         Args <- list(...)
         if (length(Args) > 0) {
-            if (is.element("vertices", names(Args)) || is.element("vertexList", 
-                names(Args))) {
+            if (is.element("vertices", names(Args)) || 
+                is.element("vertexList", names(Args))) {
                 if (is.element("vertices", names(Args))) {
                   vertices <- Args$vertices
                   if (!(length(vertices) == length(Args$vertex.indices))) 
                     message(paste("Different lengths of 'vertex.indices' ", 
-                      "and 'vertices'. Use argument ", "'vertexList' for subsetting.", 
-                      sep = ""))
+                      "and 'vertices'. Use argument ", 
+                      "'vertexList' for subsetting.", sep = ""))
                 }
-                else vertices <- new("dg.VertexList", Args$vertexList[Args$vertex.indices])
-                if ((length(.Object@label) > 0) && (.Object@label == 
-                  "Label") && ((length(vertices) > 0))) 
+                else vertices <- new("dg.VertexList", 
+                                        Args$vertexList[Args$vertex.indices])
+                if ((length(.Object@label) > 0) && 
+                  (.Object@label == "Label") && ((length(vertices) > 0))) 
                   .Object@label <- paste(Labels(vertices), collapse = "~")
                 Args <- (Args[!names(Args) == "vertices"])
                 Args <- (Args[!names(Args) == "vertexList"])
@@ -951,32 +1102,41 @@
         return(.Object)
     })
     setClass("dg.VertexEdge", contains = c("dg.Edge", "dg.Node"), 
-        representation(oriented = "logical"), prototype = list(color = "black", 
-            label = "Label", label.position = c(0, 0, 0), dash = "", 
-            vertex.indices = c(0, 0), width = 2, oriented = FALSE))
-    for (prototype in paste(validEdgeClasses()[-1, 2])) setClass(prototype, 
-        contains = c("dg.VertexEdge", "dg.Edge", "dg.Node"))
+        representation(oriented = "logical"), 
+        prototype = list(color = "black", label = "Label", 
+                         label.position = c(0, 0, 0), dash = "", 
+                         vertex.indices = c(0, 0), width = 2, 
+                         oriented = FALSE))
+    for (prototype in paste(validEdgeClasses()[-1, 2])) 
+        setClass(prototype, 
+            contains = c("dg.VertexEdge", "dg.Edge", "dg.Node"))
     setClass("dg.FactorEdge", contains = c("dg.Edge", "dg.Node"), 
-        representation(), prototype = list(color = "black", label = "Label", 
-            label.position = c(0, 0, 0), dash = "", vertex.indices = c(0, 
-                0), width = 2))
+        representation(), 
+        prototype = list(color = "black", label = "Label", 
+                         label.position = c(0, 0, 0), dash = "", 
+                         vertex.indices = c(0, 0), width = 2))
     setClass("dg.ExtraEdge", contains = c("dg.Edge", "dg.Node"), 
-        representation(), prototype = list(color = "black", label = "Label", 
-            label.position = c(0, 0, 0), dash = "", vertex.indices = c(0, 
-                0), width = 2))
+        representation(), 
+        prototype = list(color = "black", label = "Label", 
+                         label.position = c(0, 0, 0), dash = "", 
+                         vertex.indices = c(0, 0), width = 2))
     setClass("dg.BlockEdge", contains = c("dg.Edge", "dg.Node"), 
-        representation(oriented = "logical"), prototype = list(color = "black", 
-            label = "Label", label.position = c(0, 0, 0), dash = "", 
-            vertex.indices = c(0, 0), width = 2, oriented = NA))
+        representation(oriented = "logical"), 
+        prototype = list(color = "black", label = "Label", 
+                         label.position = c(0, 0, 0), dash = "", 
+                         vertex.indices = c(0, 0), width = 2, oriented = NA))
     if (!isGeneric("color")) {
         if (is.function("color")) 
             fun <- color
         else fun <- function(object) standardGeneric("color")
         setGeneric("color", fun)
     }
-    setMethod("color", "dg.Node", function(object) object@color)
-    setGeneric("color<-", function(x, value) standardGeneric("color<-"))
-    setReplaceMethod("color", "dg.Node", function(x, value) {
+    setMethod("color", "dg.Node", 
+        function(object) object@color)
+    setGeneric("color<-", 
+        function(x, value) standardGeneric("color<-"))
+    setReplaceMethod("color", "dg.Node", 
+        function(x, value) {
         if (!(value %in% colors())) 
             message(paste("Invalid color: ", value))
         else x@color <- value
@@ -988,9 +1148,12 @@
         else fun <- function(object) standardGeneric("label")
         setGeneric("label", fun)
     }
-    setMethod("label", "dg.Node", function(object) object@label)
-    setGeneric("label<-", function(x, value) standardGeneric("label<-"))
-    setReplaceMethod("label", "dg.Node", function(x, value) {
+    setMethod("label", "dg.Node", 
+        function(object) object@label)
+    setGeneric("label<-", 
+        function(x, value) standardGeneric("label<-"))
+    setReplaceMethod("label", "dg.Node", 
+        function(x, value) {
         x@label <- value
         x
     })
@@ -1000,10 +1163,12 @@
         else fun <- function(object) standardGeneric("labelPosition")
         setGeneric("labelPosition", fun)
     }
-    setMethod("labelPosition", "dg.Node", function(object) object@label.position)
-    setGeneric("labelPosition<-", function(x, value) standardGeneric("labelPosition<-"))
-    setReplaceMethod("labelPosition", "dg.Node", function(x, 
-        value) {
+    setMethod("labelPosition", "dg.Node", 
+        function(object) object@label.position)
+    setGeneric("labelPosition<-", 
+        function(x, value) standardGeneric("labelPosition<-"))
+    setReplaceMethod("labelPosition", "dg.Node", 
+        function(x, value) {
         x@label.position <- value
         x
     })
@@ -1013,11 +1178,16 @@
         else fun <- function(object) standardGeneric("name")
         setGeneric("name", fun)
     }
-    setMethod("name", "dg.Vertex", function(object) object@name)
-    setMethod("name", "dg.Edge", function(object) object@label)
-    setMethod("name", "dg.Block", function(object) object@label)
-    setGeneric("name<-", function(x, value) standardGeneric("name<-"))
-    setReplaceMethod("name", "dg.Vertex", function(x, value) {
+    setMethod("name", "dg.Vertex", 
+        function(object) object@name)
+    setMethod("name", "dg.Edge", 
+        function(object) object@label)
+    setMethod("name", "dg.Block", 
+        function(object) object@label)
+    setGeneric("name<-", 
+        function(x, value) standardGeneric("name<-"))
+    setReplaceMethod("name", "dg.Vertex", 
+        function(x, value) {
         x@name <- value
         x
     })
@@ -1027,36 +1197,47 @@
         else fun <- function(object) standardGeneric("index")
         setGeneric("index", fun)
     }
-    setMethod("index", "dg.Vertex", function(object) object@index)
-    setMethod("index", "dg.Block", function(object) abs(object@index))
-    setMethod("index", "dg.FactorVertex", function(object) abs(object@index))
-    setGeneric("index<-", function(x, value) standardGeneric("index<-"))
-    setReplaceMethod("index", "dg.Vertex", function(x, value) {
+    setMethod("index", "dg.Vertex", 
+        function(object) object@index)
+    setMethod("index", "dg.Block", 
+        function(object) abs(object@index))
+    setMethod("index", "dg.FactorVertex", 
+        function(object) abs(object@index))
+    setGeneric("index<-", 
+        function(x, value) standardGeneric("index<-"))
+    setReplaceMethod("index", "dg.Vertex", 
+        function(x, value) {
         x@index <- value
         x
     })
-    setReplaceMethod("index", "dg.Block", function(x, value) {
+    setReplaceMethod("index", "dg.Block", 
+        function(x, value) {
         x@index <- -abs(value)
         x
     })
-    setReplaceMethod("index", "dg.FactorVertex", function(x, 
-        value) {
+    setReplaceMethod("index", "dg.FactorVertex", 
+        function(x, value) {
         x@index <- -abs(value)
         x
     })
-    setMethod("index", "DynamicGraphModel", function(object) object@index)
-    setMethod("index", "DynamicGraphView", function(object) object@index)
+    setMethod("index", "DynamicGraphModel", 
+        function(object) object@index)
+    setMethod("index", "DynamicGraphView", 
+        function(object) object@index)
     if (!isGeneric("nodeIndices")) {
         if (is.function("nodeIndices")) 
             fun <- nodeIndices
         else fun <- function(object) standardGeneric("nodeIndices")
         setGeneric("nodeIndices", fun)
     }
-    setMethod("nodeIndices", "dg.FactorVertex", function(object) object@vertex.indices)
-    setMethod("nodeIndices", "dg.Edge", function(object) object@vertex.indices)
-    setGeneric("nodeIndices<-", function(x, value) standardGeneric("nodeIndices<-"))
-    setReplaceMethod("nodeIndices", "dg.FactorVertex", function(x, 
-        value) {
+    setMethod("nodeIndices", "dg.FactorVertex", 
+        function(object) object@vertex.indices)
+    setMethod("nodeIndices", "dg.Edge", 
+        function(object) object@vertex.indices)
+    setGeneric("nodeIndices<-", 
+        function(x, value) standardGeneric("nodeIndices<-"))
+    setReplaceMethod("nodeIndices", "dg.FactorVertex", 
+        function(x, value) {
         x@vertex.indices <- value
         x
     })
@@ -1066,13 +1247,15 @@
         else fun <- function(object) standardGeneric("constrained")
         setGeneric("constrained", fun)
     }
-    setMethod("constrained", "dg.Vertex", function(object) if (("constrained" %in% 
+    setMethod("constrained", "dg.Vertex", 
+        function(object) if (("constrained" %in% 
         slotNames(object))) 
         object@constrained
     else FALSE)
-    setGeneric("constrained<-", function(x, value) standardGeneric("constrained<-"))
-    setReplaceMethod("constrained", "dg.Vertex", function(x, 
-        value) if (("constrained" %in% slotNames(x))) {
+    setGeneric("constrained<-", 
+        function(x, value) standardGeneric("constrained<-"))
+    setReplaceMethod("constrained", "dg.Vertex", 
+        function(x, value) if (("constrained" %in% slotNames(x))) {
         x@constrained <- value
         x
     })
@@ -1082,13 +1265,16 @@
         else fun <- function(object) standardGeneric("fixed.positions")
         setGeneric("fixed.positions", fun)
     }
-    setMethod("fixed.positions", "dg.FactorVertex", function(object) if (("fixed.positions" %in% 
+    setMethod("fixed.positions", "dg.FactorVertex", 
+        function(object) if (("fixed.positions" %in% 
         slotNames(object))) 
         object@fixed.positions
     else FALSE)
-    setGeneric("fixed.positions<-", function(x, value) standardGeneric("fixed.positions<-"))
-    setReplaceMethod("fixed.positions", "dg.FactorVertex", function(x, 
-        value) if (("fixed.positions" %in% slotNames(x))) {
+    setGeneric("fixed.positions<-", 
+        function(x, value) standardGeneric("fixed.positions<-"))
+    setReplaceMethod("fixed.positions", "dg.FactorVertex", 
+        function(x, value) 
+        if (("fixed.positions" %in% slotNames(x))) {
         x@fixed.positions <- value
         x
     })
@@ -1098,14 +1284,19 @@
         else fun <- function(object) standardGeneric("position")
         setGeneric("position", fun)
     }
-    setMethod("position", "dg.Vertex", function(object) object@position)
-    setGeneric("position<-", function(x, value) standardGeneric("position<-"))
-    setReplaceMethod("position", "dg.Vertex", function(x, value) {
+    setMethod("position", "dg.Vertex", 
+        function(object) object@position)
+    setGeneric("position<-", 
+        function(x, value) standardGeneric("position<-"))
+    setReplaceMethod("position", "dg.Vertex", 
+        function(x, value) {
         x@position <- value
         x
     })
-    setMethod("position", "dg.Block", function(object) t(object@position))
-    setReplaceMethod("position", "dg.Block", function(x, value) {
+    setMethod("position", "dg.Block", 
+        function(object) t(object@position))
+    setReplaceMethod("position", "dg.Block", 
+        function(x, value) {
         x@position <- t(value)
         x
     })
@@ -1115,14 +1306,19 @@
         else fun <- function(object) standardGeneric("stratum")
         setGeneric("stratum", fun)
     }
-    setMethod("stratum", "dg.Vertex", function(object) object@stratum)
-    setGeneric("stratum<-", function(x, value) standardGeneric("stratum<-"))
-    setReplaceMethod("stratum", "dg.Vertex", function(x, value) {
+    setMethod("stratum", "dg.Vertex", 
+        function(object) object@stratum)
+    setGeneric("stratum<-", 
+        function(x, value) standardGeneric("stratum<-"))
+    setReplaceMethod("stratum", "dg.Vertex", 
+        function(x, value) {
         x@stratum <- value
         x
     })
-    setMethod("stratum", "dg.Block", function(object) object@stratum)
-    setReplaceMethod("stratum", "dg.Block", function(x, value) {
+    setMethod("stratum", "dg.Block", 
+        function(object) object@stratum)
+    setReplaceMethod("stratum", "dg.Block", 
+        function(x, value) {
         x@stratum <- value
         x
     })
@@ -1132,9 +1328,12 @@
         else fun <- function(object) standardGeneric("blockindex")
         setGeneric("blockindex", fun)
     }
-    setMethod("blockindex", "dg.Vertex", function(object) object@blockindex)
-    setGeneric("blockindex<-", function(x, value) standardGeneric("blockindex<-"))
-    setReplaceMethod("blockindex", "dg.Vertex", function(x, value) {
+    setMethod("blockindex", "dg.Vertex", 
+        function(object) object@blockindex)
+    setGeneric("blockindex<-", 
+        function(x, value) standardGeneric("blockindex<-"))
+    setReplaceMethod("blockindex", "dg.Vertex", 
+        function(x, value) {
         x@blockindex <- value
         x
     })
@@ -1144,9 +1343,12 @@
         else fun <- function(object) standardGeneric("parent")
         setGeneric("parent", fun)
     }
-    setMethod("parent", "dg.Block", function(object) abs(object@parent))
-    setGeneric("parent<-", function(x, value) standardGeneric("parent<-"))
-    setReplaceMethod("parent", "dg.Block", function(x, value) {
+    setMethod("parent", "dg.Block", 
+        function(object) abs(object@parent))
+    setGeneric("parent<-", 
+        function(x, value) standardGeneric("parent<-"))
+    setReplaceMethod("parent", "dg.Block", 
+        function(x, value) {
         x@parent <- value
         x
     })
@@ -1156,9 +1358,12 @@
         else fun <- function(object, ...) standardGeneric("children")
         setGeneric("children", fun)
     }
-    setMethod("children", "dg.Block", function(object, ...) object@children)
-    setGeneric("children<-", function(x, value) standardGeneric("children<-"))
-    setReplaceMethod("children", "dg.Block", function(x, value) {
+    setMethod("children", "dg.Block", 
+        function(object, ...) object@children)
+    setGeneric("children<-", 
+        function(x, value) standardGeneric("children<-"))
+    setReplaceMethod("children", "dg.Block", 
+        function(x, value) {
         x@children <- value
         x
     })
@@ -1169,35 +1374,45 @@
             ...) standardGeneric("ancestors")
         setGeneric("ancestors", fun)
     }
-    setMethod("ancestors", "dg.Vertex", function(object, blockList = NULL, 
+    setMethod("ancestors", "dg.Vertex", 
+        function(object, blockList = NULL, 
         vertexList = NULL, ...) warning("Not implemented"))
-    setGeneric("ancestors<-", function(x, value) standardGeneric("ancestors<-"))
-    setReplaceMethod("ancestors", "dg.Vertex", function(x, value) {
+    setGeneric("ancestors<-", 
+        function(x, value) standardGeneric("ancestors<-"))
+    setReplaceMethod("ancestors", "dg.Vertex", 
+        function(x, value) {
         warning("Not implemented")
     })
-    setMethod("ancestors", "dg.Block", function(object, blockList = NULL, 
+    setMethod("ancestors", "dg.Block", 
+        function(object, blockList = NULL, 
         vertexList = NULL, ...) object@ancestors)
-    setReplaceMethod("ancestors", "dg.Block", function(x, value) {
+    setReplaceMethod("ancestors", "dg.Block", 
+        function(x, value) {
         x@ancestors <- value
         x
     })
     if (!isGeneric("descendants")) {
         if (is.function("descendants")) 
             fun <- descendants
-        else fun <- function(object, blockList = NULL, vertexList = NULL, 
-            ...) standardGeneric("descendants")
+        else fun <- function(object, blockList = NULL, vertexList = NULL, ...) 
+            standardGeneric("descendants")
         setGeneric("descendants", fun)
     }
-    setMethod("descendants", "dg.Vertex", function(object, blockList = NULL, 
+    setMethod("descendants", "dg.Vertex", 
+        function(object, blockList = NULL, 
         vertexList = NULL, ...) warning("Not implemented"))
-    setGeneric("descendants<-", function(x, value) standardGeneric("descendants<-"))
-    setReplaceMethod("descendants", "dg.Vertex", function(x, 
+    setGeneric("descendants<-", 
+        function(x, value) standardGeneric("descendants<-"))
+    setReplaceMethod("descendants", "dg.Vertex", 
+        function(x, 
         value) {
         warning("Not implemented")
     })
-    setMethod("descendants", "dg.Block", function(object, blockList = NULL, 
+    setMethod("descendants", "dg.Block", 
+        function(object, blockList = NULL, 
         vertexList = NULL, ...) object@descendants)
-    setReplaceMethod("descendants", "dg.Block", function(x, value) {
+    setReplaceMethod("descendants", "dg.Block", 
+        function(x, value) {
         x@descendants <- value
         x
     })
@@ -1207,9 +1422,12 @@
         else fun <- function(object) standardGeneric("closed")
         setGeneric("closed", fun)
     }
-    setMethod("closed", "dg.Block", function(object) object@closed)
-    setGeneric("closed<-", function(x, value) standardGeneric("closed<-"))
-    setReplaceMethod("closed", "dg.Block", function(x, value) {
+    setMethod("closed", "dg.Block", 
+        function(object) object@closed)
+    setGeneric("closed<-", 
+        function(x, value) standardGeneric("closed<-"))
+    setReplaceMethod("closed", "dg.Block", 
+        function(x, value) {
         x@closed <- value
         x
     })
@@ -1219,13 +1437,18 @@
         else fun <- function(object) standardGeneric("visible")
         setGeneric("visible", fun)
     }
-    setMethod("visible", "dg.Vertex", function(object) warning("Not implemented"))
-    setGeneric("visible<-", function(x, value) standardGeneric("visible<-"))
-    setReplaceMethod("visible", "dg.Vertex", function(x, value) {
+    setMethod("visible", "dg.Vertex", 
+        function(object) warning("Not implemented"))
+    setGeneric("visible<-", 
+        function(x, value) standardGeneric("visible<-"))
+    setReplaceMethod("visible", "dg.Vertex", 
+        function(x, value) {
         warning("Not implemented")
     })
-    setMethod("visible", "dg.Block", function(object) object@visible)
-    setReplaceMethod("visible", "dg.Block", function(x, value) {
+    setMethod("visible", "dg.Block", 
+        function(object) object@visible)
+    setReplaceMethod("visible", "dg.Block", 
+        function(x, value) {
         x@visible <- value
         x
     })
@@ -1237,57 +1460,65 @@
             background = "white", ...) standardGeneric("draw")
         setGeneric("draw", fun)
     }
-    setMethod("draw", "dg.TextVertex", function(object, canvas, 
+    setMethod("draw", "dg.TextVertex", 
+        function(object, canvas, 
         position, x = position[1], y = position[2], stratum = 0, 
         w = 2, color = "black", background = "white") {
         s <- w * sqrt(4/pi)/10
-        p <- tkcreate(canvas, "oval", x - s, y - s, x + s, y + 
-            s, fill = color(object), activefill = "IndianRed")
+        p <- tkcreate(canvas, "oval", x - s, y - s, x + s, y + s, 
+            fill = color(object), activefill = "IndianRed")
         return(list(dynamic = list(p), fixed = NULL))
     })
-    setMethod("draw", "dg.DiscreteVertex", function(object, canvas, 
+    setMethod("draw", "dg.DiscreteVertex", 
+        function(object, canvas, 
         position, x = position[1], y = position[2], stratum = 0, 
         w = 2, color = "green", background = "white") {
         s <- w * sqrt(4/pi)
-        p <- tkcreate(canvas, "oval", x - s, y - s, x + s, y + 
-            s, fill = color(object), activefill = "IndianRed")
+        p <- tkcreate(canvas, "oval", x - s, y - s, x + s, y + s, 
+            fill = color(object), activefill = "IndianRed")
         return(list(dynamic = list(p), fixed = NULL))
     })
-    setMethod("draw", "dg.OrdinalVertex", function(object, canvas, 
+    setMethod("draw", "dg.OrdinalVertex", 
+        function(object, canvas, 
         position, x = position[1], y = position[2], stratum = 0, 
         w = 2, color = "green", background = "white") {
-        p <- tkcreate(canvas, "rectangle", x - w, y - w, x + 
-            w, y + w, fill = color(object), activefill = "IndianRed")
+        p <- tkcreate(canvas, "rectangle", x - w, y - w, x + w, y + w, 
+            fill = color(object), activefill = "IndianRed")
         return(list(dynamic = list(p), fixed = NULL))
     })
-    setMethod("draw", "dg.ContinuousVertex", function(object, 
+    setMethod("draw", "dg.ContinuousVertex", 
+        function(object, 
         canvas, position, x = position[1], y = position[2], stratum = 0, 
         w = 2, color = "green", background = "white") {
         s <- w * sqrt(4/pi)
-        p <- tkcreate(canvas, "oval", x - s, y - s, x + s, y + 
-            s, fill = color(object), activefill = "IndianRed")
+        p <- tkcreate(canvas, "oval", x - s, y - s, x + s, y + s, 
+            fill = color(object), activefill = "IndianRed")
         s <- 0.6 * w * sqrt(4/pi)
-        q <- tkcreate(canvas, "oval", x - s, y - s, x + s, y + 
-            s, fill = background)
+        q <- tkcreate(canvas, "oval", x - s, y - s, x + s, y + s, 
+            fill = background)
         return(list(dynamic = list(p), fixed = list(q)))
     })
     if (!isGeneric("propertyDialog")) {
         if (is.function("propertyDialog")) 
             fun <- propertyDialog
         else fun <- function(object, classes = NULL, title = class(object), 
-            sub.title = label(object), name.object = name(object), 
-            okReturn = TRUE, fixedSlots = NULL, difficultSlots = NULL, 
-            top = NULL, entryWidth = 20, do.grab = FALSE) standardGeneric("propertyDialog")
+                             sub.title = label(object), 
+                             name.object = name(object), okReturn = TRUE, 
+                             fixedSlots = NULL, difficultSlots = NULL, 
+                             top = NULL, entryWidth = 20, do.grab = FALSE) 
+            standardGeneric("propertyDialog")
         setGeneric("propertyDialog", fun)
     }
-    setMethod("propertyDialog", "dg.Node", function(object, classes = NULL, 
-        title = class(object), sub.title = label(object), name.object = name(object), 
-        okReturn = TRUE, fixedSlots = NULL, difficultSlots = NULL, 
-        top = NULL, entryWidth = 20, do.grab = FALSE) {
+    setMethod("propertyDialog", "dg.Node", 
+        function(object, classes = NULL, title = class(object), 
+                 sub.title = label(object), name.object = name(object), 
+                 okReturn = TRUE, fixedSlots = NULL, difficultSlots = NULL, 
+                 top = NULL, entryWidth = 20, do.grab = FALSE) {
         .propertyDialog(object, classes = classes, title = title, 
-            sub.title = sub.title, name.object = name.object, 
-            okReturn = okReturn, fixedSlots = fixedSlots, difficultSlots = difficultSlots, 
-            top = top, entryWidth = entryWidth, do.grab = do.grab)
+                        sub.title = sub.title, name.object = name.object, 
+                        okReturn = okReturn, fixedSlots = fixedSlots, 
+                        difficultSlots = difficultSlots, 
+                        top = top, entryWidth = entryWidth, do.grab = do.grab)
     })
     if (!isGeneric("addToPopups")) {
         if (is.function("addToPopups")) 
@@ -1296,15 +1527,18 @@
             updateArguments, Args, ...) standardGeneric("addToPopups")
         setGeneric("addToPopups", fun)
     }
-    setMethod("addToPopups", "dg.Node", function(object, type, 
+    setMethod("addToPopups", "dg.Node", 
+        function(object, type, 
         nodePopupMenu, i, updateArguments, Args, ...) {
         if ((type == "Factor")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is a factor!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is a factor!"), 
                 command = function() {
                   str(i)
                 })
         if ((type == "Vertex")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is a vertex!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is a vertex!"), 
                 command = function() {
                   print(i)
                   updateArguments(NULL)
@@ -1312,92 +1546,107 @@
                   print(Arguments$vertexList[[i]]@label)
                 })
         else if ((type == "OpenBlock")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is an open block!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is an open block!"), 
                 command = function() {
                   str(i)
                 })
         else if ((type == "ClosedBlock")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is a closed block!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is a closed block!"), 
                 command = function() {
                   str(i)
                 })
         else if ((type == "Edge")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is an edge!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is an edge!"), 
                 command = function() {
                   str(i)
                 })
         else if ((type == "VertexEdge")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is a graph edge!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is a graph edge!"), 
                 command = function() {
                   str(i)
                 })
         else if ((type == "FactorEdge")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is a factor edge!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is a factor edge!"), 
                 command = function() {
                   str(i)
                 })
         else if ((type == "ExtraEdge")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is a extra edge!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is a extra edge!"), 
                 command = function() {
                   str(i)
                 })
         else if ((type == "BlockEdge")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is a block edge!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is a block edge!"), 
                 command = function() {
                   str(i)
                 })
         else if ((type == "Extra")) 
-            tkadd(nodePopupMenu, "command", label = paste(" --- This is an extra!"), 
+            tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is an extra!"), 
                 command = function() {
                   str(i)
                 })
-        else tkadd(nodePopupMenu, "command", label = paste(" --- This is ??? "), 
+        else tkadd(nodePopupMenu, "command", 
+                label = paste(" --- This is ??? "), 
             command = function() {
                 str(i)
             })
     })
-    setMethod("draw", "dg.Generator", function(object, canvas, 
-        position, x = position[1], y = position[2], stratum = 0, 
-        w = 2, color = "green", background = "white") {
+    setMethod("draw", "dg.Generator", 
+        function(object, canvas, position, x = position[1], 
+                 y = position[2], stratum = 0, w = 2, color = "green", 
+                 background = "white") {
         s <- w * sqrt(2)
         p <- tkcreate(canvas, "polygon", x - 0, y + s, x + s, 
             y + 0, x + 0, y - s, x - s, y - 0, fill = color(object), 
             activefill = "IndianRed")
         return(list(dynamic = list(p), fixed = NULL))
     })
-    setMethod("draw", "dg.DiscreteGenerator", function(object, 
-        canvas, position, x = position[1], y = position[2], stratum = 0, 
-        w = 2, color = "green", background = "white") {
+    setMethod("draw", "dg.DiscreteGenerator", 
+        function(object, canvas, position, x = position[1], 
+                 y = position[2], stratum = 0, w = 2, color = "green", 
+                 background = "white") {
         s <- w * sqrt(2)
         p <- tkcreate(canvas, "polygon", x - w, y + w, x + w, 
             y + w, x + w, y - w, x - w, y - w, fill = color(object), 
             activefill = "IndianRed")
         return(list(dynamic = list(p), fixed = NULL))
     })
-    setMethod("draw", "dg.LinearGenerator", function(object, 
-        canvas, position, x = position[1], y = position[2], stratum = 0, 
-        w = 2, color = "green", background = "white") {
+    setMethod("draw", "dg.LinearGenerator", 
+        function(object, canvas, position, x = position[1], 
+                 y = position[2], stratum = 0, w = 2, color = "green", 
+                 background = "white") {
         s <- w * sqrt(2)
         p <- tkcreate(canvas, "polygon", x - w, y + w, x + w, 
             y + w, x + w, y - w, x - w, y - w, fill = color(object), 
             activefill = "IndianRed")
         return(list(dynamic = list(p), fixed = NULL))
     })
-    setMethod("draw", "dg.QuadraticGenerator", function(object, 
-        canvas, position, x = position[1], y = position[2], stratum = 0, 
-        w = 2, color = "green", background = "white") {
+    setMethod("draw", "dg.QuadraticGenerator", 
+        function(object, canvas, position, x = position[1], 
+                 y = position[2], stratum = 0, w = 2, color = "green", 
+                 background = "white") {
         s <- w * sqrt(2)
         p <- tkcreate(canvas, "polygon", x - w, y + w, x + w, 
             y + w, x + w, y - w, x - w, y - w, fill = color(object), 
             activefill = "IndianRed")
         return(list(dynamic = list(p), fixed = NULL))
     })
-    setMethod("draw", "dg.Edge", function(object, canvas, position, 
-        x = lapply(position, function(e) e[1]), y = lapply(position, 
-            function(e) e[2]), stratum = as.vector(rep(0, length(position)), 
-            mode = "list"), w = 2, color = "green", background = "white", 
-        font.edge.label = "8x16") {
-        f <- function(i, j) {
+    setMethod("draw", "dg.Edge", 
+        function(object, canvas, position, 
+                 x = lapply(position, function(e) e[1]), 
+                 y = lapply(position, function(e) e[2]), 
+                 stratum = as.vector(rep(0, length(position)), mode = "list"), 
+                 w = 2, color = "green", background = "white", 
+                 font.edge.label = "8x16") {
+        "f" <- function(i, j) {
             arrowhead <- "none"
             if ((class(object) == "dg.VertexEdge") || (class(object) == 
                 "dg.BlockEdge")) 
@@ -1413,9 +1662,10 @@
             dash <- dash(object)
             if (class(object) == "dg.DashedEdge") 
                 dash <- "-"
-            l <- function(xi, yi, xj, yj) tkcreate(canvas, "line", 
-                xi, yi, xj, yj, width = w, arrow = arrowhead, 
-                dash = dash, fill = color(object), activefill = "DarkSlateGray")
+            l <- function(xi, yi, xj, yj) 
+                tkcreate(canvas, "line", xi, yi, xj, yj, width = w, 
+                         arrow = arrowhead, dash = dash, fill = color(object), 
+                         activefill = "DarkSlateGray")
             if ((class(object) == "dg.DoubleConnectedEdge") || 
                 (class(object) == "dg.TripleConnectedEdge")) {
                 dx <- x[[i]] - x[[j]]
@@ -1437,20 +1687,23 @@
             label.position <- (position[[i]] + position[[j]])/2
             pos <- label.position + rep(0, length(label.position))
             label <- tkcreate(canvas, "text", pos[1], pos[2], 
-                text = object@label, anchor = "nw", font = font.edge.label, 
-                activefill = "DarkSlateGray")
+                              text = object@label, anchor = "nw", 
+                              font = font.edge.label, 
+                              activefill = "DarkSlateGray")
             tags <- NULL
             if (class(object) == "dg.DottedEdge") {
                 x. <- mean(unlist(x))
                 y. <- mean(unlist(y))
                 s <- w * sqrt(4/pi)
                 p <- tkcreate(canvas, "oval", x. - s, y. - s, 
-                  x. + s, y. + s, fill = color(object), activefill = "SeaGreen")
+                              x. + s, y. + s, fill = color(object), 
+                              activefill = "SeaGreen")
                 tags <- list(p)
             }
-            return(list(lines = lines, tags = tags, from = object@vertex.indices[i], 
-                to = object@vertex.indices[j], label = label, 
-                label.position = label.position))
+            return(list(lines = lines, tags = tags, 
+                        from = object@vertex.indices[i], 
+                        to = object@vertex.indices[j], label = label, 
+                        label.position = label.position))
         }
         result <- NULL
         edge <- object@vertex.indices
@@ -1466,9 +1719,12 @@
         else fun <- function(object) standardGeneric("width")
         setGeneric("width", fun)
     }
-    setMethod("width", "dg.Edge", function(object) object@width)
-    setGeneric("width<-", function(x, value) standardGeneric("width<-"))
-    setReplaceMethod("width", "dg.Edge", function(x, value) {
+    setMethod("width", "dg.Edge", 
+        function(object) object@width)
+    setGeneric("width<-", 
+        function(x, value) standardGeneric("width<-"))
+    setReplaceMethod("width", "dg.Edge", 
+        function(x, value) {
         x@width <- value
         x
     })
@@ -1478,9 +1734,12 @@
         else fun <- function(object) standardGeneric("dash")
         setGeneric("dash", fun)
     }
-    setMethod("dash", "dg.Edge", function(object) object@dash)
-    setGeneric("dash<-", function(x, value) standardGeneric("dash<-"))
-    setReplaceMethod("dash", "dg.Edge", function(x, value) {
+    setMethod("dash", "dg.Edge", 
+        function(object) object@dash)
+    setGeneric("dash<-", 
+        function(x, value) standardGeneric("dash<-"))
+    setReplaceMethod("dash", "dg.Edge", 
+        function(x, value) {
         .dashReplaceMethod(x, value)
     })
     if (!isGeneric("oriented")) {
@@ -1489,56 +1748,64 @@
         else fun <- function(object) standardGeneric("oriented")
         setGeneric("oriented", fun)
     }
-    setMethod("oriented", "dg.VertexEdge", function(object) object@oriented)
-    setGeneric("oriented<-", function(x, value) standardGeneric("oriented<-"))
-    setReplaceMethod("oriented", "dg.VertexEdge", function(x, 
-        value) {
+    setMethod("oriented", "dg.VertexEdge", 
+        function(object) object@oriented)
+    setGeneric("oriented<-", 
+        function(x, value) standardGeneric("oriented<-"))
+    setReplaceMethod("oriented", "dg.VertexEdge", 
+        function(x, value) {
         x@oriented <- value
         x
     })
-    setMethod("oriented", "dg.BlockEdge", function(object) object@oriented)
-    setReplaceMethod("oriented", "dg.BlockEdge", function(x, 
-        value) {
+    setMethod("oriented", "dg.BlockEdge", 
+        function(object) object@oriented)
+    setReplaceMethod("oriented", "dg.BlockEdge", 
+        function(x, value) {
         x@oriented <- value
         x
     })
-    setMethod("oriented", "dg.graphedges", function(object) object@oriented)
+    setMethod("oriented", "dg.graphedges", 
+        function(object) object@oriented)
     if (!isGeneric("nodeTypesOfEdge")) {
         if (is.function("nodeTypesOfEdge")) 
             fun <- nodeTypesOfEdge
         else fun <- function(object) standardGeneric("nodeTypesOfEdge")
         setGeneric("nodeTypesOfEdge", fun)
     }
-    setMethod("nodeTypesOfEdge", "dg.VertexEdge", function(object) rep("Vertex", 
+    setMethod("nodeTypesOfEdge", "dg.VertexEdge", 
+        function(object) rep("Vertex", 
         length(object@vertex.indices)))
-    setMethod("nodeTypesOfEdge", "dg.FactorEdge", function(object) ifelse(object@vertex.indices > 
-        0, "Vertex", "Factor"))
-    setMethod("nodeTypesOfEdge", "dg.ExtraEdge", function(object) ifelse(object@vertex.indices > 
-        0, "Vertex", "Extra"))
-    setMethod("nodeTypesOfEdge", "dg.BlockEdge", function(object) ifelse(object@vertex.indices > 
-        0, "Vertex", "Block"))
+    setMethod("nodeTypesOfEdge", "dg.FactorEdge", 
+        function(object) ifelse(object@vertex.indices > 0, "Vertex", "Factor"))
+    setMethod("nodeTypesOfEdge", "dg.ExtraEdge", 
+        function(object) ifelse(object@vertex.indices > 0, "Vertex", "Extra"))
+    setMethod("nodeTypesOfEdge", "dg.BlockEdge", 
+        function(object) ifelse(object@vertex.indices > 0, "Vertex", "Block"))
     if (!isGeneric("nodeIndicesOfEdge")) {
         if (is.function("nodeIndicesOfEdge")) 
             fun <- nodeIndicesOfEdge
         else fun <- function(object) standardGeneric("nodeIndicesOfEdge")
         setGeneric("nodeIndicesOfEdge", fun)
     }
-    setMethod("nodeIndicesOfEdge", "dg.Edge", function(object) object@vertex.indices)
-    setGeneric("nodeIndicesOfEdge<-", function(x, value) standardGeneric("nodeIndicesOfEdge<-"))
-    setReplaceMethod("nodeIndicesOfEdge", "dg.Edge", function(x, 
-        value) {
+    setMethod("nodeIndicesOfEdge", "dg.Edge", 
+        function(object) object@vertex.indices)
+    setGeneric("nodeIndicesOfEdge<-", 
+        function(x, value) standardGeneric("nodeIndicesOfEdge<-"))
+    setReplaceMethod("nodeIndicesOfEdge", "dg.Edge", 
+        function(x, value) {
         x@vertex.indices <- value
         x
     })
-    setMethod("draw", "dg.Block", function(object, canvas, position, 
-        x = position[1], y = position[2], stratum = 0, w = 10, 
-        color = "green", background = "white") {
+    setMethod("draw", "dg.Block", 
+        function(object, canvas, position, 
+                 x = position[1], y = position[2], stratum = 0, w = 10, 
+                 color = "green", background = "white") {
         s <- w
-        p <- tkcreate(canvas, "rectangle", x - s, y - s, x + 
-            s, y + s, fill = color(object), activefill = "IndianRed")
+        p <- tkcreate(canvas, "rectangle", x - s, y - s, x + s, y + s, 
+                      fill = color(object), activefill = "IndianRed")
         s <- w - 2
-        q <- tkcreate(canvas, "rectangle", x - s, y - s, x + 
-            s, y + s, fill = background)
+        q <- tkcreate(canvas, "rectangle", x - s, y - s, x + s, y + s, 
+                      fill = background)
         return(list(dynamic = list(p), fixed = list(q)))
     })
     if (!isGeneric("Names")) {
@@ -1547,14 +1814,17 @@
         else fun <- function(objects) standardGeneric("Names")
         setGeneric("Names", fun)
     }
-    setMethod("Names", "dg.list", function(objects) {
-        NAMES <- lapply(objects, function(x) if (!is.null(x)) 
-            name(x))
+    setMethod("Names", "dg.list", 
+        function(objects) {
+        NAMES <- lapply(objects, 
+                        function(x) if (!is.null(x)) name(x))
         names(NAMES) <- NULL
         return(unlist(NAMES))
     })
-    setGeneric("Names<-", function(objectlist, value) standardGeneric("Names<-"))
-    setReplaceMethod("Names", "dg.list", function(objectlist, 
+    setGeneric("Names<-", 
+        function(objectlist, value) standardGeneric("Names<-"))
+    setReplaceMethod("Names", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
             for (i in seq(along = objectlist)) objectlist[[i]]@name <- value[i]
@@ -1568,17 +1838,21 @@
         else fun <- function(objectlist) standardGeneric("Colors")
         setGeneric("Colors", fun)
     }
-    setMethod("Colors", "dg.list", function(objectlist) {
-        Colors <- lapply(objectlist, function(x) if (!is.null(x)) 
-            color(x))
+    setMethod("Colors", "dg.list", 
+        function(objectlist) {
+        Colors <- lapply(objectlist, 
+                         function(x) if (!is.null(x)) color(x))
         names(Colors) <- Names(objectlist)
         return(unlist(Colors))
     })
-    setGeneric("Colors<-", function(objectlist, value) standardGeneric("Colors<-"))
-    setReplaceMethod("Colors", "dg.list", function(objectlist, 
+    setGeneric("Colors<-", 
+        function(objectlist, value) standardGeneric("Colors<-"))
+    setReplaceMethod("Colors", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@color <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@color <- value[i]
         }
         else warning("Invalid list of values for colors")
         objectlist
@@ -1589,17 +1863,21 @@
         else fun <- function(objectlist) standardGeneric("Dashes")
         setGeneric("Dashes", fun)
     }
-    setMethod("Dashes", "dg.list", function(objectlist) {
-        Dashes <- lapply(objectlist, function(x) if (!is.null(x)) 
-            dash(x))
+    setMethod("Dashes", "dg.list", 
+        function(objectlist) {
+        Dashes <- lapply(objectlist, 
+                         function(x) if (!is.null(x)) dash(x))
         names(Dashes) <- Names(objectlist)
         return(unlist(Dashes))
     })
-    setGeneric("Dashes<-", function(objectlist, value) standardGeneric("Dashes<-"))
-    setReplaceMethod("Dashes", "dg.list", function(objectlist, 
+    setGeneric("Dashes<-", 
+        function(objectlist, value) standardGeneric("Dashes<-"))
+    setReplaceMethod("Dashes", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@dash <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@dash <- value[i]
         }
         else warning("Invalid list of values for dashs")
         objectlist
@@ -1610,17 +1888,21 @@
         else fun <- function(objectlist) standardGeneric("Labels")
         setGeneric("Labels", fun)
     }
-    setMethod("Labels", "dg.list", function(objectlist) {
-        Labels <- lapply(objectlist, function(x) if (!is.null(x)) 
-            label(x))
+    setMethod("Labels", "dg.list", 
+        function(objectlist) {
+        Labels <- lapply(objectlist, 
+                         function(x) if (!is.null(x)) label(x))
         names(Labels) <- Names(objectlist)
         return(unlist(Labels))
     })
-    setGeneric("Labels<-", function(objectlist, value) standardGeneric("Labels<-"))
-    setReplaceMethod("Labels", "dg.list", function(objectlist, 
+    setGeneric("Labels<-", 
+        function(objectlist, value) standardGeneric("Labels<-"))
+    setReplaceMethod("Labels", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@label <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@label <- value[i]
         }
         else warning("Invalid list of values for labels")
         objectlist
@@ -1631,13 +1913,14 @@
         else fun <- function(objectlist) standardGeneric("LabelPositions")
         setGeneric("LabelPositions", fun)
     }
-    setMethod("LabelPositions", "dg.list", function(objectlist) {
-        positions <- lapply(objectlist, function(x) if (!is.null(x)) 
-            labelPosition(x))
+    setMethod("LabelPositions", "dg.list", 
+        function(objectlist) {
+        positions <- lapply(objectlist, 
+                            function(x) if (!is.null(x)) labelPosition(x))
         N.list <- unlist(lapply(positions, function(x) length(x)))
         if ((N.list[1] > 0) && all(N.list == N.list[1])) {
-            positions <- matrix(unlist(positions), ncol = length(positions[[1]]), 
-                byrow = TRUE)
+            positions <- matrix(unlist(positions), 
+                                ncol = length(positions[[1]]), byrow = TRUE)
             labels <- c("X", "Y")
             if (ncol(positions) > 2) 
                 labels <- c(labels, paste("Z", 3:ncol(positions), 
@@ -1646,12 +1929,14 @@
         }
         return(positions)
     })
-    setGeneric("LabelPositions<-", function(objectlist, value) standardGeneric("LabelPositions<-"))
-    setReplaceMethod("LabelPositions", "dg.list", function(objectlist, 
+    setGeneric("LabelPositions<-", 
+        function(objectlist, value) standardGeneric("LabelPositions<-"))
+    setReplaceMethod("LabelPositions", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == nrow(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@label.position <- value[i, 
-                ]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@label.position <- value[i, ]
         }
         else warning("Invalid list of values for labelpositions")
         objectlist
@@ -1662,14 +1947,17 @@
         else fun <- function(objectlist) standardGeneric("FixedPositions")
         setGeneric("FixedPositions", fun)
     }
-    setMethod("FixedPositions", "dg.list", function(objectlist) {
-        fixed.positions <- lapply(objectlist, function(x) if (!is.null(x)) 
-            fixed.positions(x))
+    setMethod("FixedPositions", "dg.list", 
+        function(objectlist) {
+        fixed.positions <- lapply(objectlist, 
+                             function(x) if (!is.null(x)) fixed.positions(x))
         names(fixed.positions) <- Names(objectlist)
         return(unlist(fixed.positions))
     })
-    setGeneric("FixedPositions<-", function(objectlist, value) standardGeneric("FixedPositions<-"))
-    setReplaceMethod("FixedPositions", "dg.list", function(objectlist, 
+    setGeneric("FixedPositions<-", 
+        function(objectlist, value) standardGeneric("FixedPositions<-"))
+    setReplaceMethod("FixedPositions", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
             for (i in seq(along = objectlist)) if (("fixed.positions" %in% 
@@ -1685,14 +1973,17 @@
         else fun <- function(objectlist) standardGeneric("Constrained")
         setGeneric("Constrained", fun)
     }
-    setMethod("Constrained", "dg.list", function(objectlist) {
-        constrained <- lapply(objectlist, function(x) if (!is.null(x)) 
-            constrained(x))
+    setMethod("Constrained", "dg.list", 
+        function(objectlist) {
+        constrained <- lapply(objectlist, 
+                              function(x) if (!is.null(x)) constrained(x))
         names(constrained) <- Names(objectlist)
         return(unlist(constrained))
     })
-    setGeneric("Constrained<-", function(objectlist, value) standardGeneric("Constrained<-"))
-    setReplaceMethod("Constrained", "dg.list", function(objectlist, 
+    setGeneric("Constrained<-", 
+        function(objectlist, value) standardGeneric("Constrained<-"))
+    setReplaceMethod("Constrained", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
             for (i in seq(along = objectlist)) if (("constrained" %in% 
@@ -1708,31 +1999,32 @@
         else fun <- function(objectlist) standardGeneric("Positions")
         setGeneric("Positions", fun)
     }
-    setMethod("Positions", "dg.list", function(objectlist) {
+    setMethod("Positions", "dg.list", 
+        function(objectlist) {
         if (length(objectlist) == 0) 
             return(NULL)
-        positions <- lapply(objectlist, function(x) if (!is.null(x)) 
-            position(x))
+        positions <- lapply(objectlist, 
+                            function(x) if (!is.null(x)) position(x))
         if (class(objectlist[[1]]) == "dg.Block") {
             N <- nrow(positions[[1]])
             N.list <- unlist(lapply(positions, function(x) nrow(x)))
             if ((N > 0) && all(N.list == N)) {
-                positions <- matrix(unlist(positions), ncol = 2 * 
-                  N, byrow = TRUE)
+                positions <- matrix(unlist(positions), 
+                                    ncol = 2 * N, byrow = TRUE)
                 labels <- c("X", "Y", "x", "y")
                 if (N > 2) 
                   labels <- c("X", "Y", paste("Z", 3:N, sep = "-"), 
                     "x", "y", paste("z", 3:N, sep = "-"))
                 if (ncol(positions) > 2) 
-                  dimnames(positions) <- list(Names(objectlist), 
-                    labels)
+                  dimnames(positions) <- list(Names(objectlist), labels)
             }
         }
         else {
             N.list <- unlist(lapply(positions, function(x) length(x)))
             if ((N.list[1] > 0) && all(N.list == N.list[1])) {
-                positions <- matrix(unlist(positions), ncol = length(positions[[1]]), 
-                  byrow = TRUE)
+                positions <- matrix(unlist(positions), 
+                                    ncol = length(positions[[1]]), 
+                                    byrow = TRUE)
                 labels <- c("X", "Y")
                 if (ncol(positions) > 2) 
                   labels <- c(labels, paste("Z", 3:ncol(positions), 
@@ -1743,12 +2035,14 @@
         }
         return(positions)
     })
-    setGeneric("Positions<-", function(objectlist, value) standardGeneric("Positions<-"))
-    setReplaceMethod("Positions", "dg.list", function(objectlist, 
+    setGeneric("Positions<-", 
+        function(objectlist, value) standardGeneric("Positions<-"))
+    setReplaceMethod("Positions", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == nrow(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@position <- value[i, 
-                ]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@position <- value[i, ]
         }
         else warning("Invalid list of values for positions")
         objectlist
@@ -1759,17 +2053,21 @@
         else fun <- function(objectlist) standardGeneric("Closed")
         setGeneric("Closed", fun)
     }
-    setMethod("Closed", "dg.list", function(objectlist) {
-        closed <- lapply(objectlist, function(x) if (!is.null(x)) 
-            closed(x))
+    setMethod("Closed", "dg.list", 
+        function(objectlist) {
+        closed <- lapply(objectlist, 
+                         function(x) if (!is.null(x)) closed(x))
         names(closed) <- Names(objectlist)
         return(unlist(closed))
     })
-    setGeneric("Closed<-", function(objectlist, value) standardGeneric("Closed<-"))
-    setReplaceMethod("Closed", "dg.list", function(objectlist, 
+    setGeneric("Closed<-", 
+        function(objectlist, value) standardGeneric("Closed<-"))
+    setReplaceMethod("Closed", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@closed <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@closed <- value[i]
         }
         else warning("Invalid list of values for closed")
         objectlist
@@ -1780,17 +2078,21 @@
         else fun <- function(objectlist) standardGeneric("Strata")
         setGeneric("Strata", fun)
     }
-    setMethod("Strata", "dg.list", function(objectlist) {
-        strata <- lapply(objectlist, function(x) if (!is.null(x)) 
-            stratum(x))
+    setMethod("Strata", "dg.list", 
+        function(objectlist) {
+        strata <- lapply(objectlist, 
+                         function(x) if (!is.null(x)) stratum(x))
         names(strata) <- Names(objectlist)
         return(unlist(strata))
     })
-    setGeneric("Strata<-", function(objectlist, value) standardGeneric("Strata<-"))
-    setReplaceMethod("Strata", "dg.list", function(objectlist, 
+    setGeneric("Strata<-", 
+        function(objectlist, value) standardGeneric("Strata<-"))
+    setReplaceMethod("Strata", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@stratum <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@stratum <- value[i]
         }
         else warning("Invalid list of values for strata")
         objectlist
@@ -1801,17 +2103,21 @@
         else fun <- function(objectlist) standardGeneric("Parents")
         setGeneric("Parents", fun)
     }
-    setMethod("Parents", "dg.list", function(objectlist) {
-        parents <- lapply(objectlist, function(x) if (!is.null(x)) 
-            parent(x))
+    setMethod("Parents", "dg.list", 
+        function(objectlist) {
+        parents <- lapply(objectlist, 
+                          function(x) if (!is.null(x)) parent(x))
         names(parents) <- Names(objectlist)
         return(parents)
     })
-    setGeneric("Parents<-", function(objectlist, value) standardGeneric("Parents<-"))
-    setReplaceMethod("Parents", "dg.list", function(objectlist, 
+    setGeneric("Parents<-", 
+        function(objectlist, value) standardGeneric("Parents<-"))
+    setReplaceMethod("Parents", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@parent <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@parent <- value[i]
         }
         else warning("Invalid list of values for parents")
         objectlist
@@ -1822,17 +2128,21 @@
         else fun <- function(objectlist) standardGeneric("Children")
         setGeneric("Children", fun)
     }
-    setMethod("Children", "dg.list", function(objectlist) {
-        parents <- lapply(objectlist, function(x) if (!is.null(x)) 
-            children(x))
+    setMethod("Children", "dg.list", 
+        function(objectlist) {
+        parents <- lapply(objectlist, 
+                          function(x) if (!is.null(x)) children(x))
         names(parents) <- Names(objectlist)
         return(parents)
     })
-    setGeneric("Children<-", function(objectlist, value) standardGeneric("Children<-"))
-    setReplaceMethod("Children", "dg.list", function(objectlist, 
+    setGeneric("Children<-", 
+        function(objectlist, value) standardGeneric("Children<-"))
+    setReplaceMethod("Children", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@children <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@children <- value[i]
         }
         else warning("Invalid list of values for children")
         objectlist
@@ -1843,17 +2153,21 @@
         else fun <- function(objectlist) standardGeneric("NodeAncestors")
         setGeneric("NodeAncestors", fun)
     }
-    setMethod("NodeAncestors", "dg.list", function(objectlist) {
-        ancestors <- lapply(objectlist, function(x) if (!is.null(x)) 
-            ancestors(x))
+    setMethod("NodeAncestors", "dg.list", 
+        function(objectlist) {
+        ancestors <- lapply(objectlist, 
+                            function(x) if (!is.null(x)) ancestors(x))
         names(ancestors) <- Names(objectlist)
         return(ancestors)
     })
-    setGeneric("NodeAncestors<-", function(objectlist, value) standardGeneric("NodeAncestors<-"))
-    setReplaceMethod("NodeAncestors", "dg.list", function(objectlist, 
+    setGeneric("NodeAncestors<-", 
+        function(objectlist, value) standardGeneric("NodeAncestors<-"))
+    setReplaceMethod("NodeAncestors", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@ancestors <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@ancestors <- value[i]
         }
         else warning("Invalid list of values for ancestors")
         objectlist
@@ -1864,17 +2178,21 @@
         else fun <- function(objectlist) standardGeneric("NodeDescendants")
         setGeneric("NodeDescendants", fun)
     }
-    setMethod("NodeDescendants", "dg.list", function(objectlist) {
-        descendants <- lapply(objectlist, function(x) if (!is.null(x)) 
-            descendants(x))
+    setMethod("NodeDescendants", "dg.list", 
+        function(objectlist) {
+        descendants <- lapply(objectlist, 
+                              function(x) if (!is.null(x)) descendants(x))
         names(descendants) <- Names(objectlist)
         return(descendants)
     })
-    setGeneric("NodeDescendants<-", function(objectlist, value) standardGeneric("NodeDescendants<-"))
-    setReplaceMethod("NodeDescendants", "dg.list", function(objectlist, 
+    setGeneric("NodeDescendants<-", 
+        function(objectlist, value) standardGeneric("NodeDescendants<-"))
+    setReplaceMethod("NodeDescendants", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@descendants <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@descendants <- value[i]
         }
         else warning("Invalid list of values for descendants")
         objectlist
@@ -1885,16 +2203,20 @@
         else fun <- function(objectlist) standardGeneric("Indices")
         setGeneric("Indices", fun)
     }
-    setMethod("Indices", "dg.list", function(objectlist) {
-        indices <- lapply(objectlist, function(x) if (!is.null(x)) 
-            index(x))
+    setMethod("Indices", "dg.list", 
+        function(objectlist) {
+        indices <- lapply(objectlist, 
+                          function(x) if (!is.null(x)) index(x))
         names(indices) <- Names(objectlist)
         return(unlist(indices))
     })
-    setGeneric("Indices<-", function(objectlist, value) standardGeneric("Indices<-"))
-    setReplaceMethod("Indices", "dg.list", function(objectlist, 
+    setGeneric("Indices<-", 
+        function(objectlist, value) standardGeneric("Indices<-"))
+    setReplaceMethod("Indices", "dg.list", 
+        function(objectlist, 
         value) {
-        for (i in seq(along = objectlist)) objectlist[[i]]@index <- value[i]
+        for (i in seq(along = objectlist)) 
+            objectlist[[i]]@index <- value[i]
         objectlist
     })
     if (!isGeneric("Blockindices")) {
@@ -1903,9 +2225,10 @@
         else fun <- function(objectlist) standardGeneric("Blockindices")
         setGeneric("Blockindices", fun)
     }
-    setMethod("Blockindices", "dg.list", function(objectlist) {
-        blockindices <- lapply(objectlist, function(x) if (!is.null(x)) 
-            blockindex(x))
+    setMethod("Blockindices", "dg.list", 
+        function(objectlist) {
+        blockindices <- lapply(objectlist, 
+                               function(x) if (!is.null(x)) blockindex(x))
         names(blockindices) <- Names(objectlist)
         return(unlist(blockindices))
     })
@@ -1915,9 +2238,10 @@
         else fun <- function(objectlist) standardGeneric("NodeTypes")
         setGeneric("NodeTypes", fun)
     }
-    setMethod("NodeTypes", "dg.list", function(objectlist) {
-        indices <- lapply(objectlist, function(x) if (!is.null(x)) 
-            nodeTypesOfEdge(x))
+    setMethod("NodeTypes", "dg.list", 
+        function(objectlist) {
+        indices <- lapply(objectlist, 
+                          function(x) if (!is.null(x)) nodeTypesOfEdge(x))
         names(indices) <- Names(objectlist)
         return(indices)
     })
@@ -1927,9 +2251,10 @@
         else fun <- function(objectlist) standardGeneric("NodeIndices")
         setGeneric("NodeIndices", fun)
     }
-    setMethod("NodeIndices", "dg.list", function(objectlist) {
-        indices <- lapply(objectlist, function(x) if (!is.null(x)) 
-            nodeIndicesOfEdge(x))
+    setMethod("NodeIndices", "dg.list", 
+        function(objectlist) {
+        indices <- lapply(objectlist, 
+                          function(x) if (!is.null(x)) nodeIndicesOfEdge(x))
         names(indices) <- Names(objectlist)
         return(indices)
     })
@@ -1939,17 +2264,21 @@
         else fun <- function(objectlist) standardGeneric("Widths")
         setGeneric("Widths", fun)
     }
-    setMethod("Widths", "dg.list", function(objectlist) {
-        widths <- lapply(objectlist, function(x) if (!is.null(x)) 
-            width(x))
+    setMethod("Widths", "dg.list", 
+        function(objectlist) {
+        widths <- lapply(objectlist, 
+                         function(x) if (!is.null(x)) width(x))
         names(widths) <- Names(objectlist)
         return(unlist(widths))
     })
-    setGeneric("Widths<-", function(objectlist, value) standardGeneric("Widths<-"))
-    setReplaceMethod("Widths", "dg.list", function(objectlist, 
+    setGeneric("Widths<-", 
+        function(objectlist, value) standardGeneric("Widths<-"))
+    setReplaceMethod("Widths", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@width <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@width <- value[i]
         }
         else warning("Invalid list of values for widths")
         objectlist
@@ -1960,17 +2289,21 @@
         else fun <- function(objectlist) standardGeneric("Oriented")
         setGeneric("Oriented", fun)
     }
-    setMethod("Oriented", "dg.list", function(objectlist) {
-        oriented <- lapply(objectlist, function(x) if (!is.null(x)) 
-            oriented(x))
+    setMethod("Oriented", "dg.list", 
+        function(objectlist) {
+        oriented <- lapply(objectlist, 
+                           function(x) if (!is.null(x)) oriented(x))
         names(oriented) <- Names(objectlist)
         return(unlist(oriented))
     })
-    setGeneric("Oriented<-", function(objectlist, value) standardGeneric("Oriented<-"))
-    setReplaceMethod("Oriented", "dg.list", function(objectlist, 
+    setGeneric("Oriented<-", 
+        function(objectlist, value) standardGeneric("Oriented<-"))
+    setReplaceMethod("Oriented", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@oriented <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@oriented <- value[i]
         }
         else warning("Invalid list of values for oriented")
         objectlist
@@ -1981,23 +2314,29 @@
         else fun <- function(objectlist) standardGeneric("Visible")
         setGeneric("Visible", fun)
     }
-    setMethod("Visible", "dg.list", function(objectlist) {
-        visible <- lapply(objectlist, function(x) if (!is.null(x)) 
-            visible(x))
+    setMethod("Visible", "dg.list", 
+        function(objectlist) {
+        visible <- lapply(objectlist, 
+                          function(x) if (!is.null(x)) visible(x))
         names(visible) <- Names(objectlist)
         return(unlist(visible))
     })
-    setGeneric("Visible<-", function(objectlist, value) standardGeneric("Visible<-"))
-    setReplaceMethod("Visible", "dg.list", function(objectlist, 
+    setGeneric("Visible<-", 
+        function(objectlist, value) standardGeneric("Visible<-"))
+    setReplaceMethod("Visible", "dg.list", 
+        function(objectlist, 
         value) {
         if (length(objectlist) == length(value)) {
-            for (i in seq(along = objectlist)) objectlist[[i]]@visible <- value[i]
+            for (i in seq(along = objectlist)) 
+                objectlist[[i]]@visible <- value[i]
         }
         else warning("Invalid list of values for visible")
         objectlist
     })
-    setClass("dg.Model", representation(name = "character", dg = "dg.graphedges"))
-    setMethod("setSlots", "dg.Model", function(object, arguments) {
+    setClass("dg.Model", 
+        representation(name = "character", dg = "dg.graphedges"))
+    setMethod("setSlots", "dg.Model", 
+        function(object, arguments) {
         for (i in seq(along = arguments)) {
             name <- names(arguments)[i]
             if (is.element(name, slotNames(object))) 
@@ -2007,7 +2346,8 @@
         }
         return(object)
     })
-    setMethod("initialize", "dg.Model", function(.Object, ...) {
+    setMethod("initialize", "dg.Model", 
+        function(.Object, ...) {
         Args <- list(...)
         .Object <- setSlots(.Object, Args)
         return(.Object)
@@ -2015,17 +2355,19 @@
     if (!isGeneric("graphComponents")) {
         if (is.function("graphComponents")) 
             fun <- graphComponents
-        else fun <- function(object, viewType = NULL, ...) standardGeneric("graphComponents")
+        else fun <- function(object, viewType = NULL, ...) 
+                standardGeneric("graphComponents")
         setGeneric("graphComponents", fun)
     }
     if (!isGeneric("graphEdges")) {
         if (is.function("graphEdges")) 
             fun <- graphEdges
-        else fun <- function(object, viewType = NULL, ...) standardGeneric("graphEdges")
+        else fun <- function(object, viewType = NULL, ...) 
+                standardGeneric("graphEdges")
         setGeneric("graphEdges", fun)
     }
-    setMethod("graphEdges", "dg.Model", function(object, viewType = NULL, 
-        ...) {
+    setMethod("graphEdges", "dg.Model", 
+        function(object, viewType = NULL, ...) {
         dots <- list(...)
         localArguments <- dots$Arguments
         Vertices <- localArguments$vertexList
@@ -2043,32 +2385,45 @@
                 FactorVertices <- result$FactorVertices
                 FactorEdges <- result$FactorEdges
             }
-            new("dg.graphedges", viewType = viewType, oriented = object@dg@oriented, 
-                edgeList = object@dg@edgeList, blockEdgeList = object@dg@blockEdgeList, 
-                factorVertexList = FactorVertices, factorEdgeList = FactorEdges, 
+            new("dg.graphedges", viewType = viewType,  
+                oriented = object@dg@oriented, 
+                edgeList = object@dg@edgeList, 
+                blockEdgeList = object@dg@blockEdgeList, 
+                factorVertexList = FactorVertices, 
+                factorEdgeList = FactorEdges, 
                 visibleVertices = object@dg@visibleVertices, 
-                visibleBlocks = object@dg@visibleBlocks, extraList = object@dg@extraList, 
+                visibleBlocks = object@dg@visibleBlocks, 
+                extraList = object@dg@extraList, 
                 extraEdgeList = object@dg@extraEdgeList)
         }
         else if (viewType == "Moral") {
             message("Moral view not implemented; ")
-            new("dg.graphedges", viewType = viewType, oriented = object@dg@oriented, 
-                edgeList = object@dg@edgeList, visibleVertices = object@dg@visibleVertices, 
-                visibleBlocks = numeric(), extraList = object@dg@extraList, 
+            new("dg.graphedges", viewType = viewType, 
+                oriented = object@dg@oriented, 
+                edgeList = object@dg@edgeList, 
+                visibleVertices = object@dg@visibleVertices, 
+                visibleBlocks = numeric(), 
+                extraList = object@dg@extraList, 
                 extraEdgeList = object@dg@extraEdgeList)
         }
         else if (viewType == "Essential") {
             message("Essential view not implemented; ")
-            new("dg.graphedges", viewType = viewType, oriented = object@dg@oriented, 
-                edgeList = object@dg@edgeList, visibleVertices = object@dg@visibleVertices, 
-                visibleBlocks = numeric(), extraList = object@dg@extraList, 
+            new("dg.graphedges", viewType = viewType, 
+                oriented = object@dg@oriented, 
+                edgeList = object@dg@edgeList, 
+                visibleVertices = object@dg@visibleVertices, 
+                visibleBlocks = numeric(), 
+                extraList = object@dg@extraList, 
                 extraEdgeList = object@dg@extraEdgeList)
         }
         else if (viewType == "Simple") {
-            new("dg.graphedges", viewType = viewType, oriented = object@dg@oriented, 
-                edgeList = object@dg@edgeList, blockEdgeList = object@dg@blockEdgeList, 
+            new("dg.graphedges", viewType = viewType, 
+                oriented = object@dg@oriented, 
+                edgeList = object@dg@edgeList, 
+                blockEdgeList = object@dg@blockEdgeList, 
                 visibleVertices = object@dg@visibleVertices, 
-                visibleBlocks = object@dg@visibleBlocks, extraList = object@dg@extraList, 
+                visibleBlocks = object@dg@visibleBlocks, 
+                extraList = object@dg@extraList, 
                 extraEdgeList = object@dg@extraEdgeList)
         }
         else message("View type not implemented; ")
@@ -2085,7 +2440,8 @@
     if (!isGeneric("setGraphEdges")) {
         if (is.function("setGraphEdges")) 
             fun <- setGraphEdges
-        else fun <- function(object, dg = NULL, ...) standardGeneric("setGraphEdges")
+        else fun <- function(object, dg = NULL, ...) 
+                standardGeneric("setGraphEdges")
         setGeneric("setGraphEdges", fun)
     }
     setMethod("setGraphEdges", signature(object = "dg.Model"), 
@@ -2095,8 +2451,9 @@
             return(object)
         })
     setClass("dg.Test", representation(deviance = "numeric", 
-        df = "numeric", p = "numeric"))
-    setMethod("setSlots", "dg.Test", function(object, arguments) {
+                                       df = "numeric", p = "numeric"))
+    setMethod("setSlots", "dg.Test", 
+        function(object, arguments) {
         for (i in seq(along = arguments)) {
             name <- names(arguments)[i]
             if (is.element(name, slotNames(object))) 
@@ -2106,7 +2463,8 @@
         }
         return(object)
     })
-    setMethod("initialize", "dg.Test", function(.Object, ...) {
+    setMethod("initialize", "dg.Test", 
+        function(.Object, ...) {
         Args <- list(...)
         if (!is.element("df", names(Args)) || !is.element("deviance", 
             names(Args))) {
@@ -2127,7 +2485,8 @@
             ...) standardGeneric("asDataFrame")
         setGeneric("asDataFrame", fun)
     }
-    setMethod("asDataFrame", "dg.list", function(objectlist, 
+    setMethod("asDataFrame", "dg.list", 
+        function(objectlist, 
         setRowLabels = FALSE, ...) {
         .asDataFrame(objectlist, setRowLabels, ...)
     })
@@ -2138,21 +2497,25 @@
             ...) standardGeneric("Str")
         setGeneric("Str", fun)
     }
-    setMethod("Str", "NULL", function(object, setRowLabels = FALSE, 
+    setMethod("Str", "NULL", 
+        function(object, setRowLabels = FALSE, 
         title = "", ...) message(paste(title, "NULL", sep = ": ")))
-    setMethod("Str", "integer", function(object, setRowLabels = FALSE, 
+    setMethod("Str", "integer", 
+        function(object, setRowLabels = FALSE, 
         title = "", ...) message(paste(title, paste(object, collapse = ", "), 
         sep = ": ")))
-    setMethod("Str", "numeric", function(object, setRowLabels = FALSE, 
+    setMethod("Str", "numeric", 
+        function(object, setRowLabels = FALSE, 
         title = "", ...) message(paste(title, paste(object, collapse = ", "), 
         sep = ": ")))
-    setMethod("show", "dg.list", function(object) Str(object))
-    setMethod("Str", "list", function(object, setRowLabels = TRUE, 
-        title = "", ...) {
+    setMethod("show", "dg.list", 
+        function(object) Str(object))
+    setMethod("Str", "list", 
+        function(object, setRowLabels = TRUE, title = "", ...) {
         if ((length(object) > 0) && (!is.null(object[[1]]))) 
-            if ((extends(class(object[[1]]), "dg.Node")) || (extends(class(object[[1]]), 
-                "dg.Vertex")) || (extends(class(object[[1]]), 
-                "dg.VertexEdge"))) {
+            if ((extends(class(object[[1]]), "dg.Node")) || 
+                (extends(class(object[[1]]), "dg.Vertex")) || 
+                (extends(class(object[[1]]), "dg.VertexEdge"))) {
                 if (class(object) == "list") 
                   message("<<<<< List-object not 'dg.list' !!! >>>>>")
                 if ((extends(class(object[[1]]), "dg.Block")) && 
@@ -2160,8 +2523,7 @@
                   .StrBlockTree(object, title)
                 }
                 else {
-                  Y <- asDataFrame(object, setRowLabels = setRowLabels, 
-                    ...)
+                  Y <- asDataFrame(object, setRowLabels = setRowLabels, ...)
                   if ("label" %in% dimnames(Y)[[2]]) {
                     labels <- t(Y["label"])
                     if (length(unique(match(labels, labels))) < 
@@ -2176,8 +2538,10 @@
             }
             else NextMethod("str", object, ...)
     })
-    setMethod("show", "dg.graphedges", function(object) Str(object))
-    setMethod("Str", "dg.graphedges", function(object, setRowLabels = FALSE, 
+    setMethod("show", "dg.graphedges", 
+        function(object) Str(object))
+    setMethod("Str", "dg.graphedges", 
+        function(object, setRowLabels = FALSE, 
         title = "", m = 0, ...) {
         if (!is.null(object)) {
             message(object@viewType)
@@ -2185,29 +2549,24 @@
             graphEdges <- is.element("graphEdges", names(list(...)))
             if (!graphEdges) {
                 if (is.element("vertexList", slotNames(object))) 
-                  Str(object@vertexList, title = "vertices", 
-                    ...)
+                  Str(object@vertexList, title = "vertices", ...)
                 if (is.element("blockList", slotNames(object))) 
                   Str(object@blockList, title = "blocks", ...)
             }
-            Str(object@visibleVertices, title = "visibleVertices", 
-                ...)
-            Str(object@visibleBlocks, title = "visibleBlocks", 
-                ...)
+            Str(object@visibleVertices, title = "visibleVertices", ...)
+            Str(object@visibleBlocks, title = "visibleBlocks", ...)
             Str(object@extraList, title = "extraList", ...)
-            Str(object@extraEdgeList, title = "extraEdgeList", 
-                ...)
+            Str(object@extraEdgeList, title = "extraEdgeList", ...)
             Str(object@edgeList, title = "edgeList", ...)
-            Str(object@blockEdgeList, title = "blockEdgeList", 
-                ...)
-            Str(object@factorVertexList, title = "factorVertexList", 
-                ...)
-            Str(object@factorEdgeList, title = "factorEdgeList", 
-                ...)
+            Str(object@blockEdgeList, title = "blockEdgeList", ...)
+            Str(object@factorVertexList, title = "factorVertexList", ...)
+            Str(object@factorEdgeList, title = "factorEdgeList", ...)
         }
     })
-    setMethod("show", "DynamicGraphView", function(object) Str(object))
-    setMethod("Str", "DynamicGraphView", function(object, setRowLabels = FALSE, 
+    setMethod("show", "DynamicGraphView", 
+        function(object) Str(object))
+    setMethod("Str", "DynamicGraphView", 
+        function(object, setRowLabels = FALSE, 
         title = "", m = 0, ...) {
         message(paste(rep("-", 80)))
         sub.title <- paste("<<", object@label, " | ", m, object@index, 
@@ -2223,12 +2582,15 @@
             object@dg@blockList <- new("dg.BlockList")
         Str(object@dg, title = "dg", ...)
     })
-    setMethod("Str", "dg.Model", function(object, setRowLabels = FALSE, 
+    setMethod("Str", "dg.Model", 
+        function(object, setRowLabels = FALSE, 
         title = "", ...) {
         message(object@name)
     })
-    setMethod("show", "DynamicGraphModel", function(object) Str(object))
-    setMethod("Str", "DynamicGraphModel", function(object, setRowLabels = FALSE, 
+    setMethod("show", "DynamicGraphModel",
+        function(object) Str(object))
+    setMethod("Str", "DynamicGraphModel", 
+        function(object, setRowLabels = FALSE, 
         title = "", ...) {
         if (!is.null(object)) {
             message(paste(rep("=", 80)))
@@ -2246,8 +2608,10 @@
                   i, sep = " "), ...)
         }
     })
-    setMethod("show", "DynamicGraph", function(object) Str(object))
-    setMethod("Str", "DynamicGraph", function(object, setRowLabels = FALSE, 
+    setMethod("show", "DynamicGraph", 
+        function(object) Str(object))
+    setMethod("Str", "DynamicGraph", 
+        function(object, setRowLabels = FALSE, 
         title = "", ...) {
         message(paste(rep("#", 80)))
         message(paste("<<", object@label, ">>", sep = ""))
@@ -2264,23 +2628,25 @@
             ...) standardGeneric("testEdge")
         setGeneric("testEdge", fun)
     }
-    setMethod("testEdge", signature(object = "dg.Model"), function(object, 
+    setMethod("testEdge", signature(object = "dg.Model"), 
+        function(object, 
         action, name.1, name.2, ...) {
         args <- list(...)
         from.type <- args$from.type
         to.type <- args$to.type
-        f <- function(type) if (is.null(type)) 
+        "f" <- function(type) if (is.null(type)) 
             ""
         else paste("(", type, ")")
         message(paste("Should return an object with the edge from", 
-            name.1, f(from.type), "to", name.2, f(to.type), "deleted from the argument object"))
+            name.1, f(from.type), "to", name.2, f(to.type), 
+            "deleted from the argument object"))
         return(new("dg.Test"))
     })
     if (!isGeneric("modifyModel")) {
         if (is.function("modifyModel")) 
             fun <- modifyModel
-        else fun <- function(object, action, name, name.1, name.2, 
-            ...) standardGeneric("modifyModel")
+        else fun <- function(object, action, name, name.1, name.2, ...) 
+            standardGeneric("modifyModel")
         setGeneric("modifyModel", fun)
     }
     setMethod("modifyModel", signature(object = "dg.Model"), 
@@ -2291,7 +2657,8 @@
             Vertices <- localArguments$vertexList
             viewType <- "Simple"
             DoFactors <- FALSE
-            if (!is.null(args$Arguments) && !is.null(args$Arguments$factorVertexList) && 
+            if (!is.null(args$Arguments) && 
+                !is.null(args$Arguments$factorVertexList) && 
                 (length(args$Arguments$factorVertexList) > 0) && 
                 !is.null(args$Arguments$vertexList)) 
                 DoFactors <- TRUE
@@ -2304,26 +2671,26 @@
             VisibleBlocks <- localArguments$visibleBlocks
             ExtraVertices <- new("dg.VertexList")
             ExtraEdges <- new("dg.ExtraEdgeList")
-            f <- function(type) if (is.null(type)) 
+            "f" <- function(type) if (is.null(type)) 
                 ""
             else paste("(", type, ")")
-            g <- function(type) if (is.null(type)) 
+            "g" <- function(type) if (is.null(type)) 
                 ""
             else type
             if (action == "dropEdge") {
                 message(paste("Should return an object with the edge from", 
                   name.1, f(args$from.type), "to", name.2, f(args$to.type), 
                   "deleted from the argument object"))
-                if ((g(args$from.type) == "Factor") || (g(args$from.type) == 
-                  "Factor")) 
+                if ((g(args$from.type) == "Factor") || 
+                    (g(args$from.type) == "Factor")) 
                   return(NULL)
             }
             else if (action == "addEdge") {
                 message(paste("Should return an object with the edge from", 
                   name.1, f(args$from.type), "to", name.2, f(args$to.type), 
                   "added to the argument object"))
-                if ((g(args$from.type) == "Factor") || (g(args$from.type) == 
-                  "Factor")) 
+                if ((g(args$from.type) == "Factor") || 
+                    (g(args$from.type) == "Factor")) 
                   return(NULL)
             }
             else if (action == "dropVertex") {
@@ -2344,18 +2711,22 @@
                     else return(NULL)
                   })
                   if (!is.null(factors)) {
-                    types <- types[unlist(lapply(factors, function(i) !is.null(i)))]
+                    types <- types[unlist(lapply(factors, 
+                                                 function(i) !is.null(i)))]
                     factors <- .removeNull(factors)
                   }
                   if (!is.null(factors)) {
-                    subset <- function(x) lapply(x, function(a) any(unlist(lapply(x, 
-                      function(A) all(!is.na(match(a, A))) && 
-                        (length(a) < length(A))))))
+                    subset <- function(x) lapply(x, 
+                      function(a) 
+                        any(unlist(lapply(x, 
+                      function(A) 
+                        all(!is.na(match(a, A))) && (length(a) < length(A))))))
                     s <- subset(factors)
                     types <- types[!unlist(s)]
                     factors <- factors[!unlist(s)]
                     if (!(is.null(factors))) {
-                      result <- returnFactorVerticesAndEdges(localArguments$vertexList, 
+                      result <- returnFactorVerticesAndEdges(
+                        localArguments$vertexList, 
                         factors, types, factorClasses = validFactorClasses())
                       FactorVertices <- result$FactorVertices
                       FactorEdges <- result$FactorEdges
@@ -2371,7 +2742,8 @@
             else if (action == "addVertex") {
                 VisibleVertices <- c(VisibleVertices, args$index)
                 message(paste("Should return an object with the vertex", 
-                  name, f(args$type), args$index, "added to the argument object"))
+                  name, f(args$type), args$index, 
+                  "added to the argument object"))
                 if (DoFactors && (args$index > 0)) {
                   x <- (localArguments$factorVertexList)
                   factors <- lapply(x, function(i) i@vertex.indices)
@@ -2388,7 +2760,8 @@
                     types <- append(types, types[n])
                   }
                   if (!(is.null(factors))) {
-                    result <- returnFactorVerticesAndEdges(localArguments$vertexList, 
+                    result <- returnFactorVerticesAndEdges(
+                      localArguments$vertexList, 
                       factors, types, factorClasses = validFactorClasses())
                     FactorVertices <- result$FactorVertices
                     FactorEdges <- result$FactorEdges
@@ -2409,10 +2782,14 @@
                   FactorEdges <- result$FactorEdges
                 }
             }
-            dg <- new("dg.graphedges", edgeList = Edges, viewType = viewType, 
-                blockEdgeList = BlockEdges, factorVertexList = FactorVertices, 
-                factorEdgeList = FactorEdges, visibleVertices = VisibleVertices, 
-                visibleBlocks = VisibleBlocks, extraList = ExtraVertices, 
+            dg <- new("dg.graphedges", edgeList = Edges, 
+                viewType = viewType, 
+                blockEdgeList = BlockEdges, 
+                factorVertexList = FactorVertices, 
+                factorEdgeList = FactorEdges, 
+                visibleVertices = VisibleVertices, 
+                visibleBlocks = VisibleBlocks, 
+                extraList = ExtraVertices, 
                 extraEdgeList = ExtraEdges)
             if (.IsEmpty(FactorEdges) && (viewType == "Factor")) {
                 object <- setGraphEdges(object, dg = dg)
@@ -2422,7 +2799,7 @@
             }
             return(list(object = object, dg = dg))
         })
-    setMethod("label", "dg.Test", function(object) format(object@p, 
-        digits = 4))
-    setMethod("width", "dg.Test", function(object) round(2 + 
-        5 * (1 - object@p)))
+    setMethod("label", "dg.Test", 
+        function(object) format(object@p, digits = 4))
+    setMethod("width", "dg.Test", 
+        function(object) round(2 + 5 * (1 - object@p)))

@@ -5,7 +5,7 @@
 
 \alias{dg.FactorVertexList-class}
 
-\title{Class "dg.FactorVertexList": The factor vertex list}
+\title{Class dg.FactorVertexList: The factor vertex list}
 
 \description{
  Create factor vertex and factor edge lists.

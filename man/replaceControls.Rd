@@ -35,6 +35,6 @@ replaceControls(control, frameModels = NULL,
 
 % \seealso{  }
 
-\examples{ }
+% \examples{ }
 
 \keyword{classes}

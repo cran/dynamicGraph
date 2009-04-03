@@ -15,14 +15,14 @@ function (title, question, entryInit, top = NULL, entryWidth = 20,
     tkgrid(tklabel(dlg, text = question), textEntryWidget)
     tkgrid(tklabel(dlg, text = "       "))
     ReturnVal <- returnValOnCancel
-    onOK <- function() {
+    "onOK" <- function() {
         ReturnVal <<- tclvalue(textEntryVarTcl)
         tkgrab.release(dlg)
         tkdestroy(dlg)
         if (!is.null(top)) 
             tkfocus(top)
     }
-    onCancel <- function() {
+    "onCancel" <- function() {
         ReturnVal <<- returnValOnCancel
         tkgrab.release(dlg)
         tkdestroy(dlg)

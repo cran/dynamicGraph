@@ -9,8 +9,7 @@
 \alias{dg.OrdinalVertex-class}
 \alias{draw,dg.OrdinalVertex-method}
 
-\title{Classses "dg.DiscreteVertex", "dg.ContinuousVertex",
-       and "dg.OrdinalVertex" }
+\title{Classes dg.DiscreteVertex, dg.ContinuousVertex, and dg.OrdinalVertex}
 
 \description{ The class for vertices for discrete variables, 
  continuous variables, and ordinal variables. }

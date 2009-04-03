@@ -127,7 +127,7 @@ DynamicGraph(names = character(), types = character(),
 		   by the model argument \code{object}.
 		   If the argument \code{overwrite} is TRUE and
                    the argument \code{frameViews} is given 
-		   then the model of \code{frame}\-{Views} is replaced
+		   then the model of \code{frame}\-Views is replaced
 		   by the model argument \code{object}.
 		   }
   \item{addView}{ Logical, if \code{addView} then a view of type set

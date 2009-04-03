@@ -3,8 +3,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
     objectName = NULL, control = dg.control(...), ...) 
 {
     if ((is.null(dg))) 
-        dg <- .newDgGraphEdges(vertexList = vertexList, blockList = blockList, 
-            ...)
+        dg <- .newDgGraphEdges(vertexList = vertexList, 
+                               blockList = blockList, ...)
     args <- list(...)
     if (!is.null(args$title) && (control$label == "dynamicGraph")) {
         control$label <- args$title
@@ -60,12 +60,13 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
         "ivory", "MintCream", "GhostWhite", "snow", "white")
     "myColor" <- function(i) colors[min(i%%137, length(colors))]
     "drawModel" <- function(frameModels = NULL, frameViews = NULL, 
-        graphWindow = NULL, dg = NULL, object = NULL, frameModelsEnv = .get.env.frameModels(frameModels = frameModels), 
+        graphWindow = NULL, dg = NULL, object = NULL, 
+        frameModelsEnv = .get.env.frameModels(frameModels = frameModels), 
         initialWindow = FALSE, returnNewMaster = FALSE, redraw = FALSE, 
         returnFrameModel = TRUE, control = NULL, ...) {
         if ((is.null(dg))) 
-            dg <- .newDgGraphEdges(vertexList = vertexList, blockList = blockList, 
-                ...)
+            dg <- .newDgGraphEdges(vertexList = vertexList, 
+                                   blockList = blockList, ...)
         args <- list(...)
         if (!is.null(args$title)) {
             control$label <- args$title
@@ -73,14 +74,13 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
         "redrawView" <- function(frameModels = NULL, frameViews = NULL, 
             graphWindow = NULL, dg = NULL, initialWindow = FALSE, 
             returnNewMaster = FALSE, redraw = FALSE, returnFrameModel = TRUE, 
-            setUpdateCountModelMain = FALSE, control = NULL, 
-            ...) {
+            setUpdateCountModelMain = FALSE, control = NULL, ...) {
             args <- list(...)
             if (!is.null(args$title)) {
                 control$label <- args$title
             }
             "setSrcLabel" <- function(viewLabel) {
-                g <- function(x, i, max) {
+                "g" <- function(x, i, max) {
                   if (!is.null(zoomCenter)) 
                     x <- (x - c(zoomCenter[i]))/Scale + zoomCenter[i]
                   x <- c(x[1], mean(x), x[2])
@@ -100,7 +100,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 tkconfigure(viewLabel, text = paste(ViewType, 
                   " | ", "X:", x.txt, "Y:", y.txt))
             }
-            getLabel <- function() {
+            "getLabel" <- function() {
                 title <- paste("Model: ", dm.frameViews@index, 
                   sep = " ")
                 if (exists("GraphWindow")) 
@@ -127,13 +127,13 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   }
                 }
             }
-            ubl <- function(label = block@label, index = block@index, 
+            "ubl" <- function(label = block@label, index = block@index, 
                 block = NULL) paste(c("", abs(index), label), 
                 collapse = ":")
-            iubl <- function(s, n = nchar(s), m = 1 + (1:n)[substring(s, 
+            "iubl" <- function(s, n = nchar(s), m = 1 + (1:n)[substring(s, 
                 1:n, 1:n) == ":"][2]) paste(substring(s, m:n, 
                 m:n), collapse = "")
-            tdv <- function(name) paste(c("(", name, ")"), collapse = "")
+            "tdv" <- function(name) paste(c("(", name, ")"), collapse = "")
             "tkinsert.block" <- function(treeWidget, parent, 
                 block, open = openTreeBlock[abs(block@index)], 
                 delete = FALSE, fill = "Blue") {
@@ -152,8 +152,9 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     treeWidget, delete)
                   if (!is.null((tree$sub.blocks))) 
                     for (j in 1:length(tree$sub.blocks)) {
-                      tkinsert.block(treeWidget, parent, block = tree$sub.blocks[[j]]$block, 
-                        delete)
+                      tkinsert.block(treeWidget, parent, 
+                                     block = tree$sub.blocks[[j]]$block, 
+                                     delete)
                       subVisitBlockTree(tree$sub.blocks[[j]])
                     }
                 }
@@ -193,14 +194,15 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   for (j in 1:length(blockList)) {
                     if (0 == parent(blockList[[j]])) {
                       tkinsert.subblockList(treeWidget, blockList, 
-                        index = j, parent = 0, stratum = stratum(blockList[[j]]), 
+                        index = j, parent = 0, 
+                        stratum = stratum(blockList[[j]]), 
                         delete = delete)
                     }
                   }
             }
             "tkinsert.subblockList" <- function(treeWidget, blockList, 
-                index, parent = blockList[[index]]@parent, stratum = blockList[[index]]@stratum, 
-                delete = FALSE) {
+                index, parent = blockList[[index]]@parent, 
+                stratum = blockList[[index]]@stratum, delete = FALSE) {
                 parentName <- "root"
                 if (parent > 0) 
                   parentName <- ubl(block = blockList[[parent]])
@@ -214,15 +216,16 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   for (j in 1:length(blockList)) {
                     if (index == parent(blockList[[j]])) {
                       tkinsert.subblockList(treeWidget, blockList, 
-                        index = j, parent = index, stratum = stratum(blockList[[j]]), 
+                        index = j, parent = index, 
+                        stratum = stratum(blockList[[j]]), 
                         delete = delete)
                     }
                   }
             }
             "grepVertices" <- function(name) {
                 selectedVertices <- NULL
-                for (j in 1:length(vertexList)) if (length(grep(namesVertices[j], 
-                  name)) > 0) 
+                for (j in 1:length(vertexList)) 
+                  if (length(grep(namesVertices[j], name)) > 0) 
                   selectedVertices <- c(selectedVertices, j)
                 return(selectedVertices)
             }
@@ -260,14 +263,16 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   if (closedVertex[i]) 
                     vertex.type <- "Vertex"
                   callPopupInBox(vertex = vertexList[[i]], i = i, 
-                    vertex.type = vertex.type, UserNodePopupItems = control$UserMenus)()
+                    vertex.type = vertex.type, 
+                    UserNodePopupItems = control$UserMenus)()
                 }
                 for (i in selectedBlocks) {
                   vertex.type <- "OpenBlock"
                   if (closedBlock[i]) 
                     vertex.type <- "ClosedBlock"
                   callPopupInBox(vertex = blockList[[i]], i = i, 
-                    vertex.type = vertex.type, UserNodePopupItems = control$UserMenus)()
+                    vertex.type = vertex.type, 
+                    UserNodePopupItems = control$UserMenus)()
                 }
             }
             "bindBox" <- function(box, label = "newGraph") {
@@ -394,7 +399,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   print("<Button-3>")
             }
 
-            moveCanvas <- function() {
+            "moveCanvas" <- function() {
                 o.x <- NULL
                 o.y <- NULL
                 function(x, y) {
@@ -450,11 +455,10 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     tkpack(w.pane, side = "top", expand = "yes", 
                       fill = "both", pady = 2, padx = "2m")
                     tcl("wm", "iconname", top, "Paned window")
-                    myTclRequire <- function(package, warn = TRUE) {
+                    "myTclRequire" <- function(package, warn = TRUE) {
                       a <- tclvalue(.Tcl(paste("package versions ", 
                         package)))
-                      if (length(a) == 1 && nchar(a) == 0 && 
-                        a == "") {
+                      if (length(a) == 1 && nchar(a) == 0 && a == "") {
                         if (warn) 
                           warning(paste("Tcl package", package, 
                             "not found."))
@@ -466,7 +470,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     if ((!.IsEmpty(blockList) || !.IsEmpty(blockTree)) && 
                       (class(myTclRequire("BWidget", warn = FALSE)) == 
                         "tclObj")) {
-                      selectcommand <- function(...) {
+                      "selectcommand" <- function(...) {
                         sv <- NULL
                         if ((get("type", GW.top$env$box$env) == 
                           "variableList")) {
@@ -480,7 +484,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                         print(paste(" Node: ", list(...)[[1]], 
                           "; ", list(...)[[2]], "; Cut: ", sv))
                       }
-                      dropcmd <- function(...) {
+                      "dropcmd" <- function(...) {
                         moveVertex <- grepVertices(list(...)[[6]])
                         moveBlock <- grepBlocks(list(...)[[6]])
                         toVertex <- grepVertices(list(...)[[3]])
@@ -530,7 +534,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                                 setUpdateBlockEdges("dropcmd")
                               if (closedVertex[moveVertex] && 
                                 !closedBlock[toBlockIndex]) 
-                                setCloseVertex(moveVertex, !closedVertex[moveVertex], 
+                                setCloseVertex(moveVertex, 
+                                               !closedVertex[moveVertex], 
                                   vertex.type = "Vertex")
                               if (!closedVertex[moveVertex]) 
                                 tkmove(canvas, vertexItem(moveVertex)$tag, 
@@ -574,8 +579,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                             if (toBlockIndex > 0) {
                               x <- unique(c(blockList[[toBlockIndex]]@children, 
                                 moveBlock))
-                              blockList[[toBlockIndex]]@children <- x[x != 
-                                0]
+                              blockList[[toBlockIndex]]@children <- x[x != 0]
                             }
                             x <- unique(c(moveBlock, blockList[[moveBlock]]@descendants))
                             x <- x[x != 0]
@@ -588,8 +592,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                             if (toBlockIndex > 0) {
                               for (j in blockList[[toBlockIndex]]@ancestors) {
                                 if (j > 0) {
-                                  z <- unique(c(blockList[[j]]@descendants, 
-                                    x))
+                                  z <- unique(c(blockList[[j]]@descendants, x))
                                   z <- z[z != 0]
                                   blockList[[j]]@descendants <<- z
                                 }
@@ -628,27 +631,27 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                           }
                         }
                       }
-                      opencmd <- function(...) {
+                      "opencmd" <- function(...) {
                         openTreeBlock[which(iubl(list(...)) == 
                           Names(blockList))] <<- TRUE
                       }
-                      closecmd <- function(...) {
+                      "closecmd" <- function(...) {
                         openTreeBlock[which(iubl(list(...)) == 
                           Names(blockList))] <<- FALSE
                       }
-                      dropovercmd <- function(...) {
+                      "dropovercmd" <- function(...) {
                         print(paste("DropOverCmd: ", paste(unlist(list(...)), 
                           collapse = ";")))
                       }
-                      draginitcmd <- function(...) {
+                      "draginitcmd" <- function(...) {
                         print(paste("DragInitCmd: ", paste(unlist(list(...)), 
                           collapse = ";")))
                       }
-                      dragendcmd <- function(...) {
+                      "dragendcmd" <- function(...) {
                         print(paste("DragEndCmd: ", paste(unlist(list(...)), 
                           collapse = ";")))
                       }
-                      f0.box <- tkwidget(f0, "Tree", relief = "raised", 
+                      "f0.box" <- tkwidget(f0, "Tree", relief = "raised", 
                         background = background, highlightcolor = "Black", 
                         selectbackground = "gray", selectforeground = "white", 
                         dragenabled = TRUE, dragevent = 1, dropenabled = TRUE, 
@@ -717,11 +720,13 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       })
                     canvas <- tkcanvas(f1, relief = "raised", 
                       background = background, closeenough = close.enough, 
-                      borderwidth = 5, scrollregion = c(min.x, 
-                        min.y, max.x, max.y), xscrollincrement = -4, 
-                      yscrollincrement = -4, xscrollcommand = function(...) tkset(xscr, 
-                        ...), yscrollcommand = function(...) tkset(yscr, 
-                        ...), width = width, height = height)
+                      borderwidth = 5, 
+                      scrollregion = c(min.x, min.y, max.x, max.y), 
+                      xscrollincrement = -4, 
+                      yscrollincrement = -4, 
+                      xscrollcommand = function(...) tkset(xscr, ...), 
+                      yscrollcommand = function(...) tkset(yscr, ...), 
+                      width = width, height = height)
                     tkpack(canvas, expand = "yes", fill = "both")
                     tkgrid(canvas, padx = 1, pady = 1, row = 0, 
                       column = 1, rowspan = 1, columnspan = 1, 
@@ -762,9 +767,9 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       borderwidth = 5, highlightthickness = 2, 
                       scrollregion = c(min.x, min.y, max.x, max.y), 
                       xscrollincrement = -4, yscrollincrement = -4, 
-                      xscrollcommand = function(...) tkset(xscr, 
-                        ...), yscrollcommand = function(...) tkset(yscr, 
-                        ...), width = width, height = height)
+                      xscrollcommand = function(...) tkset(xscr, ...), 
+                      yscrollcommand = function(...) tkset(yscr, ...), 
+                      width = width, height = height)
                     tkpack(canvas, expand = "yes", fill = "both")
                     tkgrid(f1, padx = 1, pady = 1, row = 0, column = 0, 
                       rowspan = 1, columnspan = 1, sticky = "news")
@@ -847,13 +852,16 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 Arguments <- Args()
                 ldg <- dg
                 ldg@edgeList <- edge.List
+                if (any(slotNames(Object) == ".title")) {
+                  label <- Object@.title
+                }
                 if (sameModel) 
                   redrawView(frameModels = dgm.frameModels, frameViews = local.Views, 
                     graphWindow = NULL, dg = ldg, control = control, 
-                    Arguments = Arguments)
+                    Arguments = Arguments, title = label)
                 else drawModel(frameModels = dgm.frameModels, 
                   frameViews = NULL, graphWindow = NULL, dg = ldg, 
-                  object = Object, control = control, Arguments = Arguments)
+                  object = Object, control = control, Arguments = Arguments, title = label)
             }
             "relativePositionsCanvas" <- function(positions) {
                 if (!is.null(zoomPositions)) {
@@ -1299,9 +1307,11 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     if (hasMethod("graphComponents", class(object))) 
                       graphContent <- graphComponents(object, 
                         viewType = dg@viewType, Arguments = Arguments)
-                    # 'returnGraphComponents' !!!
-                    else graphContent <- returnGraphComponents(object, 
-                      viewType = dg@viewType, Arguments = Arguments)
+                    else  {
+                    warning("'returnGraphComponents' remove to aviod 'NOTE' by 'R CMD check'!")
+                      # graphContent <- returnGraphComponents(object, 
+                      #                    viewType = dg@viewType, Arguments = Arguments)
+                    }
                   }
                   if ((class(graphContent) == "dg.graph") || 
                     (class(graphContent) == "dg.graphedges")) {
@@ -1673,7 +1683,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 if (length(x) != length(y) || !is.null(dim(x)) || 
                   !is.null(dim(y))) 
                   stop("Invalid arguments")
-                dnrm2 <- function(x) sqrt(sum(x^2))
+                "dnrm2" <- function(x) sqrt(sum(x^2))
                 rot <- diag(1, n)
                 nx <- dnrm2(x)
                 ny <- dnrm2(y)
@@ -1904,7 +1914,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
             }
             "retStratum" <- function(i, vertex.type = ifelse(i > 
                 0, "Vertex", "Factor")) {
-                strata <- function(i) if (i > 0) 
+                "strata" <- function(i) if (i > 0) 
                   strataBlocks[i]
                 else i
                 if (vertex.type == "ClosedBlock") 
@@ -1965,7 +1975,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
                 return(update)
             }
-            updateVertexInBlock <- function(i, k, visibleBefore, 
+            "updateVertexInBlock" <- function(i, k, visibleBefore, 
                 visibleAfter) {
                 if (TRUE) {
                   child <- namesVertices[i]
@@ -2203,13 +2213,13 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 activefill <- "LimeGreen"
                 if (is.null(color)) 
                   activefill <- "DarkSlateGray"
-                f <- function(x) if (is.null(x)) 
+                "f" <- function(x) if (is.null(x)) 
                   "NULL"
                 else x
                 E <- getEdges(edge.type = edge.type)[[i]]
                 if (is.null(color)) 
                   color <- E@color
-                setEdge <- function(k, edges) {
+                "setEdge" <- function(k, edges) {
                   if (k != 0) {
                     edges <- edgeItem(k, edge.type = edge.type)
                     if (length(edges) > 0) 
@@ -2228,13 +2238,13 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
             }
             "setEdgeDash" <- function(i = 0, edge.type = "VertexEdge", 
                 dash = NULL) {
-                f <- function(x) if (is.null(x)) 
+                "f" <- function(x) if (is.null(x)) 
                   "NULL"
                 else x
                 E <- getEdges(edge.type = edge.type)[[i]]
                 if (is.null(color)) 
                   color <- E@color
-                setEdge <- function(k, edges) {
+                "setEdge" <- function(k, edges) {
                   if (k != 0) {
                     edges <- edgeItem(k, edge.type = edge.type)
                     if (length(edges) > 0) 
@@ -2549,7 +2559,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       reverse <- edgeNode$reverse
                     else reverse <- (stratumFrom > stratumTo)
                   }
-                  g <- function(pos, ll) {
+                  "g" <- function(pos, ll) {
                     dxy <- tkcoords(canvas, edgeNode$tags[[ll]])
                     dxy <- apply(matrix(as.numeric(dxy), ncol = 2, 
                       byrow = 2), 2, mean)
@@ -2561,7 +2571,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   if (length(edgeNode$tags) > 0) 
                     for (ll in 1:length(edgeNode$tags)) g(pos, 
                       ll)
-                  ff <- function(posFrom, posTo, ll) {
+                  "ff" <- function(posFrom, posTo, ll) {
                     if (reverse) 
                       tkcoords(canvas, edgeNode$edges[[ll]], 
                         posTo[1], posTo[2], posFrom[1], posFrom[2])
@@ -2729,7 +2739,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 tkadd(edgePopupMenu, "cascade", label = "Items by method 'addToPopups'", 
                   menu = methEdgeMenu)
                 userEdgeMenu <- tkmenu(edgePopupMenu, tearoff = FALSE)
-                UserEdgePopup <- function(item) {
+                "UserEdgePopup" <- function(item) {
                   force(item)
                   force(f)
                   force(t)
@@ -2827,7 +2837,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
             }
             "subDrawEdge" <- function(edge, i, edgecolor = "black", 
                 lower = FALSE, edge.type = "VertexEdge", newE = FALSE) {
-                emptyEdge <- function() list(list(lines = NULL, 
+                "emptyEdge" <- function() list(list(lines = NULL, 
                   tags = NULL, from = f, to = t, label = NULL, 
                   label.position = NULL))
                 type.negative <- ifelse(edge.type == "BlockEdge", 
@@ -2989,15 +2999,15 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     newE = newE, reinsert = reinsert)
                 }
             }
-            tkcoordsBlock <- function(i, color = "black", lower = FALSE) {
-                tkcoordsRectangleLine <- function(line, i, A, 
+            "tkcoordsBlock" <- function(i, color = "black", lower = FALSE) {
+                "tkcoordsRectangleLine" <- function(line, i, A, 
                   B, positions, color = "black", width = 1) {
                   posA <- positions[A, ]
                   posB <- positions[B, ]
                   tkcoords(canvas, line, posA[1], posA[2], posB[1], 
                     posB[2])
                 }
-                tkcoordsCornerLine <- function(line, i, A, posA, 
+                "tkcoordsCornerLine" <- function(line, i, A, posA, 
                   posB, color = "black", width = 1) {
                   diff <- posB - posA
                   l <- sqrt(sum(diff^2))
@@ -3006,7 +3016,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   tkcoords(canvas, line, posA[1], posA[2], posB[1], 
                     posB[2])
                 }
-                tkcoordsRectangleCorner <- function(line, i, 
+                "tkcoordsRectangleCorner" <- function(line, i, 
                   A, B, C, D, positions, color = "black", width = 2) {
                   posA <- positions[A, ]
                   tkcoordsCornerLine(line[[1]], i, A, posA, positions[B, 
@@ -3307,7 +3317,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     })
                 if ((vertex.type == "Vertex") || (vertex.type == 
                   "Factor")) 
-                  tkadd(nodePopupMenu, "command", label = paste("Add edge after highlighting with selecting class"), 
+                  tkadd(nodePopupMenu, "command", 
+                        label = paste("Add edge after highlighting with selecting class"), 
                     command = newEdge(i, vertex.type = "Vertex", 
                       slave = FALSE, selectClass = TRUE))
                 if ((vertex.type == "Vertex") || (vertex.type == 
@@ -3321,7 +3332,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 else if ((vertex.type == "OpenBlock")) {
                 }
                 else if ((vertex.type == "ClosedBlock")) 
-                  tkadd(nodePopupMenu, "command", label = paste("Adds edges from/to block after highlight", 
+                  tkadd(nodePopupMenu, "command", 
+                        label = paste("Adds edges from/to block after highlight", 
                     if (slave) 
                       "(Here: Slave view!)"
                     else "", collapse = ""), accelerator = "[ Click block ]", 
@@ -3480,7 +3492,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 else if ((vertex.type == "OpenBlock")) {
                 }
                 else if ((vertex.type == "ClosedBlock")) 
-                  tkadd(helpNodeMenu, "command", label = paste(" - Drag label:   Move label of minimized block"), 
+                  tkadd(helpNodeMenu, "command", 
+                        label = paste(" - Drag label:   Move label of minimized block"), 
                     command = function() {
                     })
                 tkadd(nodePopupMenu, "cascade", label = "Help on node", 
@@ -3492,7 +3505,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 tkadd(nodePopupMenu, "cascade", label = "Items by method 'addToPopups'", 
                   menu = methNodeMenu)
                 userNodeMenu <- tkmenu(nodePopupMenu, tearoff = FALSE)
-                NodePopup <- function(UserNodePopupItems, item, 
+                "NodePopup" <- function(UserNodePopupItems, item, 
                   vertex.type) {
                   force(UserNodePopupItems)
                   force(item)
@@ -3505,8 +3518,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   }
                 }
                 if (length(UserNodePopupItems) > 0) 
-                  for (item in seq(along = UserNodePopupItems)) if ((names(UserNodePopupItems[item]) == 
-                    vertex.type)) 
+                  for (item in seq(along = UserNodePopupItems)) 
+                    if ((names(UserNodePopupItems[item]) == vertex.type)) 
                     tkadd(userNodeMenu, "command", label = UserNodePopupItems[[item]]$label, 
                       command = NodePopup(UserNodePopupItems, 
                         item, vertex.type))
@@ -3515,7 +3528,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
             }
             "setBindNode" <- function(canvas, vertex, tag, result, 
                 label, i, vertex.type, UserNodePopupItems) {
-                f <- function(item, i, label = FALSE) {
+                "f" <- function(item, i, label = FALSE) {
                   tkitembind(canvas, item, "<Leave>", function() tkconfigure(canvas, 
                     cursor = "arrow"))
                   if (label) {
@@ -3609,7 +3622,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     callPopupNode(vertex, i, vertex.type, UserNodePopupItems))
                   tkaddtag(canvas, tag, "withtag", item)
                 }
-                blockitembind <- function(item, label = FALSE) {
+                "blockitembind" <- function(item, label = FALSE) {
                   tkitembind(canvas, item, "<Leave>", function() tkconfigure(canvas, 
                     cursor = "arrow"))
                   if (label) 
@@ -3651,7 +3664,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                         i, FALSE)
                 }
             }
-            subDrawVertex <- function(vertex, i, w = control$w, 
+            "subDrawVertex" <- function(vertex, i, w = control$w, 
                 vertexcolor = vertexcolor, vertex.type = ifelse(i > 
                   0, "Vertex", "Factor"), setTag = TRUE) {
                 tag <- getTag(vertex.type, i, setTag = setTag)
@@ -3690,7 +3703,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 return(list(tag = tag, dot = dot, label = label, 
                   numbers = numbers))
             }
-            drawVertex <- function(i, w = control$w, vertexcolor = vertexcolor, 
+            "drawVertex" <- function(i, w = control$w, vertexcolor = vertexcolor, 
                 vertex.type = ifelse(i > 0, "Vertex", "Factor"), 
                 setTag = TRUE) {
                 if (vertex.type == "ClosedBlock") 
@@ -3710,14 +3723,14 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     i, w = w, vertexcolor = vertexcolor, vertex.type = vertex.type, 
                     setTag = setTag)
             }
-            clearSelectedVertices <- function() {
+            "clearSelectedVertices" <- function() {
                 if (length(selectedNodes) > 0) {
                   lapply(selectedNodes, function(k) setVertexColor(k$index, 
                     color = "red", vertex.type = k$node.type))
                   selectedNodes <<- list()
                 }
             }
-            setActivatedVertex <- function(i, vertex.type = ifelse(i > 
+            "setActivatedVertex" <- function(i, vertex.type = ifelse(i > 
                 0, "Vertex", "Factor"), hit.type = "none") {
                 if (hit.type == "none") 
                   activatedNode <<- list(number = i, vertex.type = vertex.type)
@@ -3729,9 +3742,9 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     selectedNodes <<- append(list(a), selectedNodes)
                 }
             }
-            retActivatedVertex <- function() return(activatedNode[[1]])
-            retActivatedVertexVertex.Type <- function() return(activatedNode[[2]])
-            deActivateVertex <- function(i, color = retVertexColor(i, 
+            "retActivatedVertex" <- function() return(activatedNode[[1]])
+            "retActivatedVertexVertex.Type" <- function() return(activatedNode[[2]])
+            "deActivateVertex" <- function(i, color = retVertexColor(i, 
                 vertex.type), vertex.type = ifelse(i > 0, "Vertex", 
                 "Factor"), new.edge = FALSE) {
                 if (length(selectedNodes) > 0) {
@@ -3754,7 +3767,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
                 else return(FALSE)
             }
-            subActivateVertex <- function(i, color = "green", 
+            "subActivateVertex" <- function(i, color = "green", 
                 vertex.type = ifelse(i > 0, "Vertex", "Factor"), 
                 hit.type = "none", new.edge = FALSE) {
                 if (!(hit.type == "none")) {
@@ -3773,7 +3786,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   else return(FALSE)
                 else return(TRUE)
             }
-            activateVertex <- function(i, vertex.type = ifelse(i > 
+            "activateVertex" <- function(i, vertex.type = ifelse(i > 
                 0, "Vertex", "Factor"), color = "green", hit.type = "none") {
                 force(i)
                 force(vertex.type)
@@ -3782,14 +3795,14 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 function(...) subActivateVertex(i, color = color, 
                   vertex.type = vertex.type, hit.type = hit.type)
             }
-            clearSelectedEdges <- function() {
+            "clearSelectedEdges" <- function() {
                 if (length(selectedEdges) > 0) {
                   lapply(selectedEdges, function(k) setEdgeColor(k$index, 
                     color = NULL, edge.type = k$edge.type))
                   selectedEdges <<- list()
                 }
             }
-            setActivatedEdge <- function(i, from = -1, to = -1, 
+            "setActivatedEdge" <- function(i, from = -1, to = -1, 
                 edge.type = ifelse(i > 0, "Edge", "Factor"), 
                 hit.type = "none") {
                 if (hit.type == "none") 
@@ -3802,7 +3815,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     selectedEdges <<- append(list(a), selectedEdges)
                 }
             }
-            subActivateEdge <- function(i, from = -1, to = -1, 
+            "subActivateEdge" <- function(i, from = -1, to = -1, 
                 edge.type = "VertexEdge", color = "green", hit.type = "none") {
                 if ((hit.type != "none")) {
                   setActivatedEdge(i, from = from, to = to, edge.type, 
@@ -3836,7 +3849,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     setEdgeColor(i, edge.type = edge.type, "Green")
                 }
             }
-            activateEdge <- function(i, from = -1, to = -1, edge.type = "VertexEdge", 
+            "activateEdge" <- function(i, from = -1, to = -1, edge.type = "VertexEdge", 
                 color = "green", hit.type = "none") {
                 force(i)
                 force(from)
@@ -3848,8 +3861,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   to = to, color = color, edge.type = edge.type, 
                   hit.type = hit.type)
             }
-            retActivatedEdge <- function(edge.type = "VertexEdge") return(activatedEdge$number)
-            updateSelectedEdges <- function(R, vertexEdges, edge.type = "VertexEdge", 
+            "retActivatedEdge" <- function(edge.type = "VertexEdge") return(activatedEdge$number)
+            "updateSelectedEdges" <- function(R, vertexEdges, edge.type = "VertexEdge", 
                 setVertex = FALSE, updateBE = FALSE) {
                 if (updateBE) {
                   updateBlockEdges()
@@ -3875,7 +3888,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 if (!is.null(ldg@factorVertexList) && !is.null(ldg@factorEdgeList)) 
                   drawFactors(ldg@factorEdgeList, ldg@factorVertexList)
             }
-            drawResult <- function(newEdges, R, slave, txt, Arguments = Args()) {
+            "drawResult" <- function(newEdges, R, slave, txt, Arguments = Args()) {
                 Edges <- extractEdgesResult(R, newEdges, TRUE, 
                   txt)
                 if (is.null(Edges)) 
@@ -4084,28 +4097,28 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                           f = i, posFrom = pos)
                 }
             }
-            setUpdateVertices <- function(txt = "") {
+            "setUpdateVertices" <- function(txt = "") {
                 updateCountVerticesMain <<- updateCountVerticesMain + 
                   1
                 updateCountVertices <<- updateCountVerticesMain
             }
-            setUpdatePositions <- function(txt = "") {
+            "setUpdatePositions" <- function(txt = "") {
                 updateCountPositionsMain <<- updateCountPositionsMain + 
                   1
                 updateCountPositions <<- updateCountPositionsMain
             }
-            setUpdateBlocks <- function(txt = "") {
+            "setUpdateBlocks" <- function(txt = "") {
                 updateCountBlocksMain <<- updateCountBlocksMain + 
                   1
                 updateCountBlocks <<- updateCountBlocksMain
             }
-            setUpdateBlockEdges <- function(txt = "", local = TRUE) {
+            "setUpdateBlockEdges" <- function(txt = "", local = TRUE) {
                 updateCountBlockEdgesMain <<- updateCountBlockEdgesMain + 
                   1
                 if (!local) 
                   updateCountBlockEdges <<- updateCountBlockEdgesMain
             }
-            setUpdateAll <- function(txt = "") {
+            "setUpdateAll" <- function(txt = "") {
                 updateCountVerticesMain <<- updateCountVerticesMain + 
                   1
                 updateCountPositionsMain <<- updateCountPositionsMain + 
@@ -4172,19 +4185,19 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   updateCountBlockEdges <<- updateCountBlockEdgesMain
                 }
             }
-            updatePositions <- function(txt = "") {
+            "updatePositions" <- function(txt = "") {
                 force(txt)
                 function(...) {
                   subUpdatePositions(txt)
                 }
             }
-            tkdeleteRectangleCorner <- function(line) {
+            "tkdeleteRectangleCorner" <- function(line) {
                 tkdelete(canvas, line[[1]])
                 tkdelete(canvas, line[[2]])
                 if (!is.null(transformation)) 
                   tkdelete(canvas, line[[3]])
             }
-            tkdeleteRectangle <- function(rectangle) {
+            "tkdeleteRectangle" <- function(rectangle) {
                 line <- rectangle$Lines
                 tkdelete(canvas, line[[1]])
                 tkdelete(canvas, line[[2]])
@@ -4212,22 +4225,22 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   tkdeleteRectangleCorner(corner[[8]])
                 }
             }
-            tkdeleteBar <- function(line) {
+            "tkdeleteBar" <- function(line) {
                 tkdelete(canvas, line[[1]])
                 tkdelete(canvas, line[[2]])
                 tkdelete(canvas, line[[3]])
                 tkdelete(canvas, line[[4]])
             }
-            deleteBlock <- function(i) {
+            "deleteBlock" <- function(i) {
                 tkdeleteRectangle(openBlockItem(i)$rectangle)
                 tkdeleteBar(openBlockItem(i)$bar)
                 tkdelete(canvas, openBlockItem(i)$label)
                 if (!is.null(openBlockItem(i)$canvas)) 
                   tkdelete(canvas, openBlockItem(i)$canvas)
             }
-            subSubDeleteEdge <- function(i, f, t, edge.type = "VertexEdge") {
+            "subSubDeleteEdge" <- function(i, f, t, edge.type = "VertexEdge") {
                 E <- getEdges(edge.type = edge.type)[[i]]
-                delete <- function(k, edges) {
+                "delete" <- function(k, edges) {
                   edges <- edgeItem(k, edge.type = edge.type)
                   if (length(edges) > 0) 
                     for (e in edges) if (!(is.null(e))) 
@@ -4251,7 +4264,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
                 for (j in E@vertex.indices) delete(j, edgeItem(j, 
                   edge.type = edge.type))
-                remove <- function(k, edges) if (length(edges) > 
+                "remove" <- function(k, edges) if (length(edges) > 
                   0) {
                   result <- NULL
                   for (e in edges) if (!(is.null(e))) 
@@ -4265,7 +4278,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 for (j in E@vertex.indices) remove(j, edgeItem(j, 
                   edge.type = edge.type))
             }
-            subSubUndisplayFactorVertex <- function(i, edge.type = "FactorEdge") {
+            "subSubUndisplayFactorVertex" <- function(i, edge.type = "FactorEdge") {
                 edges <- edgeItem(i, edge.type = edge.type)
                 if (length(edges) > 0) 
                   for (e in edges) if (!(is.null(e))) {
@@ -4279,26 +4292,26 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 tkdelete(canvas, vertexItem(i)$tag)
                 setVertexItem(i, list(NULL))
             }
-            clearFactorEdges <- function() {
+            "clearFactorEdges" <- function() {
                 for (f in seq(along = itemsFactors)) subSubUndisplayFactorVertex(-f)
             }
-            clearExtraEdges <- function() {
+            "clearExtraEdges" <- function() {
             }
-            setVisibleVertices <- function(i) {
+            "setVisibleVertices" <- function(i) {
                 dg@visibleVertices <<- i
                 GraphWindow@dg@visibleVertices <<- dg@visibleVertices
             }
-            returnVisibleVertices <- function() {
+            "returnVisibleVertices" <- function() {
                 return(dg@visibleVertices)
             }
-            setVisibleBlocks <- function(i) {
+            "setVisibleBlocks" <- function(i) {
                 dg@visibleBlocks <<- i
                 GraphWindow@dg@visibleBlocks <<- dg@visibleBlocks
             }
-            returnVisibleBlocks <- function() {
+            "returnVisibleBlocks" <- function() {
                 return(dg@visibleBlocks)
             }
-            subSubUndisplayVertex <- function(i, edge.type = "VertexEdge") {
+            "subSubUndisplayVertex" <- function(i, edge.type = "VertexEdge") {
                 if (control$debug.position) 
                   print(paste("subSubUndisplayVertex", i, edge.type))
                 edges <- edgeItem(i, edge.type = edge.type)
@@ -4317,9 +4330,10 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 if (control$variableFrame) {
                 }
             }
-            update.edge.labels <- function() {
-                subUpdateEdgeLabels <- function(itemsNodes, edge.type = "VertexEdge") for (f in seq(along = itemsNodes)) if (!is.null(itemsNodes[[f]]) && 
-                  !is.null(itemsNodes[[f]][[1]])) {
+            "update.edge.labels" <- function() {
+                "subUpdateEdgeLabels" <- function(itemsNodes, edge.type = "VertexEdge") 
+                  for (f in seq(along = itemsNodes)) 
+                    if (!is.null(itemsNodes[[f]]) && !is.null(itemsNodes[[f]][[1]])) {
                   if (edge.type != "VertexEdge") 
                     f <- -f
                   edges <- edgeItem(f, edge.type = edge.type)
@@ -4349,13 +4363,17 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   subUpdateEdgeLabels(itemsClosedBlocks, edge.type = "BlockEdge")
                 }
                 if (!is.na(control$namesOnEdges) && !control$namesOnEdges) {
-                  for (i in seq(along = GraphWindow@dg@edgeList)) label(GraphWindow@dg@edgeList[[i]]) <<- ""
-                  for (i in seq(along = GraphWindow@dg@factorEdgeList)) label(GraphWindow@dg@factorEdgeList[[i]]) <<- ""
-                  for (i in seq(along = GraphWindow@dg@extraEdgeList)) label(GraphWindow@dg@extraEdgeList[[i]]) <<- ""
-                  for (i in seq(along = GraphWindow@dg@blockEdgeList)) label(GraphWindow@dg@blockEdgeList[[i]]) <<- ""
+                  for (i in seq(along = GraphWindow@dg@edgeList)) 
+                    label(GraphWindow@dg@edgeList[[i]]) <<- ""
+                  for (i in seq(along = GraphWindow@dg@factorEdgeList)) 
+                    label(GraphWindow@dg@factorEdgeList[[i]]) <<- ""
+                  for (i in seq(along = GraphWindow@dg@extraEdgeList)) 
+                    label(GraphWindow@dg@extraEdgeList[[i]]) <<- ""
+                  for (i in seq(along = GraphWindow@dg@blockEdgeList)) 
+                    label(GraphWindow@dg@blockEdgeList[[i]]) <<- ""
                 }
             }
-            updateBlockEdges <- function() {
+            "updateBlockEdges" <- function() {
                 Edges <- selectCurrentEdges(omitEdges = FALSE, 
                   edge.type = "VertexEdge")
                 edge.list <- lapply(Edges, function(i) i@vertex.indices)
@@ -4388,10 +4406,11 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     edge.type = "BlockEdge")
                 }
             }
-            deleteAllEdgeLabels <- function(permanent = TRUE) {
+            "deleteAllEdgeLabels" <- function(permanent = TRUE) {
                 function(...) {
-                  g <- function(items, edge.type = "VertexEdge") for (f in seq(along = items)) if (TRUE || 
-                    !is.null(items[[f]]) && !is.null(items[[f]][[1]])) {
+                  "g" <- function(items, edge.type = "VertexEdge") 
+                    for (f in seq(along = items)) 
+                      if (TRUE || !is.null(items[[f]]) && !is.null(items[[f]][[1]])) {
                     ff <- ifelse(edge.type == "VertexEdge", f, 
                       -f)
                     if (control$debug.edges) 
@@ -4417,19 +4436,18 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   g(itemsExtras, edge.type = "ExtraEdge")
                 }
             }
-            moveEdgesToVertex <- function(X, v, edge.type = "VertexEdge") {
+            "moveEdgesToVertex" <- function(X, v, edge.type = "VertexEdge") {
                 edges <- edgeItem(v, edge.type = edge.type)
                 if (length(edges) > 0) 
                   for (e in edges) if (!(is.null(e))) 
                     setEdgeCoords(e, edge.type = "vertexEdge", 
                       f = v, posFrom = X, raise = FALSE, setEdgeLabel = FALSE)
             }
-            moveVerticesInBlock <- function(i, dxy, move.vertices = TRUE) {
-                for (v in seq(along = vertexList)) if (is.element(v, 
-                  dg@visibleVertices)) {
+            "moveVerticesInBlock" <- function(i, dxy, move.vertices = TRUE) {
+                for (v in seq(along = vertexList)) 
+                  if (is.element(v, dg@visibleVertices)) {
                   blockIndex <- retBlockIndex(v, vertex.type = "Vertex")
-                  if ((blockIndex > 0) && (blockReferences[blockIndex] == 
-                    i)) {
+                  if ((blockIndex > 0) && (blockReferences[blockIndex] == i)) {
                     if (move.vertices) {
                       if (changeVertexPos(v, dxy)) 
                         if (!closedVertex[v]) 
@@ -4441,8 +4459,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   }
                 }
             }
-            subMoveVertex <- function(i, vertex.type, posFrom, 
-                posTo) {
+            "subMoveVertex" <- function(i, vertex.type, posFrom, posTo) {
                 dxy <- findDifference(posTo, posFrom)
                 tag <- vertexItem(i, vertex.type)$tag
                 if (setVertexPos(i, posTo, dxy, vertex.type)) {
@@ -4481,7 +4498,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   }
                 }
             }
-            setFactorVertexPosition <- function(i, vertex.indices) {
+            "setFactorVertexPosition" <- function(i, vertex.indices) {
                 if (!dg@factorVertexList[[abs(i)]]@fixed.positions) {
                   posFrom <- retVertexPos(-i, "Factor")
                   positions <- NULL
@@ -4494,7 +4511,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   subMoveVertex(-i, "Factor", posFrom, posTo)
                 }
             }
-            moveFactorVertex <- function(vertex) {
+            "moveFactorVertex" <- function(vertex) {
                 if (!is.null(itemsFactors)) 
                   for (i in seq(along = itemsFactors)) if (!is.null(itemsFactors[[i]]) && 
                     !is.null(itemsFactors[[i]][[1]])) {
@@ -4503,7 +4520,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       setFactorVertexPosition(i, vertex.indices)
                   }
             }
-            moveVertex <- function(i, vertex.type = ifelse(i > 
+            "moveVertex" <- function(i, vertex.type = ifelse(i > 
                 0, "Vertex", "Factor")) {
                 force(i)
                 force(vertex.type)
@@ -4517,7 +4534,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   setUpdatePositions("")
                 }
             }
-            moveVertexLabel <- function(i, vertex.type = ifelse(i > 
+            "moveVertexLabel" <- function(i, vertex.type = ifelse(i > 
                 0, "Vertex", "Factor")) {
                 force(i)
                 force(vertex.type)
@@ -4544,7 +4561,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   setUpdatePositions("")
                 }
             }
-            changeVertexLabel <- function(i, vertex.type = ifelse(i > 
+            "changeVertexLabel" <- function(i, vertex.type = ifelse(i > 
                 0, "Vertex", "Factor")) {
                 force(i)
                 force(vertex.type)
@@ -4557,7 +4574,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   setUpdatePositions("")
                 }
             }
-            deleteVertexLabel <- function(i, vertex.type = ifelse(i > 
+            "deleteVertexLabel" <- function(i, vertex.type = ifelse(i > 
                 0, "Vertex", "Factor")) {
                 force(i)
                 force(vertex.type)
@@ -4566,7 +4583,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   setUpdatePositions("")
                 }
             }
-            changeEdgeLabel <- function(i, f, t, edge.type = "VertexEdge") {
+            "changeEdgeLabel" <- function(i, f, t, edge.type = "VertexEdge") {
                 force(i)
                 force(f)
                 force(t)
@@ -4691,7 +4708,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     visibleBefore = TRUE, visibleAfter = FALSE)
                 }
             }
-            undisplayVertex <- function(i, vertex.type = ifelse(i > 
+            "undisplayVertex" <- function(i, vertex.type = ifelse(i > 
                 0, "Vertex", "Factor"), slave = TRUE) {
                 force(i)
                 force(slave)
@@ -4701,9 +4718,9 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   subDropVertex(i, vertex.type, slave)
                 }
             }
-            undisplayBlock <- function(i, descendants = TRUE, 
+            "undisplayBlock" <- function(i, descendants = TRUE, 
                 slave = TRUE, update = TRUE) {
-                subUndisplayBlock <- function(i) {
+                "subUndisplayBlock" <- function(i) {
                   deleteBlock(i)
                   visible.Blocks <- returnVisibleBlocks()
                   visible.Blocks <- visible.Blocks[visible.Blocks != 
@@ -4722,22 +4739,19 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   subUpdateGraphWindow("undisplayBlock", raiseEdges = TRUE, 
                     updateEdges = TRUE)
             }
-            removeBlock <- function(i, descendants = TRUE, slave = TRUE, 
+            "removeBlock" <- function(i, descendants = TRUE, slave = TRUE, 
                 update = TRUE) {
-                subRemoveBlock <- function(i) {
+                "subRemoveBlock" <- function(i) {
                   deleteBlock(i)
                   visible.Blocks <- returnVisibleBlocks()
-                  visible.Blocks <- visible.Blocks[visible.Blocks != 
-                    i]
+                  visible.Blocks <- visible.Blocks[visible.Blocks != i]
                   setVisibleBlocks(visible.Blocks)
                   positionsBlocks[i, , 1] <<- rep(-1000, local.N)
-                  positionsBlocks[i, , 2] <<- rep(-1000, local.N) + 
-                    1e-04
+                  positionsBlocks[i, , 2] <<- rep(-1000, local.N) + 1e-04
                   positionsClosedBlocks[i, ] <<- rep(-1000, local.N)
                 }
                 if (descendants) 
-                  for (j in blockList[[i]]@descendants) if ((j != 
-                    i) && (j != 0)) {
+                  for (j in blockList[[i]]@descendants) if ((j != i) && (j != 0)) {
                     subRemoveBlock(j)
                     if ((closedBlock[j] || hiddenBlock[j])) 
                       openBlock(j, update = FALSE)()
@@ -4750,9 +4764,9 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   raiseEdges = TRUE, updateEdges = TRUE, all.blockframes = TRUE)
                 setUpdateAll("removeBlock")
             }
-            markVerticesOfBlock <- function(i, descendants = TRUE, 
+            "markVerticesOfBlock" <- function(i, descendants = TRUE, 
                 slave = TRUE, update = TRUE) {
-                subMarkVerticesOfBlock <- function(i) {
+                "subMarkVerticesOfBlock" <- function(i) {
                   subActivateVertex(i, "ClosedBlock", hit.type = "Mark-2", 
                     color = "GreenYellow")
                   for (v in seq(along = vertexList)) if (is.element(v, 
@@ -4774,7 +4788,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 subMarkVerticesOfBlock(i)
                 return(vertices)
             }
-            moveEdge <- function(i, f, t, edge.type = "VertexEdge") {
+            "moveEdge" <- function(i, f, t, edge.type = "VertexEdge") {
                 force(i)
                 force(f)
                 force(t)
@@ -4791,7 +4805,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   X <- replaceXY(x, y, pos)
                   dxy <- findDifference(X, pos)
                   if (sum(dxy^2) < 0.25^2 * sum((posFrom - posTo)^2)) {
-                    fun <- function(ii, vertex.type, position) {
+                    "fun" <- function(ii, vertex.type, position) {
                       if (control$debug.position) 
                         print(paste("moveEdge, f", ii, vertex.type))
                       if (vertex.type == "ClosedBlock") {
@@ -4826,7 +4840,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   setUpdatePositions("")
                 }
             }
-            moveEdgeLabel <- function(i, f, t, edge.type = "VertexEdge") {
+            "moveEdgeLabel" <- function(i, f, t, edge.type = "VertexEdge") {
                 force(i)
                 force(f)
                 force(t)
@@ -4855,7 +4869,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                           }
                 }
             }
-            subSubAddEdge <- function(f, t, from.type, to.type, 
+            "subSubAddEdge" <- function(f, t, from.type, to.type, 
                 edge.type = "VertexEdge", slave = TRUE, edgeClass = NULL) {
                 fun <- function(result, ff, tt, edge.type = "VertexEdge") {
                   if (!any(which.edge(c(ff, tt), edge.type = edge.type)) && 
@@ -4929,8 +4943,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                             result <- fun(result, v, w, edge.type = "VertexEdge")
                   }
                 }
-                if (redraw || !is.null(result) || (edge.type == 
-                  "selected")) {
+                if (redraw || !is.null(result) || (edge.type == "selected")) {
                   vertexEdges <- appendToCurrentEdges(omitEdges = FALSE, 
                     new.edge = result, edge.type = "VertexEdge", 
                     edgeClass = edgeClass)
@@ -4974,7 +4987,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   else message("Null result in addEdge")
                 }
             }
-            subAddEdge <- function(f, t, from.type, to.type, 
+            "subAddEdge" <- function(f, t, from.type, to.type, 
                 edge.type = "VertexEdge", slave = TRUE, edgeClass = NULL) {
                 tkconfigure(canvas, cursor = "watch")
                 tkfocus(GW.top)
@@ -5110,7 +5123,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 tkconfigure(GW.top$env$viewLabel, text = dg@viewType)
                 tkconfigure(canvas, cursor = "arrow")
             }
-            newBlockXY <- function() {
+            "newBlockXY" <- function() {
                 function(x, y) {
                   X <- replaceXY(x, y, rep(50, local.N))
                   position <- c(inversProject(inversCanvasPosition(X)))
@@ -5120,7 +5133,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   new.Block(position, get.name = FALSE)
                 }
             }
-            newEdge <- function(i, vertex.type = ifelse(i > 0, 
+            "newEdge" <- function(i, vertex.type = ifelse(i > 0, 
                 "Vertex", "Factor"), slave = TRUE, selectClass = FALSE) {
                 force(i)
                 force(slave)
@@ -5166,7 +5179,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     }
                 }
             }
-            addLastEdge <- function(vertex.type = ifelse(i > 
+            "addLastEdge" <- function(vertex.type = ifelse(i > 
                 0, "Vertex", "Factor")) {
                 function() {
                   n <- length(vertexList)
@@ -5179,7 +5192,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   newEdge(n, vertex.type = "Vertex", slave = FALSE)()
                 }
             }
-            subSubDropEdge <- function(i, f, t, from.type = vertexTypeOfEdge(f, 
+            "subSubDropEdge" <- function(i, f, t, from.type = vertexTypeOfEdge(f, 
                 edge.type), to.type = vertexTypeOfEdge(t, edge.type), 
                 edge.type = "VertexEdge", slave = TRUE) {
                 redraw <- FALSE
@@ -5300,7 +5313,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
                 else message("Null result in dropEdge")
             }
-            subDropEdge <- function(i, f, t, from.type = vertexTypeOfEdge(f, 
+            "subDropEdge" <- function(i, f, t, from.type = vertexTypeOfEdge(f, 
                 edge.type), to.type = vertexTypeOfEdge(t, edge.type), 
                 from.all = FALSE, to.all = FALSE, edge.type = "VertexEdge", 
                 slave = TRUE) {
@@ -5342,7 +5355,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
                 tkconfigure(canvas, cursor = "arrow")
             }
-            deleteEdge <- function(i, f, t, edge.type = "VertexEdge") {
+            "deleteEdge" <- function(i, f, t, edge.type = "VertexEdge") {
                 force(i)
                 force(f)
                 force(t)
@@ -5353,7 +5366,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       edge.type = edge.type, slave = FALSE)
                 }
             }
-            changeEdgeClass <- function(i, f, t, edge.type = "VertexEdge") {
+            "changeEdgeClass" <- function(i, f, t, edge.type = "VertexEdge") {
                 force(i)
                 force(f)
                 force(t)
@@ -5378,7 +5391,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   }
                 }
             }
-            propertyEdge <- function(i, f, t, edge.type = "VertexEdge") {
+            "propertyEdge" <- function(i, f, t, edge.type = "VertexEdge") {
                 force(i)
                 force(f)
                 force(t)
@@ -5470,7 +5483,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 force(i)
                 force(vertex.type)
                 function(...) {
-                  f <- function() {
+                  "f" <- function() {
                     if ((length(selectedNodes) > 0) && (length(ReturnVal$values) > 
                       1) && ("color" %in% names(ReturnVal$values))) 
                       message("Only color changed for selected vertices; ")
@@ -5661,7 +5674,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   }
                 }
             }
-            computeEdgeLabel <- function(i, f, t, force = FALSE, 
+            "computeEdgeLabel" <- function(i, f, t, force = FALSE, 
                 edge.type = "VertexEdge") {
                 force(i)
                 force(f)
@@ -5706,7 +5719,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   }
                 }
             }
-            deleteEdgeLabel <- function(i, f, t, edge.type = "VertexEdge") {
+            "deleteEdgeLabel" <- function(i, f, t, edge.type = "VertexEdge") {
                 force(i)
                 force(f)
                 force(t)
@@ -5782,7 +5795,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   setUpdateBlocks("")
                 }
             }
-            moveBlock <- function(i, A) {
+            "moveBlock" <- function(i, A) {
                 force(i)
                 force(A)
                 Y <- NULL
@@ -5811,7 +5824,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   }
                 }
             }
-            hideBlock <- function(i, ancestor, update = TRUE) {
+            "hideBlock" <- function(i, ancestor, update = TRUE) {
                 blockReferences[i] <<- ancestor
                 for (v in seq(along = vertexList)) if (is.element(v, 
                   dg@visibleVertices)) 
@@ -5824,7 +5837,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     hideBlock(j, ancestor, update = FALSE)
                 }
             }
-            closeBlock <- function(i, update = TRUE) {
+            "closeBlock" <- function(i, update = TRUE) {
                 force(i)
                 function(...) {
                   for (v in seq(along = vertexList)) if (is.element(v, 
@@ -5844,7 +5857,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       updateEdges = TRUE)
                 }
             }
-            subOpenBlock <- function(i, update = TRUE) {
+            "subOpenBlock" <- function(i, update = TRUE) {
                 blockReferences[i] <<- i
                 if ((hiddenBlock[i] && closedBlock[i])) {
                   drawVertex(i, w = 10, vertexcolor = "Black", 
@@ -5880,7 +5893,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       updateEdges = TRUE)
                 }
             }
-            subNewVertex <- function(position, get.name = TRUE, 
+            "subNewVertex" <- function(position, get.name = TRUE, 
                 get.vertex.type = TRUE, get.how.to.compute = TRUE) {
                 n <- length(vertexList) + 1
                 if (get.name) {
@@ -5953,7 +5966,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   redraw <- TRUE
                 vertexEdges <- appendToCurrentEdges(omitEdges = FALSE, 
                   new.edge = NULL, edge.type = "VertexEdge")
-                newEdges <- list(vertexEdges = vertexEdges, factorEdges = getEdges(edge.type = "FactorEdge"), 
+                newEdges <- list(vertexEdges = vertexEdges, 
+                  factorEdges = getEdges(edge.type = "FactorEdge"), 
                   extraEdges = getEdges(edge.type = "ExtraEdge"), 
                   blockEdges = getEdges(edge.type = "BlockEdge"))
                 if (vertex.type == "selected") {
@@ -6009,7 +6023,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
                 tkconfigure(canvas, cursor = "arrow")
             }
-            newVertexXY <- function() {
+            "newVertexXY" <- function() {
                 function(x, y) {
                   X <- replaceXY(x, y, rep(50, local.N))
                   position <- c(inversProject(inversCanvasPosition(X)))
@@ -6020,8 +6034,8 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   tkfocus(canvas)
                 }
             }
-            zoom <- function(xy, factor) {
-                f <- function(title, x) print(paste(title, paste(x, 
+            "zoom" <- function(xy, factor) {
+                "f" <- function(title, x) print(paste(title, paste(x, 
                   collapse = ", ")))
                 if (is.null(xy)) 
                   xy <- c(control$width, control$height, rep(100, 
@@ -6063,23 +6077,23 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     raiseEdges = TRUE, updateEdges = TRUE, all.blockframes = TRUE)
                 setSrcLabel(GW.top$env$viewLabel)
             }
-            zoomIn <- function() {
+            "zoomIn" <- function() {
                 function(x, y) {
                   xy <- replaceXY(x, y, rep(50, local.N))
                   zoom(xy, sqrt(sqrt(2)))
                 }
             }
-            zoomOut <- function() {
+            "zoomOut" <- function() {
                 function(x, y) {
                   xy <- replaceXY(x, y, rep(50, local.N))
                   zoom(xy, 1/sqrt(sqrt(2)))
                 }
             }
-            resizeCanvas <- function() {
+            "resizeCanvas" <- function() {
                 function(x, y, ...) {
                 }
             }
-            initFactorVariables <- function(dg.factorVertexList) {
+            "initFactorVariables" <- function(dg.factorVertexList) {
                 if (length(dg.factorVertexList) > 0) {
                   itemsFactors <<- vector("list", length(dg.factorVertexList))
                   itemsFactorEdges <<- vector("list", length(dg.factorVertexList))
@@ -6099,7 +6113,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     warning("Factor-vertices should have same number of coordinates as vertices")
                 }
             }
-            initExtraVariables <- function(dg.extraList) {
+            "initExtraVariables" <- function(dg.extraList) {
                 if (length(dg.extraList) > 0) {
                   itemsExtras <<- vector("list", length(dg.extraList))
                   itemsExtraEdges <<- vector("list", length(dg.extraList))
@@ -6119,7 +6133,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     warning("Extra-vertices should have same number of coordinates as vertices")
                 }
             }
-            replaceBlocks <- function(blockList) {
+            "replaceBlocks" <- function(blockList) {
                 if (!is.null(blockList)) {
                   positionsBlocks <- Positions(blockList)
                   d <- dim(positionsBlocks)
@@ -6137,7 +6151,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   setUpdateAll()
                 }
             }
-            replaceVertices <- function(vertexList) {
+            "replaceVertices" <- function(vertexList) {
                 if (length(vertexList) > 0) {
                   namesVertices <<- Names(vertexList)
                   positionsVertices <<- Positions(vertexList)
@@ -6158,7 +6172,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     warning("New vertices should have same number of coordinates as old vertices;")
                 }
             }
-            drawFactors <- function(X.FactorEdges, X.FactorVertices) {
+            "drawFactors" <- function(X.FactorEdges, X.FactorVertices) {
                 dg@factorEdgeList <<- X.FactorEdges
                 GraphWindow@dg@factorEdgeList <<- dg@factorEdgeList
                 dg@factorVertexList <<- X.FactorVertices
@@ -6176,7 +6190,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     w = control$w, vertexcolor = control$vertexColor, 
                     vertex.type = "Factor")
             }
-            setMainMenu <- function() {
+            "setMainMenu" <- function() {
                 topMenu <- tkmenu(GW.top)
                 tkconfigure(GW.top, menu = topMenu)
                 fileMenu <- tkmenu(topMenu, tearoff = FALSE)
@@ -6189,14 +6203,15 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                     else tkpostscript(canvas, file = fileName, 
                       width = control$width, height = control$height)
                   })
-                tkadd(fileMenu, "command", label = "Quit", command = function() destroyView(txt = "Quit")())
+                tkadd(fileMenu, "command", label = "Quit", 
+                  command = function() destroyView(txt = "Quit")())
                 tkadd(fileMenu, "command", label = "Popup selected in panel", 
                   command = function() {
                     popupSelectedInPanel()
                   })
                 tkadd(topMenu, "cascade", label = "File", menu = fileMenu)
                 userMenu <- tkmenu(topMenu, tearoff = FALSE)
-                UserMainMenu <- function(i) {
+                "UserMainMenu" <- function(i) {
                   force(i)
                   function(...) {
                     sinkView(control$UserMenus[[i]], blocks = TRUE)
@@ -6205,13 +6220,13 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   }
                 }
                 if (length(control$UserMenus) > 0) 
-                  for (i in seq(along = control$UserMenus)) if (names(control$UserMenus[i]) == 
-                    "MainUser") 
+                  for (i in seq(along = control$UserMenus)) 
+                    if (names(control$UserMenus[i]) == "MainUser") 
                     tkadd(userMenu, "command", label = control$UserMenus[[i]]$label, 
                       command = UserMainMenu(i))
                 tkadd(topMenu, "cascade", label = "User", menu = userMenu)
                 variableMenu <- tkmenu(topMenu, tearoff = FALSE)
-                selectVariableDialog <- function() {
+                "selectVariableDialog" <- function() {
                   vertexlabels <- Labels[dg@visibleVertices]
                   ReturnVal <- selectDialog("Variable vertex selection entry", 
                     "Select variable", vertexlabels, top = GW.top)
@@ -6227,7 +6242,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 }
                 tkadd(variableMenu, "command", label = "Highlight vertex (for adding edge)", 
                   command = function() selectVariableDialog())
-                selectOtherDialog <- function(slave = TRUE) {
+                "selectOtherDialog" <- function(slave = TRUE) {
                   "not.in" <- function(x, l = max(x)) {
                     y <- rep(TRUE, l)
                     y[x] <- FALSE
@@ -6246,17 +6261,21 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                       subAddVertex(index, slave = slave)
                   }
                 }
-                tkadd(variableMenu, "command", label = "Select vertex among variables not displayed (slave)", 
+                tkadd(variableMenu, "command", 
+                  label = "Select vertex among variables not displayed (slave)", 
                   command = function() selectOtherDialog())
-                tkadd(variableMenu, "command", label = "Select vertex among variables not displayed (here)", 
+                tkadd(variableMenu, "command", 
+                  label = "Select vertex among variables not displayed (here)", 
                   command = function() selectOtherDialog(slave = FALSE))
               # tkadd(variableMenu, "command", label = paste("'addVertex', selected vertices and edges"), 
               #   command = function() subAddVertex(0, vertex.type = "selected", 
               #     slave = FALSE))
-                tkadd(variableMenu, "command", label = paste("'dropVertex', selected vertices and edges"), 
+                tkadd(variableMenu, "command", 
+                  label = paste("'dropVertex', selected vertices and edges"), 
                   command = function() subDropVertex(0, vertex.type = "selected", 
                     slave = FALSE))
-                tkadd(variableMenu, "command", label = "Create new variable (not displayed before selected)", 
+                tkadd(variableMenu, "command", 
+                  label = "Create new variable (not displayed before selected)", 
                   accelerator = "(~ <F3>)", command = function() subNewVertex(rep(0, 
                     local.N)))
                 tkadd(topMenu, "cascade", label = "Variables", 
@@ -6319,12 +6338,12 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 tkadd(slaveMenu, "command", label = "Same model", 
                   command = function() {
                     makeSlave(sameModel = TRUE, local.Views = dm.frameViews, 
-                      Object = NULL, label = control$label)
+                      Object = object, label = control$label)
                   })
                 tkadd(slaveMenu, "command", label = "Same model, switch 'variableFrame'", 
                   command = function() {
                     makeSlave(sameModel = TRUE, local.Views = dm.frameViews, 
-                      Object = NULL, label = control$label, variableFrame = !control$variableFrame)
+                      Object = object, label = control$label, variableFrame = !control$variableFrame)
                   })
                 tkadd(slaveMenu, "command", label = "Copy model", 
                   command = function() {
@@ -6412,7 +6431,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 expGraphMenu <- tkmenu(topMenu, tearoff = FALSE)
                 tkadd(graphMenu, "cascade", label = "Export & show", 
                   menu = expGraphMenu)
-                argsExport <- function() {
+                "argsExport" <- function() {
                   ReturnVal <- modalDialog("Args Name Entry", 
                     "Enter name for Args", "Args", top = GW.top)
                   sinkView(NULL, edges = TRUE, blocks = TRUE)
@@ -6424,7 +6443,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() argsExport())
                 tkadd(exportMenu, "command", label = "Assign 'Args' in .GlobalEnv", 
                   command = function() argsExport())
-                updateAllPositionsMenu <- function() {
+                "updateAllPositionsMenu" <- function() {
                   subSinkAllFrames("Positions", txt = "Update")
                   Str(dgm.frameModels, excludeSlots = TRUE)
                 }
@@ -6432,7 +6451,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() updateAllPositionsMenu())
                 tkadd(exportMenu, "command", label = "Update positions of all views of 'frameModels'", 
                   command = function() updateAllPositionsMenu())
-                updateAllArgumentsMenu <- function() {
+                "updateAllArgumentsMenu" <- function() {
                   subSinkAllFrames("Arguments", menuItem = NULL, 
                     vertices = TRUE, edges = TRUE, blocks = TRUE)
                   Str(dgm.frameModels, excludeSlots = TRUE)
@@ -6441,7 +6460,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() updateAllArgumentsMenu())
                 tkadd(exportMenu, "command", label = "Update all slots of 'frameModels'", 
                   command = function() updateAllArgumentsMenu())
-                latticeModelsExport <- function() {
+                "latticeModelsExport" <- function() {
                   ReturnVal <- modalDialog("Lattice for Models Name Entry", 
                     "Enter name for lattice for models", "frameModels", 
                     top = GW.top)
@@ -6456,7 +6475,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() latticeModelsExport())
                 tkadd(exportMenu, "command", label = "Assign 'frameModels' in .GlobalEnv", 
                   command = function() latticeModelsExport())
-                latticeGraphsExport <- function() {
+                "latticeGraphsExport" <- function() {
                   ReturnVal <- modalDialog("Lattice for Views Name Entry", 
                     "Enter name for lattice for views", "frameViews", 
                     top = GW.top)
@@ -6472,7 +6491,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() latticeGraphsExport())
                 tkadd(exportMenu, "command", label = "Assign 'frameViews' in .GlobalEnv", 
                   command = function() latticeGraphsExport())
-                graphWindowExport <- function() {
+                "graphWindowExport" <- function() {
                   ReturnVal <- modalDialog("GraphWindow Name Entry", 
                     "Enter name for graphWindow", "graphWindow", 
                     top = GW.top)
@@ -6487,7 +6506,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() graphWindowExport())
                 tkadd(exportMenu, "command", label = "Assign 'graphWindow' in .GlobalEnv", 
                   command = function() graphWindowExport())
-                objectExport <- function() {
+                "objectExport" <- function() {
                   ReturnVal <- modalDialog("Object Name Entry", 
                     "Enter name for object", "object", top = GW.top)
                   if (ReturnVal == "ID_CANCEL") 
@@ -6498,7 +6517,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() objectExport())
                 tkadd(expGraphMenu, "command", label = "Assign 'object' in .GlobalEnv", 
                   command = function() objectExport())
-                transformationExport <- function() {
+                "transformationExport" <- function() {
                   ReturnVal <- modalDialog("Transformation Name Entry", 
                     "Enter name for transformation", "transformation", 
                     top = GW.top)
@@ -6510,7 +6529,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() transformationExport())
                 tkadd(expGraphMenu, "command", label = "Assign 'transformation' in .GlobalEnv", 
                   command = function() transformationExport())
-                topExport <- function() {
+                "topExport" <- function() {
                   ReturnVal <- modalDialog("Top Name Entry", 
                     "Enter name for top", "top", top = GW.top)
                   if (ReturnVal == "ID_CANCEL") 
@@ -6521,7 +6540,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() topExport())
                 tkadd(expGraphMenu, "command", label = "Assign 'top' in .GlobalEnv", 
                   command = function() topExport())
-                canvasExport <- function() {
+                "canvasExport" <- function() {
                   ReturnVal <- modalDialog("Canvas Name Entry", 
                     "Enter name for canvas", "canvas", top = GW.top)
                   if (ReturnVal == "ID_CANCEL") 
@@ -6532,7 +6551,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() canvasExport())
                 tkadd(expGraphMenu, "command", label = "Assign 'canvas' in .GlobalEnv", 
                   command = function() canvasExport())
-                viewLabelExport <- function() {
+                "viewLabelExport" <- function() {
                   ReturnVal <- modalDialog("ViewLabel Name Entry", 
                     "Enter name for viewLabel", "viewLabel", 
                     top = GW.top)
@@ -6546,7 +6565,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() viewLabelExport())
                 tkadd(expVarMenu, "command", label = "'print(selectedNodesMatrix(selectedNodes()))'", 
                   command = function() print(selectedNodesMatrix()))
-                vertexListExport <- function() {
+                "vertexListExport" <- function() {
                   ReturnVal <- modalDialog("Vertices Name Entry", 
                     "Enter name for vertices", "vertexList", 
                     top = GW.top)
@@ -6563,7 +6582,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() print(asDataFrame(vertexList)))
                 tkadd(expEdgesMenu, "command", label = "'print(selectedEdgesMatrix(selectedEdges()))'", 
                   command = function() print(selectedEdgesMatrix()))
-                edgeListExport <- function() {
+                "edgeListExport" <- function() {
                   ReturnVal <- modalDialog("Edges Name Entry", 
                     "Enter name for Edges", "edgeList", top = GW.top)
                   if (ReturnVal == "ID_CANCEL") 
@@ -6577,7 +6596,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() edgeListExport())
                 tkadd(expEdgesMenu, "command", label = "'print(asDataFrame(dg@edgeList))'", 
                   command = function() print(asDataFrame(dg@edgeList)))
-                extraListExport <- function() {
+                "extraListExport" <- function() {
                   ReturnVal <- modalDialog("ExtraVertices Name Entry", 
                     "Enter name for the extravertices", "extraList", 
                     top = GW.top)
@@ -6592,7 +6611,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() extraListExport())
                 tkadd(expEdgesMenu, "command", label = "'print(asDataFrame(dg@extraList))'", 
                   command = function() print(asDataFrame(dg@extraList)))
-                extraEdgeListExport <- function() {
+                "extraEdgeListExport" <- function() {
                   ReturnVal <- modalDialog("ExtraEdges Name Entry", 
                     "Enter name for the extraedges", "extraEdgeList", 
                     top = GW.top)
@@ -6607,7 +6626,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() extraEdgeListExport())
                 tkadd(expEdgesMenu, "command", label = "'print(asDataFrame(dg@extraEdgeList))'", 
                   command = function() print(asDataFrame(dg@extraEdgeList)))
-                factorVertexListExport <- function() {
+                "factorVertexListExport" <- function() {
                   ReturnVal <- modalDialog("FactorVertices Name Entry", 
                     "Enter name for the factorvertices", "factorVertexList", 
                     top = GW.top)
@@ -6622,7 +6641,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() factorVertexListExport())
                 tkadd(expGenMenu, "command", label = "'print(asDataFrame(dg@factorVertexList))'", 
                   command = function() print(asDataFrame(dg@factorVertexList)))
-                factorEdgeListExport <- function() {
+                "factorEdgeListExport" <- function() {
                   ReturnVal <- modalDialog("FactorEdges Name Entry", 
                     "Enter name for the factoredges", "factorEdgeList", 
                     top = GW.top)
@@ -6637,7 +6656,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   command = function() factorEdgeListExport())
                 tkadd(expGenMenu, "command", label = "'print(asDataFrame(dg@factorEdgeList))'", 
                   command = function() print(asDataFrame(dg@factorEdgeList)))
-                blockListExport <- function() {
+                "blockListExport" <- function() {
                   ReturnVal <- modalDialog("Blocklist Name Entry", 
                     "Enter name for the blocklist", "blockList", 
                     top = GW.top)
@@ -6653,7 +6672,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                 tkadd(expBlockMenu, "command", label = "'print(asDataFrame(blockList))'", 
                   command = function() print(asDataFrame(blockList)))
                 if (!is.null(blockTree)) {
-                  blockTreeExport <- function() {
+                  "blockTreeExport" <- function() {
                     ReturnVal <- modalDialog("Blocktree Name Entry", 
                       "Enter name for the blocktree", "blockTree", 
                       top = GW.top)
@@ -6667,7 +6686,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
                   tkadd(exportMenu, "command", label = "Assign 'blockTree' in .GlobalEnv", 
                     command = function() blockTreeExport())
                 }
-                blockEdgeListExport <- function() {
+                "blockEdgeListExport" <- function() {
                   ReturnVal <- modalDialog("BlockEdges Name Entry", 
                     "Enter name for the blockedges", "blockEdgeList", 
                     top = GW.top)
@@ -6699,7 +6718,7 @@ function (vertexList = NULL, blockList = NULL, dg = NULL, object = NULL,
             updateCountModel <- updateCountModelMain
             updateWindow <- TRUE
             args <- list(...)
-            extract <- function(x, y = x, z = "$", a = "graphComponents", 
+            "extract" <- function(x, y = x, z = "$", a = "graphComponents", 
                 b = paste(a, z, y, collapse = "")) {
                 eval(parse(text = paste(c("if (is.null(", x, 
                   ") && !is.null(", b, ")) {", x, " <<- ", b, 

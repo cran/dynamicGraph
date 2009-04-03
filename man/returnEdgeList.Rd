@@ -26,7 +26,7 @@
 % \alias{Oriented,dg.list-method}
 % \alias{Oriented<-,dg.list-method}
 
-\title{Class "dg.VertexEdgeList": The edge list }
+\title{Class dg.VertexEdgeList: The edge list }
 \description{
  Return a list of edges, each of class containing \code{dg.VertexEdge}.
 

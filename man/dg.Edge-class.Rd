@@ -18,7 +18,7 @@
 
 % \alias{propertyDialog,dg.Edge-method}
 
-\title{Class "dg.Edge" }
+\title{Class dg.Edge}
 
 \description{  A skeleton class for the classes of edges. }
 

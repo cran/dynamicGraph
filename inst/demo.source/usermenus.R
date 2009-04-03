@@ -149,7 +149,7 @@ your.LabelAllEdges <- function(object, slave = FALSE, ...)
              mdsX <- cmdscale(X, k = N, add = TRUE, eig = TRUE, x.ret = TRUE)
              # mdsX <- isoMDS(X, k = N)
              M <- max(abs(mdsX$points))
-             Positions(localArguments$dg@vertexList) <<- mdsX$points / M * 45
+             Positions(localArguments$dg@vertexList) <- mdsX$points / M * 45
 
              # replaceVertexList(localArguments$vertexList, 
              #                   frameModels = localArguments$frameModels, 

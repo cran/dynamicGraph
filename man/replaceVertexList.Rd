@@ -42,6 +42,6 @@ replaceVertexList(vertexList, frameModels = NULL,
 
 % \seealso{  }
 
-\examples{ }
+% \examples{ }
 
 \keyword{classes}

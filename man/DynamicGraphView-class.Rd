@@ -38,7 +38,7 @@
 \alias{MoralDynamicGraphView-class}
 \alias{SimpleDynamicGraphView-class}
 
-\title{Class "DynamicGraphView" }
+\title{Class DynamicGraphView}
 
 \description{ The class for views of the models of the dynamicGraph. }
 

@@ -36,6 +36,6 @@ replaceBlockList(blockList, frameModels = NULL,
 
 % \seealso{  }
 
-\examples{ }
+% \examples{ }
 
 \keyword{classes}

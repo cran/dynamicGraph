@@ -552,7 +552,7 @@ Claus Dethlefsen for testing early versions of this package on DEAL.
      The method \code{graphEdges} of the model object is for
      returning an object of class \code{\link{dg.graphedges-class}}
      to draw in the view, depending on the viewType.
-     The method\ code{setGraphEdges} of the model object
+     The method \code{setGraphEdges} of the model object
      is called on the model object when the model is modified.
 
      % By \code{returnLink} set to TRUE the functions

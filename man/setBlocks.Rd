@@ -1,6 +1,6 @@
 \name{setBlocks}
 
-\title{Class "dg.BlockList": The block list}
+\title{Class dg.BlockList: The block list}
 
 \alias{setBlocks}
 \alias{blockList}

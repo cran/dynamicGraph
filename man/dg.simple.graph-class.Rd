@@ -13,7 +13,7 @@
 \alias{replaceModel,dg.simple.graph-method}
 \alias{replaceView,dg.simple.graph-method}
 
-\title{Class "dg.simple.graph"}
+\title{Class dg.simple.graph}
 
 \description{  A simple representation of a graph for dynamicGraph. 
                Vertices are represented by text-strings for names or numbers

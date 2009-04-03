@@ -35,7 +35,7 @@
 \alias{oriented}
 \alias{oriented<-}
 
-\title{Class "dg.VertexEdge" }
+\title{Class dg.VertexEdge}
 
 \description{  The class for edges between vertices. }
 

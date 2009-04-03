@@ -6,7 +6,7 @@
 \alias{dg.FactorEdgeList-class}
 \alias{initialize,dg.FactorEdgeList-method}
 
-\title{Class "dg.FactorEdgeList": The factor edge list }
+\title{Class dg.FactorEdgeList: The factor edge list }
 
 \description{
  Return a list of factor edges, each of class \code{dg.FactorEdge}.

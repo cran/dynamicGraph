@@ -11,8 +11,8 @@
 \alias{dg.QuadraticGenerator-class}
 \alias{draw,dg.QuadraticGenerator-method}
 
-\title{Classses "dg.Generator", "dg.DiscreteGenerator",
-       "dg.Linear"\-"Generator", and "dg.QuadraticGenerator" }
+\title{Classes dg.Generator, dg.DiscreteGenerator,
+       dg.Linear\-Generator, and dg.QuadraticGenerator}
 
 \description{ The class for factor vertices for general terms,
  discrete terms, linear terms, and quadratic terms. 

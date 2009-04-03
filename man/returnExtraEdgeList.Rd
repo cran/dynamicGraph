@@ -6,7 +6,7 @@
 \alias{dg.ExtraEdgeList-class}
 \alias{initialize,dg.ExtraEdgeList-method}
 
-\title{Class "dg.ExtraEdgeList": The extra edge list }
+\title{Class dg.ExtraEdgeList: The extra edge list }
 
 \description{
  Return a list of extra edges, each of class \code{dg.ExtraEdge}.

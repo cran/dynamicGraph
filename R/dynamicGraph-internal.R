@@ -24,15 +24,21 @@ function (dg, modelObject = NULL, modelObjectName = NULL, frameModels = NULL,
     }
     if (is.null(control)) 
         control <- frameModels@control
+    label <- control$label
+    if (any(slotNames(modelObject) == ".title")) {
+      label <- modelObject@.title
+    }
     if (length(formals(drawModel)) == 0) {
         warning("Invalid function 'drawModel' of arguments")
     }
     else drawModel(frameModels = frameModels, frameViews = frameViews, 
         graphWindow = graphWindow, dg = dg, object = modelObject, 
-        objectName = modelObjectName, control = control, ...)
+        objectName = modelObjectName, control = control, title = label, ...)
 }
+
 ".addView" <-
-function (dg, frameModels = NULL, frameViews = frameModels@models[[modelIndex]], 
+function (dg, frameModels = NULL, 
+    frameViews = frameModels@models[[modelIndex]], 
     modelIndex = 1, graphWindow = frameViews@graphs[[viewIndex]], 
     viewIndex = 1, overwrite = FALSE, control = NULL, ...) 
 {
@@ -53,17 +59,18 @@ function (dg, frameModels = NULL, frameViews = frameModels@models[[modelIndex]],
         graphWindow = graphWindow, dg = dg, control = control, 
         Arguments = localArguments)
 }
+
 ".asDataFrame" <-
 function (v, setRowLabels = FALSE, shortNames = TRUE, excludeSlots = FALSE) 
 {
     ".removeNull" <- function(x) {
         result <- NULL
-        for (i in seq(along = x)) if (!is.null(x[[i]]) && (length(x[[i]] > 
-            0))) 
+        for (i in seq(along = x)) 
+            if (!is.null(x[[i]]) && (length(x[[i]] > 0))) 
             result <- append(result, list(x[[i]]))
         return(result)
     }
-    f <- function(name, v) {
+    "f" <- function(name, v) {
         if (name == "class") 
             x <- lapply(v, function(i) slot(i, name))
         else x <- lapply(v, function(i) if (name %in% slotNames(i)) 
@@ -123,6 +130,7 @@ function (v, setRowLabels = FALSE, shortNames = TRUE, excludeSlots = FALSE)
     }
     return(Y)
 }
+
 ".asRow" <-
 function (positions) 
 if (is.null(dim(positions))) return(positions) else return(t(positions))
@@ -133,14 +141,15 @@ function (x, n = nchar(x), sep = ".")
     b <- p[length(p)] - 1
     return(paste(substring(x, 1:b, 1:b), collapse = ""))
 }
+
 ".cliquesFromEdges" <-
 function (Edges, Vertices, VisibleVertices) 
 {
     require(ggm)
     e <- NodeIndices(Edges)
     if (length(e) > 0) {
-        e <- lapply(e, function(egde) if (sum(abs(egde)) > 0) 
-            egde)
+        e <- lapply(e, function(egde) 
+            if (sum(abs(egde)) > 0) egde)
         e <- .removeNull(e)
     }
     else e <- NULL
@@ -161,10 +170,11 @@ function (Edges, Vertices, VisibleVertices)
     }
     return(factors)
 }
+
 ".dashReplaceMethod" <-
 function (x, value) 
 {
-    abort <- function() {
+    "abort" <- function() {
         message("Invalid DASH PATTERN, see the Tcl/tk Reference Manual;")
         value <<- x@dash
     }
@@ -195,6 +205,7 @@ function (x, value)
     x@dash <- value
     x
 }
+
 ".Dg.newenv" <-
 function (ID) 
 {
@@ -219,14 +230,16 @@ function (parent = .DgRoot, ...)
         assign("parent", parent, envir = win$env)
         win
     }
-    .Dg.ID <- function(win) win$ID
+    ".Dg.ID" <- function(win) win$ID
     w <- .Dg.subenv(parent)
     ID <- .Dg.ID(w)
     w
 }
+
 ".emptyDgList" <-
 function (type = "dg.list", n = 0) 
 new(type, vector("list", n))
+
 ".emptyToNull" <-
 function (x) 
 {
@@ -234,11 +247,13 @@ function (x)
         return(NULL)
     else return(x)
 }
+
 ".First.lib" <-
 function (lib, pkg) 
 {
     # .onLoad.dynamicGraph()
 }
+
 ".get.env.frameModels" <-
 function (id = frameModels@id.env, frameModels = NULL, env = .DgRoot$env) 
 {
@@ -254,9 +269,12 @@ function (id = frameModels@id.env, frameModels = NULL, env = .DgRoot$env)
         NULL
     }
 }
+
 ".get.env.frameViews" <-
-function (id = frameViews@id.env, frameViews = NULL, env = .get.env.frameModels(id = id.fm, 
-    env = .DgRoot$env)$env, id.fm = if (is.null(frameModels)) .but.last(id) else frameModels@id.env, 
+function (id = frameViews@id.env, frameViews = NULL, 
+    env = .get.env.frameModels(id = id.fm, 
+    env = .DgRoot$env)$env, 
+    id.fm = if (is.null(frameModels)) .but.last(id) else frameModels@id.env, 
     frameModels = NULL) 
 {
     if (is.null(env)) {
@@ -271,11 +289,16 @@ function (id = frameViews@id.env, frameViews = NULL, env = .get.env.frameModels(
         NULL
     }
 }
+
 ".get.env.graphWindow" <-
-function (id = graphWindow@id.env, graphWindow = NULL, env = .get.env.frameViews(id = id.fv, 
-    env = env.fm)$env, id.fv = if (is.null(frameViews)) .but.last(id) else frameViews@id.env, 
-    frameViews = NULL, env.fm = .get.env.frameModels(id = id.fm, 
-        env = .DgRoot$env)$env, id.fm = if (is.null(frameModels)) .but.last(.but.last(id)) else frameModels@id.env, 
+function (id = graphWindow@id.env, graphWindow = NULL, 
+    env = .get.env.frameViews(id = id.fv, 
+    env = env.fm)$env, 
+    id.fv = if (is.null(frameViews)) .but.last(id) else frameViews@id.env, 
+    frameViews = NULL, 
+    env.fm = .get.env.frameModels(id = id.fm, env = .DgRoot$env)$env, 
+    id.fm = if (is.null(frameModels)) .but.last(.but.last(id)) 
+            else frameModels@id.env, 
     frameModels = NULL) 
 {
     if (is.null(env)) {
@@ -290,6 +313,7 @@ function (id = graphWindow@id.env, graphWindow = NULL, env = .get.env.frameViews
         NULL
     }
 }
+
 ".get.redrawView" <-
 function (frameViews, localArguments) 
 {
@@ -304,9 +328,11 @@ function (frameViews, localArguments)
         redrawView <- localArguments$redrawView
     return(redrawView)
 }
+
 ".is.dgenv" <-
 function (x) 
 inherits(x, "dgenv")
+
 ".IsEmpty" <-
 function (x) 
 {
@@ -315,43 +341,60 @@ function (x)
         return(TRUE)
     else return(FALSE)
 }
+
 ".newDgGraph" <-
-function (viewType = "Simple", vertexList = NULL, visibleVertices = 1:length(vertexList), 
+function (viewType = "Simple", vertexList = NULL, 
+    visibleVertices = 1:length(vertexList), 
     visibleBlocks = 1:length(blockList), oriented = NA, edgeList = NULL, 
     blockList = NULL, blockEdgeList = NULL, factorVertexList = NULL, 
     factorEdgeList = NULL, extraList = NULL, extraEdgeList = NULL, 
     ...) 
 {
-    new("dg.graph", viewType = viewType, vertexList = .nullToEmpty(vertexList), 
-        visibleVertices = .nullToEmpty(visibleVertices), visibleBlocks = .nullToEmpty(visibleBlocks), 
-        edgeList = .nullToList(edgeList, type = "dg.VertexEdgeList"), 
-        oriented = oriented, blockList = .nullToList(blockList, 
-            type = "dg.BlockList"), blockEdgeList = .nullToList(blockEdgeList, 
-            type = "dg.BlockEdgeList"), factorVertexList = .nullToList(factorVertexList, 
-            type = "dg.FactorVertexList"), factorEdgeList = .nullToList(factorEdgeList, 
-            type = "dg.FactorEdgeList"), extraList = .nullToList(extraList, 
-            type = "dg.VertexList"), extraEdgeList = .nullToList(extraEdgeList, 
+    new("dg.graph", viewType = viewType, 
+        vertexList = .nullToEmpty(vertexList), 
+        visibleVertices = .nullToEmpty(visibleVertices), 
+        visibleBlocks = .nullToEmpty(visibleBlocks), 
+        edgeList = .nullToList(edgeList,  
+            type = "dg.VertexEdgeList"), 
+        oriented = oriented, 
+        blockList = .nullToList(blockList,  
+            type = "dg.BlockList"), 
+        blockEdgeList = .nullToList(blockEdgeList,  
+            type = "dg.BlockEdgeList"), 
+        factorVertexList = .nullToList(factorVertexList,  
+            type = "dg.FactorVertexList"), 
+        factorEdgeList = .nullToList(factorEdgeList, 
+            type = "dg.FactorEdgeList"), 
+        extraList = .nullToList(extraList, 
+            type = "dg.VertexList"), 
+        extraEdgeList = .nullToList(extraEdgeList, 
             type = "dg.ExtraEdgeList"))
 }
+
 ".newDgGraphEdges" <-
-function (viewType = "Simple", vertexList = NULL, visibleVertices = 1:length(vertexList), 
+function (viewType = "Simple", vertexList = NULL,  
+   visibleVertices = 1:length(vertexList), 
     visibleBlocks = 1:length(blockList), oriented = NA, edgeList = NULL, 
     blockList = NULL, blockEdgeList = NULL, factorVertexList = NULL, 
     factorEdgeList = NULL, extraList = NULL, extraEdgeList = NULL, 
     ...) 
 {
-    new("dg.graphedges", viewType = viewType, visibleVertices = .nullToEmpty(visibleVertices), 
-        visibleBlocks = .nullToEmpty(visibleBlocks), edgeList = .nullToList(edgeList, 
-            type = "dg.VertexEdgeList"), oriented = oriented, 
+    new("dg.graphedges", viewType = viewType, 
+        visibleVertices = .nullToEmpty(visibleVertices), 
+        visibleBlocks = .nullToEmpty(visibleBlocks), 
+        edgeList = .nullToList(edgeList, type = "dg.VertexEdgeList"), 
+        oriented = oriented, 
         blockEdgeList = .nullToList(blockEdgeList, type = "dg.BlockEdgeList"), 
         factorVertexList = .nullToList(factorVertexList, type = "dg.FactorVertexList"), 
         factorEdgeList = .nullToList(factorEdgeList, type = "dg.FactorEdgeList"), 
         extraList = .nullToList(extraList, type = "dg.VertexList"), 
         extraEdgeList = .nullToList(extraEdgeList, type = "dg.ExtraEdgeList"))
 }
+
 ".newDgSimpleGraph" <-
 function (vertex.names = character(), labels = vertex.names, 
-    types = character(), from = vector(), to = vector(), edge.list = list(NULL), 
+    types = character(), from = vector(), to = vector(), 
+    edge.list = list(NULL), 
     edge.types = character(), blocks = list(NULL), block.tree = list(NULL), 
     oriented = NA, factors = list(NULL), texts = character(), 
     extra.from = vector(), extra.to = vector(), extra.edge.list = list(NULL), 
@@ -378,6 +421,7 @@ function (vertex.names = character(), labels = vertex.names,
             list(NULL)
         else extra.edge.list, viewType = viewType)
 }
+
 ".newDynamicGraphModelObject" <-
 function (object, model = list(object), graphs = list(NULL), 
     label = "", index = 0, parent = "", env = .Dg.toplevel(parent)) 
@@ -385,6 +429,7 @@ function (object, model = list(object), graphs = list(NULL),
     return(new("DynamicGraphModel", id.env = env$ID, label = label, 
         index = index, model = model, graphs = graphs))
 }
+
 ".newDynamicGraphObject" <-
 function (vertices, blocks = list(NULL), blockTree = list(NULL), 
     models = list(NULL), label = "", control = dg.control(), 
@@ -394,44 +439,55 @@ function (vertices, blocks = list(NULL), blockTree = list(NULL),
         list()
     else return(x)
     return(new("DynamicGraph", id.env = env$ID, label = label, 
-        vertices = vertices, blocks = .nullToList(blocks, type = "dg.BlockList"), 
+        vertices = vertices, 
+        blocks = .nullToList(blocks, type = "dg.BlockList"), 
         control = control, models = models))
 }
+
 ".nullToEmpty" <-
 function (x) 
 if (is.null(x)) return(numeric()) else return(x)
+
 ".nullToList" <-
 function (x, type = "dg.list") 
 if (is.null(x)) .emptyDgList(type) else return(x)
+
 ".onAttach" <-
 function (lib, pkg) 
 {
     require(tcltk)
 }
+
 ".onLoad" <-
 function (lib, pkg) 
 {
     # .onLoad.dynamicGraph()
 }
+
 ".onLoad.dynamicGraph" <-
 function () 
 {
 }
+
 ".onLoad.dynamicGraphInterface" <-
 function () 
 {
 }
+
 ".propertyDialog" <-
-function (object, classes = NULL, title = class(object), sub.title = label(object), 
+function (object, classes = NULL, title = class(object), 
+    sub.title = label(object), 
     name.object = name(object), okReturn = TRUE, fixedSlots = NULL, 
     difficultSlots = NULL, top = NULL, entryWidth = 20, do.grab = FALSE) 
 {
     "subSelectDialog" <- function(dlg, itemNames, init = 0, title = title, 
         background = "white", subtitle = sub.title) {
-        scr <- tkscrollbar(dlg, repeatinterval = 5, command = function(...) tkyview(tl, 
-            ...))
-        tl <- tklistbox(dlg, height = length(itemNames), selectmode = "single", 
-            yscrollcommand = function(...) tkset(scr, ...), background = background)
+        scr <- tkscrollbar(dlg, repeatinterval = 5, 
+                           command = function(...) tkyview(tl, ...))
+        tl <- tklistbox(dlg, height = length(itemNames), 
+                        selectmode = "single", 
+                        yscrollcommand = function(...) 
+                                 tkset(scr, ...), background = background)
         tkgrid(tklabel(dlg, text = subtitle), tl, scr)
         tkgrid.configure(scr, rowspan = length(itemNames), sticky = "nsw")
         for (i in (1:length(itemNames))) tkinsert(tl, "end", 
@@ -480,10 +536,8 @@ function (object, classes = NULL, title = class(object), sub.title = label(objec
             else r <- tclvalue(t)
         })
         if (!is.null(classes)) 
-            r.class <<- as.numeric(tkcurselection(t.class)) + 
-                1
-        if ((length(r.class) == 0) && !(length(init.class) == 
-            0)) 
+            r.class <<- as.numeric(tkcurselection(t.class)) + 1
+        if ((length(r.class) == 0) && !(length(init.class) == 0)) 
             r.class <<- init.class + 1
         tkgrab.release(dlg)
         tkdestroy(dlg)
@@ -513,19 +567,21 @@ function (object, classes = NULL, title = class(object), sub.title = label(objec
         if (slot.name %in% fixedSlots) 
             color <- "DarkGrey"
         if (is.language(slot.value)) 
-            t <- subTextDialog(dlg, subtitle = slot.name, entryInit = paste(slot.value), 
+            t <- subTextDialog(dlg, subtitle = slot.name, 
+                entryInit = paste(slot.value), 
                 entryWidth = entryWidth, background = color)
         else if (size > 1) 
-            t <- subListDialog(dlg, subtitle = slot.name, entryInit = slot.value, 
-                entryWidth = entryWidth, background = color)
-        else t <- subTextDialog(dlg, subtitle = slot.name, entryInit = slot.value, 
+            t <- subListDialog(dlg, subtitle = slot.name, 
+                               entryInit = slot.value, 
+                               entryWidth = entryWidth, background = color)
+        else t <- subTextDialog(dlg, subtitle = slot.name, 
+                                entryInit = slot.value, 
             entryWidth = entryWidth, background = color)
         return(t)
     })
     init.class <- list()
     if (!is.null(classes)) {
-        init.class <- which(class(object) == classes[, 2]) - 
-            1
+        init.class <- which(class(object) == classes[, 2]) - 1
         if (length(init.class) == 0) 
             t.class <- subSelectDialog(dlg, class(object), init = NULL, 
                 title = title, subtitle = "Class:", background = "grey")
@@ -556,10 +612,10 @@ function (object, classes = NULL, title = class(object), sub.title = label(objec
     })
     tkwait.window(dlg)
     Result <- list()
-    isCancel <- function(x) (is.null(x))
+    "isCancel" <- function(x) (is.null(x))
     old.slot.names <- slotNames(object)
-    if (!is.null(classes) && !isCancel(r.class) && !(length(init.class) == 
-        0) && (init.class != r.class - 1)) {
+    if (!is.null(classes) && !isCancel(r.class) && !(length(init.class) == 0) 
+        && (init.class != r.class - 1)) {
         if ("class" %in% difficultSlots) 
             message(paste("Trying to change the difficult slot '", 
                 "class", "' ; "))
@@ -632,6 +688,7 @@ function (object, classes = NULL, title = class(object), sub.title = label(objec
     }
     return(list(object = object, values = Result))
 }
+
 ".removeNull" <-
 function (x) 
 {
@@ -641,6 +698,7 @@ function (x)
     class(result) <- class(x)
     return(result)
 }
+
 ".StrBlockTree" <-
 function (tree, title = "blockTree") 
 {
@@ -669,6 +727,7 @@ function (tree, title = "blockTree")
         subStrBlockTree(tree, 1, 0, 0)
     invisible()
 }
+
 ".visit.envs" <-
 function (X = ls(.DgRoot$env, all.names = all.names), all.names = TRUE) 
 {

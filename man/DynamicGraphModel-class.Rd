@@ -22,7 +22,7 @@
 
 % \newpage
 
-\title{Class "DynamicGraphModel" }
+\title{Class DynamicGraphModel}
 
 \description{  The class for the models of the dynamicGraph. }
 

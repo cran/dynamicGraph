@@ -33,7 +33,7 @@
 \alias{extraList}
 % \alias{extraEdgeList}
 
-\title{Class "dg.graph"}
+\title{Class dg.graph}
 
 \description{ The representation of a graph for dynamicGraph. 
               Vertices, blocks, viewType, edges, etc. 

@@ -4,8 +4,8 @@ function (edge.list, vertices, blocks, visibleBlocks = 1:length(blocks),
 {
     "newBlockEdgeList" <- function(list) return(new("dg.BlockEdgeList", 
         nodeList = list))
-    which.edge <- function(e) unlist(lapply(result, function(i) all(i@vertex.indices == 
-        e)))
+    "which.edge" <- function(e) 
+        unlist(lapply(result, function(i) all(i@vertex.indices == e)))
     vertex.names <- Names(vertices)
     if (is.null(edge.list)) 
         edge.list <- vector("list", length = 0)
@@ -22,7 +22,8 @@ function (edge.list, vertices, blocks, visibleBlocks = 1:length(blocks),
             if (!is.numeric(edge)) 
                 edge <- match(edge, vertex.names)
             strata <- unlist(lapply(edge, function(i) stratum(vertices[[i]])))
-            blockindex <- unlist(lapply(edge, function(i) blockindex(vertices[[i]])))
+            blockindex <- unlist(lapply(edge, function(i) 
+                                                   blockindex(vertices[[i]])))
             if ((blockindex[1] != blockindex[2]) && (length(strata) > 
                 1) && !any(is.na(strata))) {
                 if (strata[1] < strata[2]) {
@@ -37,9 +38,8 @@ function (edge.list, vertices, blocks, visibleBlocks = 1:length(blocks),
                   e1 <- edge[2]
                   e2 <- edge[1]
                 }
-                f <- function(x) if (!(any(which.edge(x)))) {
-                  block.vertices <- lapply(x, function(i) if (i < 
-                    0) 
+                "f" <- function(x) if (!(any(which.edge(x)))) {
+                  block.vertices <- lapply(x, function(i) if (i < 0) 
                     blocks[[-i]]
                   else vertices[[i]])
                   if (color == "default") 
@@ -62,25 +62,25 @@ function (edge.list, vertices, blocks, visibleBlocks = 1:length(blocks),
                 if (b2 != 0) {
                   f(c(e1, -b2))
                   if (any(blocks[[b2]]@ancestors != 0)) 
-                    for (i in blocks[[b2]]@ancestors) if ((i != 
-                      0) && !is.element(i, b1.plus.ancestors)) 
+                    for (i in blocks[[b2]]@ancestors) 
+                      if ((i != 0) && !is.element(i, b1.plus.ancestors)) 
                       f(c(e1, -i))
                 }
                 if (b1 != 0) {
                   f(c(-b1, e2))
                   if (any(blocks[[b1]]@ancestors != 0)) 
-                    for (i in blocks[[b1]]@ancestors) if ((i != 
-                      0) && !is.element(i, b2.plus.ancestors)) 
+                    for (i in blocks[[b1]]@ancestors) 
+                      if ((i != 0) && !is.element(i, b2.plus.ancestors)) 
                       f(c(-i, e2))
                 }
                 if ((b1 != 0) && (b2 != 0)) {
                   f(c(-b1, -b2))
-                  if ((any(blocks[[b1]]@ancestors != 0)) && (any(blocks[[b2]]@ancestors != 
-                    0))) 
-                    for (i in b1.plus.ancestors) if ((i != 0) && 
-                      !is.element(i, b2.plus.ancestors)) 
-                      for (j in b2.plus.ancestors) if ((j != 
-                        0) && !is.element(j, b1.plus.ancestors)) 
+                  if ((any(blocks[[b1]]@ancestors != 0)) && 
+                      (any(blocks[[b2]]@ancestors != 0))) 
+                    for (i in b1.plus.ancestors) 
+                      if ((i != 0) && !is.element(i, b2.plus.ancestors)) 
+                      for (j in b2.plus.ancestors) 
+                        if ((j != 0) && !is.element(j, b1.plus.ancestors)) 
                         f(c(-i, -j))
                 }
             }

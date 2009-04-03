@@ -41,7 +41,7 @@
 \alias{descendants}
 \alias{descendants<-}
 
-\title{Class "dg.Block" }
+\title{Class dg.Block}
 
 \description{  The class for the blocks. }
 

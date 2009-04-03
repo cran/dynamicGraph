@@ -36,7 +36,7 @@
 \alias{visibleVertices<-,dg.graphedges-method}
 \alias{visibleVertices,dg.graphedges-method}
 
-\title{Class "dg.graphedges"}
+\title{Class dg.graphedges}
 
 \description{ The representation of a graph for dynamicGraph. 
               Vertices, blocks, viewType, edges, etc. 

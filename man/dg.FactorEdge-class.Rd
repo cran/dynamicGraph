@@ -9,7 +9,7 @@
 
 \alias{dg.FactorEdge}
 
-\title{Class "dg.FactorEdge" }
+\title{Class dg.FactorEdge}
 
 \description{  The class for the bipartite graph edges
                between vertices and factors. }

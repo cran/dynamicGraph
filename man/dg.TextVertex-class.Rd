@@ -5,7 +5,7 @@
 \alias{dg.TextVertex-class}
 \alias{draw,dg.TextVertex-method}
 
-\title{Class "dg.TextVertex"}
+\title{Class dg.TextVertex}
 
 \description{ The class for vertices for setting text string
 	      in the graph window.

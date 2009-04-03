@@ -15,7 +15,7 @@
 
 \alias{setSlots}
 
-\title{Class "dg.Node" }
+\title{Class dg.Node}
 
 \description{  A skeleton class for the classes of vertices,
  edges and block objects. }

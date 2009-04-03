@@ -54,7 +54,7 @@
 \alias{addToPopups}
 \alias{propertyDialog}
 
-\title{Class "dg.Vertex" }
+\title{Class dg.Vertex}
 
 \description{  A skeleton class for the classes of vertices. }
 

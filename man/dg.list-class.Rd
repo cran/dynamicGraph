@@ -87,7 +87,7 @@
 \alias{Str,list-method}
 \alias{Str,dg.list-method}
 
-\title{Class "dg.list", "dg.NodeList", and "dg.EdgeList" }
+\title{Classes dg.list, dg.NodeList, and dg.EdgeList}
 
 \description{ A class for lists of vertices, factors, blocks, and edges. }
 

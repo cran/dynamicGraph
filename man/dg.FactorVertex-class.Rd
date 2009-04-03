@@ -18,7 +18,7 @@
 \alias{nodeIndices}
 \alias{nodeIndices<-}  
 
-\title{Class "dg.FactorVertex" }
+\title{Class dg.FactorVertex}
 
 \description{ A skeleton class for the classes of factor vertices. }
 

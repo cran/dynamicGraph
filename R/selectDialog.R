@@ -5,15 +5,16 @@ function (title = "Selection entry", question = "Select item",
     "subSelectDialog" <- function(popup, itemNames, title = title, 
         subtitle = question) {
         tkwm.title(popup, title)
-        scr <- tkscrollbar(popup, repeatinterval = 5, command = function(...) tkyview(tl, 
-            ...))
+        scr <- tkscrollbar(popup, repeatinterval = 5, 
+                           command = function(...) tkyview(tl, ...))
         tl <- tklistbox(popup, height = 4, selectmode = "single", 
-            yscrollcommand = function(...) tkset(scr, ...), background = "white")
+                        yscrollcommand = function(...) tkset(scr, ...), 
+                        background = "white")
         tkgrid(tklabel(popup, text = subtitle))
         tkgrid(tl, scr)
         tkgrid.configure(scr, rowspan = 4, sticky = "nsw")
-        for (i in (1:length(itemNames))) tkinsert(tl, "end", 
-            itemNames[i])
+        for (i in (1:length(itemNames))) 
+            tkinsert(tl, "end", itemNames[i])
         tkselection.set(tl, 0)
         return(tl)
     }
@@ -24,7 +25,7 @@ function (title = "Selection entry", question = "Select item",
     tkfocus(popup)
     ReturnVal <- returnValOnCancel
     tl <- subSelectDialog(popup, itemNames, title = title, subtitle = question)
-    OnOK <- function() {
+    "OnOK" <- function() {
         ReturnVal <<- as.numeric(tkcurselection(tl)) + 1
         tkgrab.release(popup)
         tkdestroy(popup)

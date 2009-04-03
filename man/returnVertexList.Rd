@@ -48,7 +48,7 @@
 % \alias{Visible,dg.list-method}
 % \alias{Visible<-,dg.list-method}
 
-\title{Class "dg.VertexList": The vertex list }
+\title{Class dg.VertexList: The vertex list }
 
 \description{
   Return a list of vertices of classes containing the class \code{dg.Vertex}.

@@ -10,7 +10,7 @@
 
 \alias{newDefaultTestObject}
 
-\title{Class "dg.Test" }
+\title{Class dg.Test}
 
 \description{  An example class for the test object 
 	       for the model object of dynamicGraph. }

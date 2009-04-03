@@ -13,7 +13,7 @@
 \alias{dg.BlockEdge}.
 
 
-\title{Class "dg.BlockEdge" }
+\title{Class dg.BlockEdge}
 
 \description{  The class for edges between blocks and for
                edges between vertices and blocks. }

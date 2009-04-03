@@ -6,7 +6,7 @@
 \alias{dg.BlockEdgeList-class}
 \alias{initialize,dg.BlockEdgeList-method}
 
-\title{Class "dg.BlockEdgeList": The block edge list }
+\title{Class dg.BlockEdgeList: The block edge list }
 
 \description{
  Return a list of block edges, each of class \code{dg.BlockEdge}.

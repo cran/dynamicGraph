@@ -1,25 +1,24 @@
 "simpleGraphToGraph" <-
-function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...), 
-    ...) 
+function (sdg = NULL, frameModels = NULL, dg = NULL, 
+          control = dg.control(...), ...) 
 {
     if ((is.null(sdg))) 
         sdg <- .newDgSimpleGraph(...)
     else if ((class(sdg) != "dg.simple.graph")) 
         sdg <- .newDgSimpleGraph(vertex.names = sdg, ...)
-    if (!is.null(sdg@types) && (length(sdg@types) > 0) && (sdg@types == 
-        "")) 
+    if (!is.null(sdg@types) && (length(sdg@types) > 0) && (sdg@types == "")) 
         sdg@types <- character()
     if (length(sdg@from) == 0) 
         sdg@from <- vector()
     if (length(sdg@to) == 0) 
         sdg@to <- vector()
-    if (!is.null(sdg@edge.types) && (length(sdg@edge.types) > 
-        0) && (sdg@edge.types == "")) 
+    if (!is.null(sdg@edge.types) && 
+        (length(sdg@edge.types) > 0) && (sdg@edge.types == "")) 
         sdg@edge.types <- character()
     if (.IsEmpty(sdg@edge.list)) 
         sdg@edge.list <- list(NULL)
-    if (!is.null(sdg@labels) && (length(sdg@labels) > 0) && (sdg@labels == 
-        "")) 
+    if (!is.null(sdg@labels) && 
+        (length(sdg@labels) > 0) && (sdg@labels == "")) 
         sdg@labels <- sdg@vertex.names
     if (.IsEmpty(sdg@blocks)) 
         sdg@blocks <- list(NULL)
@@ -27,8 +26,7 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
         sdg@block.tree <- list(NULL)
     if (.IsEmpty(sdg@factors)) 
         sdg@factors <- list(NULL)
-    if (!is.null(sdg@texts) && (length(sdg@texts) > 0) && (sdg@texts == 
-        "")) 
+    if (!is.null(sdg@texts) && (length(sdg@texts) > 0) && (sdg@texts == "")) 
         sdg@texts <- character()
     if (length(sdg@extra.from) == 0) 
         sdg@extra.from <- vector()
@@ -36,13 +34,12 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
         sdg@extra.to <- vector()
     if (.IsEmpty(sdg@extra.edge.list)) 
         sdg@extra.edge.list <- list(NULL)
-    two.to.pairs <- function(from, to) {
+    "two.to.pairs" <- function(from, to) {
         edge.list <- vector("list", length(to))
-        for (j in seq(along = to)) edge.list[[j]] <- c(from[j], 
-            to[j])
+        for (j in seq(along = to)) edge.list[[j]] <- c(from[j], to[j])
         return(edge.list)
     }
-    check.names <- function(x, label) if (length(x) > 0) 
+    "check.names" <- function(x, label) if (length(x) > 0) 
         if (!is.numeric(x)) {
             x <- unique(sort(x))
             x.indices <- match(x, sdg@vertex.names)
@@ -58,10 +55,9 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
             }
         }
         else if (max(x) > length(sdg@vertex.names)) {
-            warning(paste("Invalid index", max(x), "in '", label, 
-                "'"))
-            new.names <- paste("v", (length(sdg@vertex.names) + 
-                1):max(x), sep = "")
+            warning(paste("Invalid index", max(x), "in '", label, "'"))
+            new.names <- paste("v", (length(sdg@vertex.names) + 1):max(x), 
+                sep = "")
             sdg@vertex.names <<- c(sdg@vertex.names, new.names)
             sdg@types <<- c(sdg@types, rep(sdg@types[1], length(new.names)))
             vertex.colors <<- c(vertex.colors, rep("magenta", 
@@ -124,8 +120,9 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
         sdg@labels <- sdg@vertex.names
     if (is.null(Vertices)) 
         Vertices <- returnVertexList(sdg@vertex.names, labels = sdg@labels, 
-            types = sdg@types, N = control$N, colors = vertex.colors, 
-            vertexClasses = control$vertexClasses)
+                                     types = sdg@types, N = control$N, 
+                                     colors = vertex.colors, 
+                                     vertexClasses = control$vertexClasses)
     else control$N <- dim(Positions(Vertices))[2]
     X <- c("edgeList", "blockEdgeList", "factorVertexList", "factorEdgeList", 
         "extraList", "extraEdgeList")
@@ -148,11 +145,16 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
             if (!.IsEmpty(sdg@texts)) 
                 warning("Argument 'texts     ' ignored")
         }
-        dg <- .newDgGraph(viewType = Arguments$viewType, vertexList = Arguments$vertexList, 
-            edgeList = Arguments$vertexEdges, oriented = Arguments$oriented, 
-            blockList = Arguments$blockList, blockEdgeList = Arguments$blockEdges, 
-            factorVertexList = Arguments$factorVertices, factorEdgeList = Arguments$factorEdges, 
-            extraList = Arguments$extraVertices, extraEdgeList = Arguments$extraEdges)
+        dg <- .newDgGraph(viewType = Arguments$viewType, 
+                          vertexList = Arguments$vertexList, 
+                          edgeList = Arguments$vertexEdges, 
+                          oriented = Arguments$oriented, 
+                          blockList = Arguments$blockList, 
+                          blockEdgeList = Arguments$blockEdges, 
+                          factorVertexList = Arguments$factorVertices, 
+                          factorEdgeList = Arguments$factorEdges, 
+                          extraList = Arguments$extraVertices, 
+                          extraEdgeList = Arguments$extraEdges)
     }
     else {
         BlockList <- NULL
@@ -166,17 +168,21 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
         else if (!is.null(Arguments$BlockList)) {
             BlockList <- Arguments$BlockList
             if (is.null(Arguments$Vertices) && is.null(Arguments$vertexList)) 
-                warning("Argument 'vertexList' should also be given to put verices in blocks!")
+                warning(
+    "Argument 'vertexList' should also be given to put verices in blocks!")
         }
         else if (!is.null(Arguments$blockList)) {
             BlockList <- Arguments$blockList
             if (is.null(Arguments$Vertices) && is.null(Arguments$vertexList)) 
-                warning("Argument 'vertexList' should also be given to put verices in blocks!")
+                warning(
+    "Argument 'vertexList' should also be given to put verices in blocks!")
         }
         else if (!(.IsEmpty(sdg@blocks))) {
-            result <- setBlocks(sdg@blocks, Vertices, right.to.left = control$right.to.left, 
-                nested.blocks = control$nested.blocks, blockColors = control$blockColors, 
-                N = control$N)
+            result <- setBlocks(sdg@blocks, Vertices, 
+                                right.to.left = control$right.to.left, 
+                                nested.blocks = control$nested.blocks, 
+                                blockColors = control$blockColors, 
+                                N = control$N)
             if (is.null(Arguments$Vertices)) 
                 Vertices <- result$Vertices
             if (control$drawblocks) 
@@ -184,8 +190,9 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
         }
         else if (!(.IsEmpty(sdg@block.tree))) {
             result <- setTreeBlocks(sdg@block.tree, Vertices, 
-                root.label = "ROOT", N = control$N, blockColors = control$blockColors, 
-                overlaying = control$overlaying)
+                                    root.label = "ROOT", N = control$N, 
+                                    blockColors = control$blockColors, 
+                                    overlaying = control$overlaying)
             if (is.null(Arguments$Vertices)) 
                 Vertices <- result$Vertices
             if (control$drawblocks) 
@@ -222,17 +229,19 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
                 ExtraVertices <- Arguments$ExtraVertices
             else if (.IsEmpty(sdg@texts)) 
                 ExtraVertices <- NULL
-            else ExtraVertices <- returnVertexList(paste("T", 
-                1:length(sdg@texts), sep = ""), labels = sdg@texts, 
+            else ExtraVertices <- returnVertexList(
+                paste("T", 1:length(sdg@texts), sep = ""), 
+                labels = sdg@texts, 
                 types = rep("TextVertex", length(sdg@texts)), 
-                line = TRUE, N = control$N, colors = rep(control$extraVertexColor, 
-                  length(sdg@texts)), vertexClasses = control$vertexClasses)
-                  # 'vertexClasses' = control$vertexClasses ???
+                line = TRUE, N = control$N, 
+                colors = rep(control$extraVertexColor, length(sdg@texts)), 
+                vertexClasses = control$vertexClasses)
+                # 'vertexClasses' = control$vertexClasses ???
             if (!is.null(ExtraVertices) && !is.null(control$diagonal) && 
                 control$diagonal) {
                 i <- 1:length(ExtraVertices) - 2
-                Positions(ExtraVertices) <- (matrix(c(rep(i * 
-                  50, 2), rep(200, (control$N - 2) * length(ExtraVertices))), 
+                Positions(ExtraVertices) <- (matrix(c(rep(i * 50, 2), 
+                  rep(200, (control$N - 2) * length(ExtraVertices))), 
                   ncol = control$N) - 200)/4
             }
             if (!is.null(Arguments$ExtraEdges)) 
@@ -251,14 +260,16 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
             if (!is.null(Arguments$FactorVertices)) {
                 FactorVertices <- Arguments$FactorVertices
                 if (is.null(Arguments$FactorEdges)) 
-                  warning("Argument FactorEdges should also be given with FactorVertices!")
+                  warning(
+    "Argument FactorEdges should also be given with FactorVertices!")
             }
             if (!(.IsEmpty(sdg@factors))) {
                 result <- returnFactorVerticesAndEdges(Vertices, 
-                  sdg@factors, factorVertexColor = control$factorVertexColor, 
-                  factorEdgeColor = control$factorEdgeColor, 
-                  fixedFactorPositions = control$fixedFactorPositions, 
-                  factorClasses = control$factorClasses)
+                          sdg@factors, 
+                          factorVertexColor = control$factorVertexColor, 
+                          factorEdgeColor = control$factorEdgeColor, 
+                          fixedFactorPositions = control$fixedFactorPositions, 
+                          factorClasses = control$factorClasses)
                 if (!is.null(Arguments$FactorVertices)) {
                   FactorVertices <- Arguments$FactorVertices
                 }
@@ -284,7 +295,8 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
                 Edges <- Arguments$Edges
             else Edges <- returnEdgeList(sdg@edge.list, Vertices, 
                 color = control$edgeColor, oriented = Oriented, 
-                N = control$N, types = sdg@edge.types, edgeClasses = control$edgeClasses)
+                N = control$N, types = sdg@edge.types, 
+                edgeClasses = control$edgeClasses)
             if (length(Oriented) > 1) 
                 Oriented <- TRUE
             BlockEdges <- NULL
@@ -303,10 +315,12 @@ function (sdg = NULL, frameModels = NULL, dg = NULL, control = dg.control(...),
             }
         }
         dg <- .newDgGraph(viewType = sdg@viewType, vertexList = Vertices, 
-            edgeList = Edges, oriented = Oriented, blockList = BlockList, 
-            blockEdgeList = BlockEdges, factorVertexList = FactorVertices, 
-            factorEdgeList = FactorEdges, extraList = ExtraVertices, 
-            extraEdgeList = ExtraEdges)
+                          edgeList = Edges, oriented = Oriented, 
+                          blockList = BlockList, blockEdgeList = BlockEdges, 
+                          factorVertexList = FactorVertices, 
+                          factorEdgeList = FactorEdges, 
+                          extraList = ExtraVertices, 
+                          extraEdgeList = ExtraEdges)
     }
     return(dg)
 }

@@ -39,7 +39,7 @@
 \alias{vertices<-}
 \alias{vertices}
 
-\title{Class "DynamicGraph" }
+\title{Class DynamicGraph}
 
 \description{ The class of the object of dynamicGraph. }
 
