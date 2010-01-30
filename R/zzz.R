@@ -1,5 +1,6 @@
     setClass("dg.list", contains = "list", 
         representation("list"), prototype = list())
+
     setClass("dg.NodeList", 
         contains = c("dg.list", "list"))
     setClass("dg.VertexList", 
@@ -8,16 +9,18 @@
         contains = c("dg.NodeList", "dg.list", "list"))
     setClass("dg.FactorVertexList", 
         contains = c("dg.NodeList", "dg.list", "list"))
+
     setClass("dg.EdgeList", 
-        contains = c("dg.NodeList", "list"))
+        contains = c("dg.NodeList", "dg.list", "list"))
     setClass("dg.VertexEdgeList", 
-        contains = c("dg.EdgeList", "dg.list", "list"))
+        contains = c("dg.EdgeList", "dg.NodeList", "dg.list", "list"))
     setClass("dg.BlockEdgeList", 
-        contains = c("dg.EdgeList", "dg.list", "list"))
+        contains = c("dg.EdgeList", "dg.NodeList", "dg.list", "list"))
     setClass("dg.FactorEdgeList", 
-        contains = c("dg.EdgeList", "dg.list", "list"))
+        contains = c("dg.EdgeList", "dg.NodeList", "dg.list", "list"))
     setClass("dg.ExtraEdgeList", 
-        contains = c("dg.EdgeList", "dg.list", "list"))
+        contains = c("dg.EdgeList", "dg.NodeList", "dg.list", "list"))
+
     setMethod("initialize", "dg.VertexList", 
         function(.Object, ...) {
         Args <- list(...)

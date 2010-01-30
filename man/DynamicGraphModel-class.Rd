@@ -45,7 +45,7 @@ with the views of the model, each of class \code{\link{DynamicGraphView-class}}.
   \describe{
     \item{\code{id.env}:}{Object of class \code{"character"}:
            Internal identification of the object. }
-    \item{\code{title}:}{Object of class \code{"character"}:
+    \item{\code{label}:}{Object of class \code{"character"}:
         The value of the argument \code{title} of 
         \code{\link{dynamicGraphMain}}, combined with the slot \code{name}
         of the model object, printed by \code{Str}. }

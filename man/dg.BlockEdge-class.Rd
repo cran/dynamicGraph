@@ -10,8 +10,7 @@
 \alias{newBlockEdge}
 
 \alias{newBlockEdge}
-\alias{dg.BlockEdge}.
-
+\alias{dg.BlockEdge}
 
 \title{Class dg.BlockEdge}
 

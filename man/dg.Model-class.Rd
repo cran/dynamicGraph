@@ -150,6 +150,8 @@ for labeling edges, see \code{\link{dg.Test-class}}.
 
 \section{Slots}{
   \describe{
+    \item{\code{dg}:}{Object of class \code{"dg.graphedges"}:
+      The \code{graphedges} of the model. }
     \item{\code{name}:}{Object of class \code{"character"}:
       The \code{name} of the model. }
   }

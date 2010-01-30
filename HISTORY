@@ -2,6 +2,9 @@
  2.2...:
  =======
 
+ 2010-01-30: "dg.list" added to definition of "dg.EdgeList",
+             and "dg.NodeList" to the 4 classes containing "dg.EdgeList"
+
  2007-10-14: message("Using 'setGraphEdges' for your model class.")
              removed
 
